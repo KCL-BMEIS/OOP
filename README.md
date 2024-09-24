@@ -1,2 +1,2 @@
-# OOP_course
+# OOP course
 Updated course for OOP
