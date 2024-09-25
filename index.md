@@ -16,7 +16,7 @@ title: Object-Oriented Programming (5CCYB041)
 
 - Tobias Wood (tobias.wood@kcl.ac.uk)
 - Marc Modat (marc.modat@kcl.ac.uk)
-  
+
 ---
 
 ## Slides

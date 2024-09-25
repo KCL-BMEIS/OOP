@@ -18,13 +18,15 @@ background-image: url(images/title.jpg)
 
 ## Module leads
 
-J-Donald Tournier (jacques-donald.tournier@kcl.ac.uk)
-Michela Antonelli (michela.antonelli@kcl.ac.uk)
+- ![donald](images/donald.jpg) J-Donald Tournier (jacques-donald.tournier@kcl.ac.uk)
+- ![michela](images/michela.jpg) Michela Antonelli (michela.antonelli@kcl.ac.uk)
 
 ## Lecturers
 
-Tobias Wood (tobias.wood@kcl.ac.uk)
-Marc Modat (marc.modat@kcl.ac.uk)
+- ![toby](images/toby.jpg) Tobias Wood (tobias.wood@kcl.ac.uk)
+- ![marc](images/marc.jpg) Marc Modat (marc.modat@kcl.ac.uk)
+
+---
 
 ## Week 1: Introduction
 
