@@ -1,7 +1,9 @@
-# OOP-slides
-Slides for Object-Oriented Programming course
+# Course material for Object-Oriented Course (5CCYB041)
 
+## Slides
 
-## Testing Slides
+Course slides are written in MarkDown for use with [the remarkjs framework](https://remarkjs.com/). They can be viewed [online at this link](https://kcl-bmeis.github.io/OOP/test). 
 
-- [test](https://jdtournier.github.io/OOP-slides/test)
+## Code examples
+
+These are stored in the `code/` folder.
