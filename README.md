@@ -2,7 +2,8 @@
 
 ## Slides
 
-Course slides are written in MarkDown for use with [the remarkjs framework](https://remarkjs.com/). They can be viewed [online at this link](https://kcl-bmeis.github.io/OOP/test). 
+- [Week 1: the Unix command-line, compiling our first C++ programs](https://kcl-bmeis.github.io/OOP/week1)
+- [Week 2: TBC](https://kcl-bmeis.github.io/OOP/week2)
 
 ## Code examples
 
