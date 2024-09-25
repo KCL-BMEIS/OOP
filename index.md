@@ -29,4 +29,4 @@ title: Object-Oriented Programming (5CCYB041)
 
 ## Code examples
 
-These are stored in the `code/` folder.
+These are stored in the [code folder](https://github.com/kcl-bmeis/oop/code).
