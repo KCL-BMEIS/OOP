@@ -1,9 +1,32 @@
 ---
 layout: presentation
-title: test
+title: "Week 1: Introduction"
 ---
 
-# Object-Oriented Programming
+class: center, middle
+background-image: url(images/title.jpg)
+
+# OBJECT-ORIENTED PROGRAMMING
+
+5CCYB041 
+
+## Week 1: Introduction
+
+---
+
+# Teaching team
+
+## Module leads
+
+J-Donald Tournier (jacques-donald.tournier@kcl.ac.uk)
+Michela Antonelli (michela.antonelli@kcl.ac.uk)
+
+## Lecturers
+
+Tobias Wood (tobias.wood@kcl.ac.uk)
+Marc Modat (marc.modat@kcl.ac.uk)
+
+## Week 1: Introduction
 
 ## Topics to be covered:
 
