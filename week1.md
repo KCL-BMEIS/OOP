@@ -3,17 +3,17 @@ layout: presentation
 title: "Week 1: Introduction"
 ---
 
-class: center, middle
+class: center, middle, title
 background-image: url(images/title.jpg)
 background-size: cover
 
-
-
+.title[
 # OBJECT-ORIENTED PROGRAMMING
 
-5CCYB041 
+5CCYB041
 
 ## Week 1: Introduction
+]
 
 ---
 
