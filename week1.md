@@ -3,14 +3,15 @@ layout: presentation
 title: "Week 1: Introduction"
 ---
 
-class: center, middle, title
+class: center, top, right, title
 background-image: url(images/title.jpg)
 background-size: cover
 
 .title[
+5CCYB041
+
 # OBJECT-ORIENTED PROGRAMMING
 
-5CCYB041
 
 ## Week 1: Introduction
 ]
@@ -21,17 +22,17 @@ background-size: cover
 
 ## Module leads
 
-- ![donald](images/donald.jpg) J-Donald Tournier (jacques-donald.tournier@kcl.ac.uk)
-- ![michela](images/michela.jpg) Michela Antonelli (michela.antonelli@kcl.ac.uk)
+.center[ .left-col[ ![:scale 25%](images/donald.jpg) <br> J-Donald Tournier ]
+.right-col[ ![:scale 25%](images/michela.jpg) <br> Michela Antonelli ] ]
 
 ## Lecturers
 
-- ![toby](images/toby.jpg) Tobias Wood (tobias.wood@kcl.ac.uk)
-- ![marc](images/marc.jpg) Marc Modat (marc.modat@kcl.ac.uk)
+.center[ .left-col[ ![:scale 25%](images/toby.jpg) <br> Tobias Wood ]
+.right-col[ ![:scale 25%](images/marc.jpg) <br> Marc Modat ] ]
 
 ---
 
-## Week 1: Introduction
+# Week 1: Introduction
 
 ## Topics to be covered:
 
@@ -79,3 +80,4 @@ int main ()
   `return` 0;
 }
 ```
+

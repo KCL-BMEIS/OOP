@@ -8,29 +8,43 @@
       @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body { font-family: 'Droid Sans'; }
+      body {
+         font-family: 'Droid Sans';
+	 font-size: 24px;
+      }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
       .remark-slide-content {
-        font-size: 2vw;
+        font-size: 24px;
         h1 { font-size: 2em; }
         h2 { font-size: 1.5em; }
         h3 { font-size: 1.2em; }
 
         .title {
-          font-size: 4vw;
-          h1 { font-size: 2em; }
-          h2 { font-size: 1.5em; }
-          h3 { font-size: 1.2em; }
+          font-size: 30px;
+          h1 { font-size: 3.5em; }
+          h2 { font-size: 2.5em; }
+          h3 { font-size: 1.5em; }
         }
       }
 
       .remark-code, .remark-inline-code { 
         font-family: 'Ubuntu Mono'; 
-        font-size: 2vw;
+        font-size: 24px;
       }
+      .left-col {
+        float: left;
+        width: 47%;
+        padding-bottom: 2em;
+      }
+      .right-col {
+        float: right;
+        width: 47%;
+        padding-bottom: 2em;
+      }
+
     </style>
   </head>
   <body>
@@ -40,6 +54,10 @@
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
     <script>
+      remark.macros.scale = function (percentage) {
+        var url = this;
+        return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
       var slideshow = remark.create({
         ratio: '16:9',
         click: true,
