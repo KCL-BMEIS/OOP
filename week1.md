@@ -5,6 +5,9 @@ title: "Week 1: Introduction"
 
 class: center, middle
 background-image: url(images/title.jpg)
+background-size: cover
+
+
 
 # OBJECT-ORIENTED PROGRAMMING
 
