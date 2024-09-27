@@ -3,18 +3,11 @@ layout: presentation
 title: "Week 1: Introduction"
 ---
 
-class: center, top, right, title
-background-image: url(images/title.jpg)
-background-size: cover
+class: title
 
-.title[
 5CCYB041
-
 # OBJECT-ORIENTED PROGRAMMING
-
-
 ## Week 1: Introduction
-]
 
 ---
 
@@ -45,13 +38,18 @@ background-size: cover
 
 ---
 
-# Agenda
+# The command-line
 
-1. Introduction
-2. Deep-dive
-3. ...
+In this course, we will be using a Unix-like terminal environment 
+and running all of our code within the terminal. 
 
-[NOTE]: Note that you need active internet connection to access remark.js script file
+- This means we need to understand the Unix command-line.
+
+On the KCL-managed Windows systems, we will rely on the `MSYS2` project. 
+
+- Use the `MSYS2 MSYS` terminal (ignore the other variants)
+- This provides a Unix-like environment, preloaded with all the necessary software.
+- Start it from the _Start_ Menu (search for "MSYS")
 
 ---
 
