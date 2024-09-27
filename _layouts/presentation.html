@@ -16,6 +16,9 @@
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
+      img {
+        filter: drop-shadow(0.3em 0.3em 0.3em #888888);
+      }
       .remark-slide-content {
         font-size: 24px;
         padding: 0em 3em 0em 3em; 
@@ -50,6 +53,10 @@
         width: 47%;
         padding-bottom: 2em;
       }
+      .float-right {
+        float: right;
+        display: inline-block
+      }
 
     </style>
   </head>
@@ -63,6 +70,10 @@
       remark.macros.scale = function (percentage) {
         var url = this;
         return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
+      remark.macros.right = function (percentage) {
+        var url = this;
+        return '<img src="' + url + '" style="width: ' + percentage + '; float: right; padding-left: 1em; padding-bottom: 1em;" />';
       };
       var slideshow = remark.create({
         ratio: '16:9',

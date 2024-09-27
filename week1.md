@@ -40,16 +40,26 @@ class: title
 
 # The command-line
 
+![:right 40%](images/MSYS.png)
+
 In this course, we will be using a Unix-like terminal environment 
 and running all of our code within the terminal. 
 
 - This means we need to understand the Unix command-line.
+
+--
 
 On the KCL-managed Windows systems, we will rely on the `MSYS2` project. 
 
 - Use the `MSYS2 MSYS` terminal (ignore the other variants)
 - This provides a Unix-like environment, preloaded with all the necessary software.
 - Start it from the _Start_ Menu (search for "MSYS")
+
+--
+
+If you wish to install this on your own Windows computer, follow the instructions on KEATS.<br>
+On macOS, you can immediatly use the Terminal application.
+
 
 ---
 
