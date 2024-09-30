@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+from sys import argv
+from os import path
+
+if len(argv) < 2 or not argv[1].endswith ('.md'):
+    raise ValueError ('expected markdown file with .md suffix')
+
+html=''
+markdown=''
+
+with open ('_layouts/presentation.html') as fd:
+    html = fd.read()
+
+with open(argv[1]) as fd:
+    npagebreak = 0
+    for line in fd.readlines():
+        if npagebreak >= 2:
+            markdown += line
+        elif line.startswith ('title:'):
+            title = line.split(maxsplit=1)[1]
+        elif line.startswith ('---'):
+            npagebreak +=1
+
+out = argv[1][:-3]+'.html'
+
+with open (out, 'w') as fd:
+    fd.write (html.replace ('{{ page.title | strip_html }}', title).replace('{{ page.content }}', markdown))
+
+print ("ready to view at file:///" + path.abspath (out))
+
