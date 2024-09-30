@@ -10,3 +10,9 @@ title: OOP Slides
 baseurl: /OOP
 author: "J-Donald Tournier"
 description: Slides for the KCL BMEIS OOP course
+
+exclude:
+  - README.md
+  - CONTRIBUTING.md
+  - code/
+  - view_local
