@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# top-level html files
+/*.html
+
