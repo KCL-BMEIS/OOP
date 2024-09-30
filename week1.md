@@ -15,13 +15,13 @@ class: title
 
 ## Module leads
 
-.center[ .left-col[ ![:scale 25%](images/donald.jpg) <br> J-Donald Tournier ]
-.right-col[ ![:scale 25%](images/michela.jpg) <br> Michela Antonelli ] ]
+.center[ .left-col[ ![:scale 25%](images/donald.jpg) <br> [J-Donald Tournier](mailto:jacques-donald.tournier@kcl.ac.uk) ] 
+.right-col[ ![:scale 25%](images/michela.jpg) <br> [Michela Antonelli](mailto:michela.antonelli@kcl.ac.uk) ] ]
 
 ## Lecturers
 
-.center[ .left-col[ ![:scale 25%](images/toby.jpg) <br> Tobias Wood ]
-.right-col[ ![:scale 25%](images/marc.jpg) <br> Marc Modat ] ]
+.center[ .left-col[ ![:scale 25%](images/toby.jpg) <br> [Tobias Wood](mailto:tobias.wood@kcl.ac.uk) ]
+.right-col[ ![:scale 25%](images/marc.jpg) <br> [Marc Modat](marc.modat@kcl.ac.uk) ] ]
 
 ---
 
@@ -49,16 +49,18 @@ and running all of our code within the terminal.
 
 --
 
-On the KCL-managed Windows systems, we will rely on the `MSYS2` project. 
+On the KCL-managed Windows systems, we will rely on the [MSYS2
+project](https://www.msys2.org/). 
 
-- Use the `MSYS2 MSYS` terminal (ignore the other variants)
+- Use the **`MSYS2 MSYS` terminal** (ignore the other variants)
 - This provides a Unix-like environment, preloaded with all the necessary software.
 - Start it from the _Start_ Menu (search for "MSYS")
 
 --
 
 If you wish to install this on your own Windows computer, follow the instructions on KEATS.<br>
-On macOS, you can immediatly use the Terminal application.
+On macOS, you can immediately use the [Terminal
+application](https://support.apple.com/en-gb/guide/terminal/welcome/mac).
 
 
 ---
