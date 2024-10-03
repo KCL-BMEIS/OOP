@@ -34,3 +34,6 @@
 # top-level html files
 /*.html
 
+# backup files
+*.swp
+*~
