@@ -293,7 +293,7 @@ easier
 
 The **up/down arrows** allow you recall previously typed commands, which you can
 then edit and modify as required (using the left/right arrows)
-- very useful when you have a single typo on a long command
+- very useful when you have a single typo on a long command!
 
 --
 
@@ -304,6 +304,39 @@ information to do so.
   - *provided* there is a `Documents` folder at that location
   - *and* there are no other folders that start with `Doc`
 
+
+---
+
+# Writing our first C++ program
+
+![:right 40%](images/micro.png)
+We need to create and edit a text file to hold our code. 
+To do this, we need to use a **text editor**
+- There are many good editors available, but some are better suited for writing C++
+
+--
+
+- On KCL-managed systems, you can use a simple terminal-based editor called
+  [micro](https://micro-editor.github.io/)
+
+--
+
+- other options include [Notepad++](https://notepad-plus-plus.org/) (Windows
+  only), [Sublime Text](https://www.sublimetext.com/), 
+  [VS Code](https://code.visualstudio.com/), [BBEdit](https://www.barebones.com/products/bbedit/) 
+  (macOS only), ...
+
+--
+
+.note[
+We do not recommend the use of full-blown _integrated development environments_
+(IDE) early on. While convenient, these obscure the processes involved, making
+it difficult for newcomers to understand where things might go wrong.
+<br>
+<br>
+It is also very difficult to find an IDE that is both easy to install and works
+flawlessly across all relevant operating systems. For consistency, we have
+therefore decided to avoid the use of IDEs on this course.]
 
 
 
@@ -355,39 +388,10 @@ We need to start by creating a folder to store our code
 
 ---
 
-# Writing our first C++ program
+# Our first C++ program: Hello World
 
-![:right 40%](images/micro.png)
-We need to create a new text file to hold our code. 
-To do this, we need to use a **text editor**
-- There are many good editors available, but some are better suited for writing C++
-
---
-
-- On KCL-managed systems, you can use a simple terminal-based editor called
-  [micro](https://micro-editor.github.io/)
-
---
-
-- other options include Notepad++ (Windows only), Sublime Text, VS Code, BBEdit (macOS only), ...
-
---
-
-.note[
-We do not recommend the use of full-blown _integrated development environments_
-(IDE) early on. While convenient, these obscure the processes involved, making
-it difficult for newcomers to understand where things might go wrong.
-<br>
-<br>
-It is also very difficult to find an IDE that is both easy to install and works
-flawlessly across all relevant operating systems. For consistency, we have
-therefore decided to avoid the use of IDEs on this course.]
-
----
-
-# Hello World
-
-We need to create a new text file called `main.cpp` with these contents:
+Once we are in the right folder, we need to create a new text file called
+`main.cpp` with these contents:
 
 ```C++
 #include <iostream>
@@ -398,6 +402,63 @@ int main ()
   return 0;
 }
 ```
+
+--
+
+<br>
+Create a new text file called `main.cpp` using `micro` (or whichever editor you
+have decided to use), type in the contents, and save the file.
+```
+micro main.cpp
+```
+
+---
+
+# micro useful shortcuts
+
+
+.left-col[
+- `Ctrl+Q` &emsp; close current file
+- `Ctrl+S` &emsp; save curent file
+- `Ctrl+O` &emsp; open file
+
+
+- `Crtl+C` &emsp; copy currently selected text
+- `Crtl+X` &emsp; cut currently selected text
+- `Crtl+K` &emsp; cut current line
+- `Ctrl+V` &emsp; paste previously copied text
+- `Crtl+D` &emsp; duplicate current line
+
+
+- `Crtl+Z` &emsp; undo
+- `Crtl+Y` &emsp; redo
+]
+
+.right-col[
+- `Ctrl+T` &emsp; new tab
+- `Ctrl+Alt+>` &emsp; Next Tab
+- `Ctrl+Alt+<` &emsp; Prev Tab
+
+
+- `Ctrl+F` &emsp; search
+- `Ctrl+N` &emsp; next match
+- `Ctrl+P` &emsp; previous match
+
+
+- `Tab` &emsp; autocomplete / indent selection
+- `Alt+Tab` &emsp; un-indent selection
+
+
+- `Ctrl+G` &emsp; help
+- `Ctrl+b` &emsp; shell prompt
+]
+
+--
+
+
+See [online documentation](https://github.com/zyedidia/micro/blob/master/runtime/help/keybindings.md#default-keybinding-configuration)
+for complete listing.
+
 
 ---
 
