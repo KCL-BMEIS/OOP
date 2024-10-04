@@ -311,14 +311,17 @@ information to do so.
 
 # Writing our first C++ program
 
-We need to start by creating a folder to store our code
+![:right 60%](images/new_folder.png)
 
---
+We need to start by creating a folder to store our code
 - we can use the Windows File Explorer (or Finder on macOS), then navigate to
   this folder using the command-line
 
+
 --
 
+<br>
+<br>
 - ... or we can use the command-line straight away!
 
 ---
@@ -352,14 +355,46 @@ We need to start by creating a folder to store our code
 
 ---
 
+# Writing our first C++ program
+
+![:right 40%](images/micro.png)
+We need to create a new text file to hold our code. 
+To do this, we need to use a **text editor**
+- There are many good editors available, but some are better suited for writing C++
+
+--
+
+- On KCL-managed systems, you can use a simple terminal-based editor called
+  [micro](https://micro-editor.github.io/)
+
+--
+
+- other options include Notepad++ (Windows only), Sublime Text, VS Code, BBEdit (macOS only), ...
+
+--
+
+.note[
+We do not recommend the use of full-blown _integrated development environments_
+(IDE) early on. While convenient, these obscure the processes involved, making
+it difficult for newcomers to understand where things might go wrong.
+<br>
+<br>
+It is also very difficult to find an IDE that is both easy to install and works
+flawlessly across all relevant operating systems. For consistency, we have
+therefore decided to avoid the use of IDEs on this course.]
+
+---
+
 # Hello World
 
-```
+We need to create a new text file called `main.cpp` with these contents:
+
+```C++
 #include <iostream>
 
 int main ()
 {
-* std::cout << "Hello World!" << std::endl;
+  std::cout << "Hello World\n";
   return 0;
 }
 ```
