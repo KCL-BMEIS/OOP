@@ -178,6 +178,18 @@ application](https://support.apple.com/en-gb/guide/terminal/welcome/mac).
 
 # The command-line
 
+To get started, click on the _Start_ menu and search for the `MSYS2 MSYS`
+application
+
+.note[
+ignore the other options, you need to use the `MSYS` variant!]
+
+
+--
+
+<br>
+<br>
+
 The terminal is an application that allows you to enter _commands_ and displays
 their output
 
@@ -194,19 +206,8 @@ intrepreter_
 
 .note[
 On Windows, the standard shell used to be the DOS shell, though MicroSoft
-has since introduced the more modern PowerShell - we won't be using either of
+has since introduced the more modern PowerShell &mdash; we won't be using either of
 them on this course!]
-
---
-
-<br>
-<br>
-
-To get started, click on the _Start_ menu and search for the `MSYS2 MSYS`
-application
-
-.note[
-ignore the other options, you need to use the `MSYS` variant!]
 
 ---
 
@@ -243,17 +244,17 @@ The `~` symbol is used as a shorthand for your home folder]
 
 Try the following commands:
 
-- `ls`: list the files & folders in the current folder
-  - `ls -l`: list in long format (permissions, ownership, file sizes, ...)
-  - `ls Desktop`: list the files in the `Desktop` folder 
+- `ls` &emsp; list the files & folders in the current folder
+  - `ls -l` &emsp; list in long format (permissions, ownership, file sizes, ...)
+  - `ls Desktop` &emsp; list the files in the `Desktop` folder 
 
-- `pwd`: print the current working directory 
+- `pwd` &emsp; print the current working directory 
 
-- `cd`: change directory
-  - `cd`: change to your _home folder_
-  - `cd ..`: change to the _parent directory_ relative to the current folder
-  - `cd Documents`: change to the `Documents` folder 
-  - `cd ../Desktop`: change to the `Desktop` folder in the parent directory
+- `cd` &emsp; change directory
+  - `cd` &emsp; change to your _home folder_
+  - `cd ..` &emsp; change to the _parent directory_ relative to the current folder
+  - `cd Documents` &emsp; change to the `Documents` folder 
+  - `cd ../Desktop` &emsp; change to the `Desktop` folder in the parent directory
 
 
 .note[
@@ -274,6 +275,79 @@ command-line correspond to the folders on your account.
 
 .note[
 on macOS, you can use the _finder_ application instead]
+
+
+---
+
+# Command-line tips & tricks
+
+Typing long commands over and over again can quickly get tiresome
+
+--
+
+Thankfully, modern command interpreters provide handy shortcuts to make life
+easier
+- please get used to them as early as you can!
+
+--
+
+The **up/down arrows** allow you recall previously typed commands, which you can
+then edit and modify as required (using the left/right arrows)
+- very useful when you have a single typo on a long command
+
+--
+
+The **TAB key** asks the shell to complete the current word if it has enough
+information to do so. 
+- for example, typing `cd Doc`, then pressing the `TAB` will complete the
+  command to `cd Documents` 
+  - *provided* there is a `Documents` folder at that location
+  - *and* there are no other folders that start with `Doc`
+
+
+
+
+---
+
+# Writing our first C++ program
+
+We need to start by creating a folder to store our code
+
+--
+- we can use the Windows File Explorer (or Finder on macOS), then navigate to
+  this folder using the command-line
+
+--
+
+- ... or we can use the command-line straight away!
+
+---
+
+# Create a folder on the command-line
+
+- navigate to the location where you want to create the folder, for example:
+  ```bash
+  cd ~/"OneDrive - King's College London/Documents/"
+  ```
+
+--
+- use the `mkdir` command to create the desired folder:
+  ```bash
+  mkdir OOP
+  ```
+
+--
+- navigate to this folder, and create a subfolder for this first example:
+  ```bash
+  cd OOP/
+  mkdir hello_world
+  ```
+
+--
+- finally, change directory into this folder:
+  ```
+  cd hello_world
+  ```
 
 
 ---
