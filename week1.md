@@ -15,13 +15,28 @@ class: title
 
 ## Module leads
 
-.center[ .left-col[ ![:scale 25%](images/donald.jpg) <br> [J-Donald Tournier](mailto:jacques-donald.tournier@kcl.ac.uk) ] 
-.right-col[ ![:scale 25%](images/michela.jpg) <br> [Michela Antonelli](mailto:michela.antonelli@kcl.ac.uk) ] ]
+.center[.teamcols[
+.col[ 
+[J-Donald Tournier](mailto:jacques-donald.tournier@kcl.ac.uk) ]
+.col[ 
+![:scale 100%](images/donald.jpg)] 
+.col[ 
+![:scale 100%](images/michela.jpg)]
+.col[
+[Michela Antonelli](mailto:michela.antonelli@kcl.ac.uk) ]
+] ]
 
 ## Lecturers
 
-.center[ .left-col[ ![:scale 25%](images/toby.jpg) <br> [Tobias Wood](mailto:tobias.wood@kcl.ac.uk) ]
-.right-col[ ![:scale 25%](images/marc.jpg) <br> [Marc Modat](marc.modat@kcl.ac.uk) ] ]
+.center[.teamcols[
+.col[
+[Tobias Wood](mailto:tobias.wood@kcl.ac.uk) ]
+.col[ 
+![:scale 100%](images/toby.jpg) ] 
+.col[ 
+![:scale 100%](images/marc.jpg) ]
+.col[ [Marc Modat](marc.modat@kcl.ac.uk) ] 
+] ]
 
 ---
 
@@ -35,7 +50,9 @@ class: title
 --
 
 ## Assessment
-.left-col[- first coursework (10%)
+.columns[
+.col[
+- first coursework (10%)
   - instructions available 6 February
   - submission due 25 February
 
@@ -44,11 +61,11 @@ class: title
   - submission due 3 April
 ]
 
---
-.right-col[- final exam (60%)
+.col[
+- final exam (60%)
   - this is a _written_ exam
   - please look through example questions provided
-
+]
 ]
 
 ---
@@ -414,10 +431,11 @@ micro main.cpp
 
 ---
 
-# micro useful shortcuts
+# Useful shortcuts for 'micro' text editor
 
 
-.left-col[
+.columns[
+.col[
 - `Ctrl+Q` &emsp; close current file
 - `Ctrl+S` &emsp; save curent file
 - `Ctrl+O` &emsp; open file
@@ -434,7 +452,7 @@ micro main.cpp
 - `Crtl+Y` &emsp; redo
 ]
 
-.right-col[
+.col[
 - `Ctrl+T` &emsp; new tab
 - `Ctrl+Alt+>` &emsp; Next Tab
 - `Ctrl+Alt+<` &emsp; Prev Tab
@@ -452,9 +470,7 @@ micro main.cpp
 - `Ctrl+G` &emsp; help
 - `Ctrl+b` &emsp; shell prompt
 ]
-
---
-
+]
 
 See [online documentation](https://github.com/zyedidia/micro/blob/master/runtime/help/keybindings.md#default-keybinding-configuration)
 for complete listing.
