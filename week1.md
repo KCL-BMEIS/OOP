@@ -187,7 +187,7 @@ project](https://www.msys2.org/).
 
 --
 
-If you wish to install this on your own Windows computer, follow the instructions on KEATS.<br>
+To install this on your own Windows computer, follow the instructions on KEATS.<br>
 On macOS, you can immediately use the [Terminal
 application](https://support.apple.com/en-gb/guide/terminal/welcome/mac).
 
@@ -204,7 +204,6 @@ ignore the other options, you need to use the `MSYS` variant!]
 
 --
 
-<br>
 <br>
 
 The terminal is an application that allows you to enter _commands_ and displays
@@ -223,7 +222,7 @@ intrepreter_
 
 .note[
 On Windows, the standard shell used to be the DOS shell, though MicroSoft
-has since introduced the more modern PowerShell &mdash; we won't be using either of
+has since introduced the more modern PowerShell &ndash; we won't be using either of
 them on this course!]
 
 ---
@@ -298,10 +297,7 @@ on macOS, you can use the _finder_ application instead]
 
 # Command-line tips & tricks
 
-Typing long commands over and over again can quickly get tiresome
-
---
-
+Typing long commands over and over again can quickly get tiresome.
 Thankfully, modern command interpreters provide handy shortcuts to make life
 easier
 - please get used to them as early as you can!
@@ -315,12 +311,16 @@ then edit and modify as required (using the left/right arrows)
 --
 
 The **TAB key** asks the shell to complete the current word if it has enough
-information to do so. 
-- for example, typing `cd Doc`, then pressing the `TAB` will complete the
+information to do so. For example, typing `cd Doc`, then pressing the `TAB` will complete the
   command to `cd Documents` 
   - *provided* there is a `Documents` folder at that location
   - *and* there are no other folders that start with `Doc`
 
+--
+
+.note[To learn more about how to use the shell, please take a look through any
+of the many tutorials available online, in particular our own [Introduction to the
+Unix command-line](https://command-line-tutorial.readthedocs.io/)]
 
 ---
 
@@ -352,7 +352,7 @@ it difficult for newcomers to understand where things might go wrong.
 <br>
 <br>
 It is also very difficult to find an IDE that is both easy to install and works
-flawlessly across all relevant operating systems. For consistency, we have
+flawlessly across all relevant platforms. We have
 therefore decided to avoid the use of IDEs on this course.]
 
 
@@ -380,26 +380,26 @@ We need to start by creating a folder to store our code
 
 - navigate to the location where you want to create the folder, for example:
   ```bash
-  cd ~/"OneDrive - King's College London/Documents/"
+  $ cd ~/"OneDrive - King's College London/Documents/"
   ```
 
 --
 - use the `mkdir` command to create the desired folder:
   ```bash
-  mkdir OOP
+  $ mkdir OOP
   ```
 
 --
 - navigate to this folder, and create a subfolder for this first example:
   ```bash
-  cd OOP/
-  mkdir hello_world
+  $ cd OOP/
+  $ mkdir hello_world
   ```
 
 --
 - finally, change directory into this folder:
   ```
-  cd hello_world
+  $ cd hello_world
   ```
 
 
@@ -426,7 +426,7 @@ int main ()
 Create a new text file called `main.cpp` using `micro` (or whichever editor you
 have decided to use), type in the contents, and save the file.
 ```
-micro main.cpp
+$ micro main.cpp
 ```
 
 ---
@@ -478,15 +478,85 @@ for complete listing.
 
 ---
 
-# Hello World
+# Compiling our program
 
+The code we have written in the file `main.cpp` cannot be executed as it is.
+- it is _human reaadable_ code, designed for us to more conveniently express
+  what the program should do
+
+--
+
+To use the program, we need to _compile_ it
+- in simple terms, we need to translate our code into _machine instructions_ that
+  the computer can execute directly
+
+--
+
+We do this by running the _compiler_ on our code:
 ```
-#include <iostream>
+$ g++ main.cpp
+```
 
-int main ()
-{
-  std::cout << "Hello World!" << std::endl;
-  `return` 0;
-}
+--
+
+This should produce a new _executable_ file in the current working directory:
+```
+$ ls
+a.exe  main.cpp
+```
+
+---
+
+# Running our program
+
+Now that we produced an executable, we can run it.
+
+--
+
+By default, the shell looks for commands to run in a predefined set of folders,
+as listed in the system `PATH`.
+- simply typing `a.exe` will not (normally) work &ndash; *unless* `a.exe` is
+  in one of these folders.
+
+--
+
+However, we can provide the explicit location of our executable when typing the
+command &ndash; *without* modifying the system `PATH`
+
+--
+
+Our command is in the current folder, also known as simply as `.` &ndash; we can therefore type:
+```
+$ ./a.exe
+Hello, world!
+```
+
+--
+
+.note[For more information about the `PATH` and how to manage it, please take a
+look at any of the many descriptions available online, e.g. [this one](https://en.wikipedia.org/wiki/PATH_(variable%29)]
+
+
+---
+
+# Controlling the output of the compiler
+
+By default, the compiler will produce an executable called `a.exe`
+- this is true for MSYS2 &ndash; on many other platforms, this will be `a.out`
+
+--
+
+We can control the name of the executable using the `-o` [command-line
+option](https://command-line-tutorial.readthedocs.io/introduction.html#command-line-options):
+```
+g++ main.cpp -o main
+```
+
+--
+
+And invoke the resulting executable as before:
+```
+$ ./main
+Hello, world!
 ```
 

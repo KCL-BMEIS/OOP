@@ -16,6 +16,15 @@
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
+      p {
+        margin-block-end: 0.2em;
+      }
+      ul {
+        margin-block-start: 0.2em;
+      }
+      li {
+        font-size: 0.9em;
+      }
       img {
         filter: drop-shadow(0.3em 0.3em 0.3em #888888);
       }
@@ -26,7 +35,7 @@
         filter: drop-shadow(0.3em 0.3em 0.3em #888888);
       }
       .remark-slide-content {
-        font-size: 24px;
+        font-size: 26px;
         padding: 0em 3em 0em 3em; 
         h1 { font-size: 2.5em; }
         h2 { font-size: 1.5em; }
@@ -46,9 +55,9 @@
         h3 { font-size: 1.5em; }
       }
 
-      .remark-code, .remark-inline-code { 
-        font-family: 'Ubuntu Mono'; 
-        font-size: 24px;
+      .remark-code, .remark-inline-code {
+        font-family: 'Ubuntu Mono';
+        font-size: inherit;
       }
       .columns {
          display: grid;
@@ -66,7 +75,7 @@
         width=100%;
         padding: 0.5em;
         background-color: #FFFFCC;
-        border-radius: 0.2em;
+        border-radius: 0.4em;
         font-size: 0.9em;
         color: #666;
         filter: drop-shadow(0.3em 0.3em 0.3em #888888);
@@ -99,6 +108,7 @@
         ratio: '16:9',
         click: true,
         slideNumberFormat: '%current%',
+        countIncrementalSlides: false,
         highlightLanguage: 'c++',
         highlightLines: true,
         highlightSpans: true,
