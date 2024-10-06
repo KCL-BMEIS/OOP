@@ -206,7 +206,7 @@ ignore the other options, you need to use the `MSYS` variant!]
 
 <br>
 
-The terminal is an application that allows you to enter _commands_ and displays
+The terminal is an application that allows you to enter _commands_ and view
 their output
 
 --
@@ -229,8 +229,8 @@ them on this course!]
 
 # The command prompt
 
-When started, the terminal will (typically) show a _prompt_, and wait for you
-to enter commands.
+When started, the shell will show a _prompt_, and wait for you to enter
+commands.
 
 --
 
@@ -270,7 +270,7 @@ Try the following commands:
   - `cd` &emsp; change to your _home folder_
   - `cd ..` &emsp; change to the _parent directory_ relative to the current folder
   - `cd Documents` &emsp; change to the `Documents` folder 
-  - `cd ../Desktop` &emsp; change to the `Desktop` folder in the parent directory
+  - `cd ../Desktop` &emsp; change to the `Desktop` folder in the current folder's parent directory
 
 
 .note[
@@ -306,7 +306,7 @@ easier
 
 The **up/down arrows** allow you recall previously typed commands, which you can
 then edit and modify as required (using the left/right arrows)
-- very useful when you have a single typo on a long command!
+- very useful when you've made a simple typo on a long command!
 
 --
 
@@ -364,7 +364,7 @@ therefore decided to avoid the use of IDEs on this course.]
 ![:right 60%](images/new_folder.png)
 
 We need to start by creating a folder to store our code
-- we can use the Windows File Explorer (or Finder on macOS), then navigate to
+- We can use the Windows File Explorer (or Finder on macOS), then navigate to
   this folder using the command-line
 
 
@@ -472,8 +472,8 @@ $ micro main.cpp
 ]
 ]
 
-See [online documentation](https://github.com/zyedidia/micro/blob/master/runtime/help/keybindings.md#default-keybinding-configuration)
-for complete listing.
+See the [online documentation](https://github.com/zyedidia/micro/blob/master/runtime/help/keybindings.md#default-keybinding-configuration)
+for the complete listing.
 
 
 ---
@@ -481,7 +481,7 @@ for complete listing.
 # Compiling our program
 
 The code we have written in the file `main.cpp` cannot be executed as it is.
-- it is _human reaadable_ code, designed for us to more conveniently express
+- it is _human readable_ code, designed for us to more conveniently express
   what the program should do
 
 --
@@ -525,7 +525,8 @@ command &ndash; *without* modifying the system `PATH`
 
 --
 
-Our command is in the current folder, also known as simply as `.` &ndash; we can therefore type:
+Our command is in the current folder, which we can refer to using the `.` symbol. <br>
+We can therefore type:
 ```
 $ ./a.exe
 Hello, world!
@@ -533,8 +534,8 @@ Hello, world!
 
 --
 
-.note[For more information about the `PATH` and how to manage it, please take a
-look at any of the many descriptions available online, e.g. [this one](https://en.wikipedia.org/wiki/PATH_(variable%29)]
+.note[If necessary, search online for more information about the `PATH`, e.g.
+[wikipedia](https://en.wikipedia.org/wiki/PATH_(variable%29)]
 
 
 ---
@@ -559,4 +560,181 @@ And invoke the resulting executable as before:
 $ ./main
 Hello, world!
 ```
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+int main ()
+{
+  std::cout << "Hello World\n";
+  return 0;
+}
+```
+Let's look through our example code again and go through each line
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+*#include <iostream>
+
+int main ()
+{
+  std::cout << "Hello World\n";
+  return 0;
+}
+```
+
+Lines that start with a `#` symbol are so-called _preprocessor directives_
+
+--
+
+The `#include` directive requests inclusion of the contents of the `iostream` _header _
+
+--
+
+Header files are normal C++ files that declare functionality that we might need to use
+
+--
+
+The `iostream` header declares the input/output stream functionality for
+printing to the terminal via `std::cout` &ndash; which is why we need to include it
+
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+*int main ()
+{
+  std::cout << "Hello World\n";
+  return 0;
+}
+```
+
+This is the declaration of the `main()` function
+
+--
+
+The `main()` function is the *entry point* for any program
+
+--
+
+By convention, we declare it as returning an integer (`int`)
+
+--
+
+We'll see more about this when we cover functions
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+int main ()
+{
+* std::cout << "Hello World\n";
+  return 0;
+}
+```
+
+Next, we feed the *string* "Hello World" to the *standard output*
+stream, `std::cout`
+
+--
+
+Note the use of the *insertion operator*, `<<`
+- This line reads as: insert the string "Hello World" into the `std::cout` IO
+  stream
+
+--
+
+Note also the trailing `\n` *escape sequence* at the end of the string
+- The backslash `\` character can be used to *escape* the normal interpretation
+  of the next character
+- Here, the sequence `\n` translates into the *newline* character
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+int main ()
+{
+  std::cout << "Hello World\n";
+* return 0;
+}
+```
+
+Finally, we return from `main()`, which marks the end of our program
+
+--
+
+We return the value 0 to indicate success (no errors)
+
+--
+
+This value is the *exit code* of our program. It can be used by other programs, or
+by the shell, to detect any errors during execution
+- by convention, any non-zero value signals that an error occurred
+- different error codes can sometimes be used to signal different types of errors
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+int main ()
+{
+* std::cout << "Hello World\n";
+* return 0;
+}
+```
+
+Note the use of semicolons `;` to mark the end of each of these lines
+
+--
+
+These lines are individual *statements*
+- in C++, the semicolon marks the end of the statement
+- technically, these statements could both be on the same line &ndash; only the
+  semicolon matters
+
+---
+
+# Understanding our 'hello world' example
+
+```C++
+#include <iostream>
+
+int main ()
+*{
+  std::cout << "Hello World\n";
+  return 0;
+*}
+```
+
+Note also the use of curly brackets (or *braces*, or *curly braces*) to enclose
+the code for the main function
+
+--
+
+In C++, braces are used to group statements together. We will see more about
+this later
+
+
 
