@@ -152,7 +152,7 @@ Learning to program can only be done through experience
 --
 - search online for examples and explanations!
   - but bear in mind that online sources may use concepts we have
-    purposefully left out of the course!
+    deliberately left out of the course!
 
 --
 
@@ -216,7 +216,7 @@ intrepreter_
 - typically referred to as 'the shell'
 
 --
-- here, we are using the _Bourne-again shell_ (`bash`)
+- here, we are using the [Bourne-again shell (`bash`)](https://en.wikipedia.org/wiki/Bash_(Unix_shell%29)
 
 --
 
@@ -738,3 +738,270 @@ this later
 
 
 
+---
+
+# Exercises
+
+- Modify `main.cpp` to remove the newline character, then compile and run the
+  executable. What effect does this have?
+
+- Modify `main.cpp` to remove the `#include` line, then compile. What effect
+  does this have?
+
+- Modify `main.cpp` to remove the semicolon after `return 0;`, then compile.
+  What effect does this have?
+
+---
+
+# Command-line arguments
+
+To interact with our program, we need some way to pass information to it
+- for example, the name of a file to process, or the value of some parameter
+
+--
+
+We can use [command-line arguments](https://command-line-tutorial.readthedocs.io/introduction.html#command-line-arguments) 
+to do this. This requires a minor modification to the declaration of our `main()` function:
+```
+int main (int argc, char* argv[])
+```
+
+--
+
+Unfortunately, the arguments are provided as a C-style array of pointers &ndash; features that we are trying hard to avoid on this course!
+
+For this reason, we recommend immediately converting these arguments into a more modern form: a vector of strings
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+This is the way we recommend handling command-line arguments on this course
+- Please use this structure for your own programs
+
+--
+
+Let's step through the program to understand each step
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+*#include <vector>
+*#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+We need to include two additional headers: `<vector>` and `<string>`
+- these provide the functionality required to form a vector of strings
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+*int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+We need to modify the declaration of the `main()` function to accept additional arguments
+- these provide the information required to access the command-line arguments
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+* std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+This line declares a new variable called `args`, of type `std::vector<std::string>` (a vector of strings)
+
+--
+- It is initialised from the arguments passed to `main()`
+
+--
+- Don't worry about the syntax for now &ndash; we will fill in the blanks in due course
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+* std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+Here, we simply display the value of the first argument by feeding it to standard output
+- each argument can be accessed using the subscript operator `[]`
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+* // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+A line starting with `//` denotes a *comment*
+- The compiler will ignore any text after this until the end of the line
+
+--
+- You are strongly encouraged to use comments to explain anything that isn't immediately obvious in your own code!
+
+
+---
+
+# Command-line arguments
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  // now we can access the command-line arguments:
+  std::cout << "first argument is " << argv[1] << "\n";
+  
+  return 0;
+}
+```
+
+Now modify your own code as shown above, compile it, and run it.
+- What happens if you *don't* provide at least one command-line argument?
+
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+--
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (auto item : vec) 
+  statement;
+```
+--
+
+- the `for` keyword declares the start of the loop
+
+--
+
+- `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
+
+--
+
+- `item` is the variable that will contain a *copy* of each element for processing within the loop
+
+--
+
+- `auto` is a special keyword, requesting that the compiler *deduce* the type of `item` from the context
+
+--
+
+- `statement` is the code to execute for each iteration (for each element in `vec`)
+
+
+---
+
+# Iterating over command-line arguments
+
+Let's try using the range-based for loop to iterate over the command-line arguments:
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (auto a : args)
+    std::cout << "argument: " << a << "\n";
+  
+  return 0;
+}
+```
+
+Modify your own code to match and try it out. 
