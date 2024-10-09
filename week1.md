@@ -961,23 +961,103 @@ The easiest and safest way to do this is to use a [range-based for loop](https:/
 for (auto item : vec) 
   statement;
 ```
---
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (auto item : vec) 
+  statement;
+```
 
 - the `for` keyword declares the start of the loop
 
---
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (auto item : `vec`) 
+  statement;
+```
+
+- the `for` keyword declares the start of the loop
 
 - `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
 
---
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (auto `item` : vec) 
+  statement;
+```
+
+- the `for` keyword declares the start of the loop
+
+- `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
 
 - `item` is the variable that will contain a *copy* of each element for processing within the loop
 
---
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (`auto` item : vec) 
+  statement;
+```
+
+- the `for` keyword declares the start of the loop
+
+- `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
+
+- `item` is the variable that will contain a *copy* of each element for processing within the loop
 
 - `auto` is a special keyword, requesting that the compiler *deduce* the type of `item` from the context
 
---
+
+---
+
+# Iterating over a vector
+
+In your own code, you will often need to iterate over the contents of a vector
+
+The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
+
+```
+for (auto item : vec) 
+  `statement;`
+```
+
+- the `for` keyword declares the start of the loop
+
+- `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
+
+- `item` is the variable that will contain a *copy* of each element for processing within the loop
+
+- `auto` is a special keyword, requesting that the compiler *deduce* the type of `item` from the context
 
 - `statement` is the code to execute for each iteration (for each element in `vec`)
 
@@ -1025,15 +1105,59 @@ for (init-statement ; condition ; expression)
   statement;
 ```
 
---
+---
+
+# The original for loop
+
+The range-based for loop is a special case of the `for` loop
+- more convenient and safer when iterating over *containers*
+- it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+
+The original `for` loop takes this form:
+```
+for (`init-statement` ; condition ; expression)
+  statement;
+```
 
 - `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
 
---
+
+---
+
+# The original for loop
+
+The range-based for loop is a special case of the `for` loop
+- more convenient and safer when iterating over *containers*
+- it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+
+The original `for` loop takes this form:
+```
+for (init-statement ; `condition` ; expression)
+  statement;
+```
+
+- `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
 
 - `condition`: a test to determine whether to perform the next iteration. If `false`, the loop will terminate.
 
---
+
+---
+
+# The original for loop
+
+The range-based for loop is a special case of the `for` loop
+- more convenient and safer when iterating over *containers*
+- it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+
+The original `for` loop takes this form:
+```
+for (init-statement ; condition ; `expression`)
+  statement;
+```
+
+- `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
+
+- `condition`: a test to determine whether to perform the next iteration. If `false`, the loop will terminate.
 
 - `expression`: an action to perform after completion of each iteration
 
