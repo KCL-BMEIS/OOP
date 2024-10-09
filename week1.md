@@ -1005,3 +1005,126 @@ int main (int argc, char* argv[])
 ```
 
 Modify your own code to match and try it out. 
+
+
+---
+
+# The original for loop
+
+The range-based for loop is a special case of the `for` loop
+- more convenient and safer when iterating over *containers*
+
+--
+- it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+
+--
+
+The original `for` loop takes this form:
+```
+for (init-statement ; condition ; expression)
+  statement;
+```
+
+--
+
+- `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
+
+--
+
+- `condition`: a test to determine whether to perform the next iteration. If `false`, the loop will terminate.
+
+--
+
+- `expression`: an action to perform after completion of each iteration
+
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (int n = 0; n < args.size(); n++)
+    std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+Let's modify our program to use a regular for loop.
+
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (`int n = 0`; n < args.size(); n++)
+    std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+For the `init-statement`: declare a variable of type `int` (an integer) and initialise it to zero
+- this will serve as our *counter* for the loop
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (int n = 0; `n < args.size()`; n++)
+    std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+For the `condition`: keep iterating while the counter is less than the size of our container
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (int n = 0; n < args.size(); `n++`)
+    std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+For the `expression`: increment the counter by one
+- note the use of the *postfix increment operator*
