@@ -1251,4 +1251,87 @@ int main (int argc, char* argv[])
 ```
 
 For the `expression`: increment the counter by one
+
+--
 - note the use of the *postfix increment operator*
+
+--
+- this is equivalent to `n = n + 1`, or `n += 1` (more on that later)
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (int n = 0; n < args.size(); n++)
+*   std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+For the `statement`, we display the argument along with its position (`n`) on
+standard output
+- with a regular `for` loop, we can also keep track of the *index* of the
+  argument
+
+
+---
+
+# The original for loop
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  for (int n = 0; n < args.size(); n++)
+    std::cout << "argument " << n << ": " << args[n] << "\n";
+
+  return 0;
+}
+```
+
+Modify your own code to match, compile it, and run your program with different
+arguments to verify that everything works as expected.
+
+
+---
+
+# Data types
+
+We have already come across a number of different *data types*:
+- `int`
+- `std::string`
+- `std::vector<std::string>`
+
+C++ in a *statically-typed* language
+- every variable needs to have its type defined before use
+- once defined, a variable cannot change its type
+
+--
+
+C++ provides many different basic types.
+
+`int`:
+   a *signed* integer, typically with 32-bit (4 bytes) of precision. Can
+   represent integer numbers from -2(<sup>31</sup>-1) to 2<sup>31</sup> 
+   (approx. -2 to 2 billion)
+
+`unsigned int`: 
+  an unsigned integer, of the same precision as `int`, but
+  capable only of representing *positive* integers from zero to 2<sup>32</sup>
+  (approx. 0 to 4 billion)
+
