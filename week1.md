@@ -971,7 +971,7 @@ In your own code, you will often need to iterate over the contents of a vector
 The easiest and safest way to do this is to use a [range-based for loop](https://www.geeksforgeeks.org/range-based-loop-c/):
 
 ```
-for (auto item : vec) 
+`for` (auto item : vec) 
   statement;
 ```
 
@@ -1254,7 +1254,6 @@ For the `expression`: increment the counter by one
 
 --
 - note the use of the *postfix increment operator*
-
 --
 - this is equivalent to `n = n + 1`, or `n += 1` (more on that later)
 
@@ -1317,21 +1316,31 @@ We have already come across a number of different *data types*:
 - `std::string`
 - `std::vector<std::string>`
 
-C++ in a *statically-typed* language
+C++ is a *statically-typed* language
 - every variable needs to have its type defined before use
 - once defined, a variable cannot change its type
 
+
 --
 
-C++ provides many different basic types.
+Let's go over the main types available in C++
 
-`int`:
-   a *signed* integer, typically with 32-bit (4 bytes) of precision. Can
-   represent integer numbers from -2(<sup>31</sup>-1) to 2<sup>31</sup> 
-   (approx. -2 to 2 billion)
+---
 
-`unsigned int`: 
-  an unsigned integer, of the same precision as `int`, but
-  capable only of representing *positive* integers from zero to 2<sup>32</sup>
-  (approx. 0 to 4 billion)
+# Basic data types (Plain Old Data)
+
+| type name | description | bits | range |
+|:----:|:-----:|:---:|:----:|
+| `bool` | true/false | ? | `true` or `false` |
+| `char` | signed integer | 8 | -127 to 128 |
+| `unsigned char` | unsigned integer | 8 | 0 to 256 |
+| `short int` | signed integer | 16 | -(2<sup>15</sup>-1) to 2<sup>15</sup> |
+| `short unsigned int` | unsigned integer | 16 | 0 to 2<sup>16</sup> |
+| `int` | *signed* integer | 32 | -(2<sup>31</sup>-1) to 2<sup>31</sup> |
+| `unsigned int` | *unsigned* integer | 32 | 0 to 2<sup>32</sup> |
+| `long int` | higher precision signed integer | 64 | -(2<sup>63</sup>-1) to 2<sup>63</sup> |
+| `long unsigned int` | higher precision unsigned integer | 64 | 0 to 2<sup>64</sup> |
+| `float` | floating-point value | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
+| `double` | higher precision floating-point value | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
+
 
