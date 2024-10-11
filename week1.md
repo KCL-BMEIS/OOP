@@ -79,24 +79,19 @@ This course is an introduction to object-oriented programming using C++.
 --
 
 It will provide you with an understanding of:
-
 - the Unix command-line
-
 --
 - how to handle and manage files and commands in a Unix environments
-
 --
 - the basics of programming using C++
-
 --
 - the basics of the object-oriented programming paradigm
-
 --
 - how to manage and process complex data structures
 
 --
 
-Where possible, the course aims to provide with transferable skills that can be
+Where possible, the course aims to provide you with transferable skills that can be
 applied in other situations
 
 --
@@ -124,10 +119,8 @@ fundamental, including:
 --
 
 Why are we avoiding these topics?
-
 - They cause too much confusion too early. You can learn about these topics
   when you have become sufficiently familiar with the basics
-
 --
 - Many of these features are discouraged in modern C++, and are best avoided
   altogether where possible
@@ -142,13 +135,10 @@ Many other C++ topics will also not be covered as they are too advanced
 
 Learning to program can only be done through experience
 - please make every effort to attend all the tutorials!
-
 --
 - don't hesitate to ask if anything is unclear or you need any help
-
 --
 - go through all the examples
-
 --
 - search online for examples and explanations!
   - but bear in mind that online sources may use concepts we have
@@ -169,7 +159,7 @@ Good online resources include:
 
 # The command-line
 
-![:right 40%](images/MSYS.png)
+![:right 50%](images/MSYS.png)
 
 In this course, we will be using a Unix-like terminal environment 
 and running all of our code within the terminal. 
@@ -188,6 +178,7 @@ project](https://www.msys2.org/).
 --
 
 To install this on your own Windows computer, follow the instructions on KEATS.<br>
+
 On macOS, you can immediately use the [Terminal
 application](https://support.apple.com/en-gb/guide/terminal/welcome/mac).
 
@@ -214,12 +205,12 @@ their output
 The commands are _interpreted_ by another program called the _command
 intrepreter_ 
 - typically referred to as 'the shell'
-
 --
 - here, we are using the [Bourne-again shell (`bash`)](https://en.wikipedia.org/wiki/Bash_(Unix_shell%29)
 
 --
 
+<br>
 .note[
 On Windows, the standard shell used to be the DOS shell, though MicroSoft
 has since introduced the more modern PowerShell &ndash; we won't be using either of
@@ -240,13 +231,11 @@ user@hostname:folder $
 ```
 
 --
+<br>
 where:
-
 - `user` is your current username
-
 --
 - `hostname` is the name of the computer this session is currently running on
-
 --
 - `folder` is the folder you are currently operating in (the _current working
   directory_)
@@ -272,7 +261,7 @@ Try the following commands:
   - `cd Documents` &emsp; change to the `Documents` folder 
   - `cd ../Desktop` &emsp; change to the `Desktop` folder in the current folder's parent directory
 
-
+<br>
 .note[
 In computing, the terms _folder_ and _directory_ are often used interchangeably]
 
@@ -289,6 +278,7 @@ manager.
 Try using the Windows Explorer to verify that the listings provided on the
 command-line correspond to the folders on your account.
 
+<br>
 .note[
 on macOS, you can use the _finder_ application instead]
 
@@ -318,9 +308,11 @@ information to do so. For example, typing `cd Doc`, then pressing the `TAB` will
 
 --
 
-.note[To learn more about how to use the shell, please take a look through any
-of the many tutorials available online, in particular our own [Introduction to the
-Unix command-line](https://command-line-tutorial.readthedocs.io/)]
+<br>
+.note[You are **strongly** encouraged to learn more about how to use the shell.
+Please take a look through any of the many tutorials available online, in
+particular our own [Introduction to the Unix
+command-line](https://command-line-tutorial.readthedocs.io/)]
 
 ---
 
@@ -328,6 +320,7 @@ Unix command-line](https://command-line-tutorial.readthedocs.io/)]
 
 ![:right 40%](images/micro.png)
 We need to create and edit a text file to hold our code. 
+
 To do this, we need to use a **text editor**
 - There are many good editors available, but some are better suited for writing C++
 
@@ -347,7 +340,7 @@ To do this, we need to use a **text editor**
 
 .note[
 We do not recommend the use of full-blown _integrated development environments_
-(IDE) early on. While convenient, these obscure the processes involved, making
+(IDE) early on. While convenient, these hide the processes involved, making
 it difficult for newcomers to understand where things might go wrong.
 <br>
 <br>
@@ -431,7 +424,7 @@ $ micro main.cpp
 
 ---
 
-# Useful shortcuts for 'micro' text editor
+# Useful shortcuts for the 'micro' text editor
 
 
 .columns[
@@ -513,10 +506,13 @@ Now that we produced an executable, we can run it.
 
 --
 
-By default, the shell looks for commands to run in a predefined set of folders,
-as listed in the system `PATH`.
+By default, the shell identifies the command to run by looking through a
+predefined set of folders, as listed in the system `PATH`.
 - simply typing `a.exe` will not (normally) work &ndash; *unless* `a.exe` is
   in one of these folders.
+
+.note[To know more about the `PATH`, search online for more information, e.g.
+[wikipedia](https://en.wikipedia.org/wiki/PATH_(variable%29)]
 
 --
 
@@ -533,9 +529,6 @@ Hello, world!
 ```
 
 --
-
-.note[If necessary, search online for more information about the `PATH`, e.g.
-[wikipedia](https://en.wikipedia.org/wiki/PATH_(variable%29)]
 
 
 ---
@@ -663,6 +656,8 @@ Note also the trailing `\n` *escape sequence* at the end of the string
 - The backslash `\` character can be used to *escape* the normal interpretation
   of the next character
 - Here, the sequence `\n` translates into the *newline* character
+- See [here for a full list of escape
+  sequences](https://www.geeksforgeeks.org/escape-sequence-in-c/)
 
 ---
 
@@ -682,7 +677,7 @@ Finally, we return from `main()`, which marks the end of our program
 
 --
 
-We return the value 0 to indicate success (no errors)
+We return the value `0` to indicate success (no errors)
 
 --
 
@@ -866,10 +861,8 @@ int main (int argc, char* argv[])
 ```
 
 This line declares a new variable called `args`, of type `std::vector<std::string>` (a vector of strings)
-
 --
 - It is initialised from the arguments passed to `main()`
-
 --
 - Don't worry about the syntax for now &ndash; we will fill in the blanks in due course
 
@@ -920,7 +913,9 @@ A line starting with `//` denotes a *comment*
 - The compiler will ignore any text after this until the end of the line
 
 --
-- You are strongly encouraged to use comments to explain anything that isn't immediately obvious in your own code!
+
+.note[
+You are **strongly** encouraged to use comments to explain anything that isn't immediately obvious in your own code!]
 
 
 ---
@@ -992,7 +987,6 @@ for (auto item : `vec`)
 ```
 
 - the `for` keyword declares the start of the loop
-
 - `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
 
 
@@ -1010,9 +1004,7 @@ for (auto `item` : vec)
 ```
 
 - the `for` keyword declares the start of the loop
-
 - `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
-
 - `item` is the variable that will contain a *copy* of each element for processing within the loop
 
 
@@ -1030,11 +1022,8 @@ for (`auto` item : vec)
 ```
 
 - the `for` keyword declares the start of the loop
-
 - `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
-
 - `item` is the variable that will contain a *copy* of each element for processing within the loop
-
 - `auto` is a special keyword, requesting that the compiler *deduce* the type of `item` from the context
 
 
@@ -1052,13 +1041,9 @@ for (auto item : vec)
 ```
 
 - the `for` keyword declares the start of the loop
-
 - `vec` is the *container* (e.g. a `std::vector`) whose elements we wish to iterate over
-
 - `item` is the variable that will contain a *copy* of each element for processing within the loop
-
 - `auto` is a special keyword, requesting that the compiler *deduce* the type of `item` from the context
-
 - `statement` is the code to execute for each iteration (for each element in `vec`)
 
 
@@ -1091,9 +1076,8 @@ Modify your own code to match and try it out.
 
 # The original for loop
 
-The range-based for loop is a special case of the `for` loop
+The range-based for loop we just saw is a special case of the `for` loop
 - more convenient and safer when iterating over *containers*
-
 --
 - it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
 
@@ -1137,7 +1121,6 @@ for (init-statement ; `condition` ; expression)
 ```
 
 - `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
-
 - `condition`: a test to determine whether to perform the next iteration. If `false`, the loop will terminate.
 
 
@@ -1156,9 +1139,7 @@ for (init-statement ; condition ; `expression`)
 ```
 
 - `init-statement`: *(optional)* a declaration and/or expression to be evaluated before the first iteration. 
-
 - `condition`: a test to determine whether to perform the next iteration. If `false`, the loop will terminate.
-
 - `expression`: an action to perform after completion of each iteration
 
 
@@ -1311,19 +1292,21 @@ arguments to verify that everything works as expected.
 
 # Data types
 
-We have already come across a number of different *data types*:
-- `int`
-- `std::string`
-- `std::vector<std::string>`
 
 C++ is a *statically-typed* language
 - every variable needs to have its type defined before use
 - once defined, a variable cannot change its type
 
+--
+
+We have already come across a number of different *data types*:
+- `int`
+- `std::string`
+- `std::vector<std::string>`
 
 --
 
-Let's go over the main types available in C++
+Let's go over the basic types available in C++
 
 ---
 
@@ -1373,15 +1356,202 @@ std::string mesg;
 --
 Declare a string called `mesg`, initialised with the content "hello":
 ```
-std::string mesg = hello;
-# or equivalently:
-std::string mesg (hello);
+std::string mesg = "some text";
+// or equivalently:
+std::string mesg ("some text");
 ```
 
 --
-Retrieve the length of the string (returns an integer):
+Retrieve the length of the string (returns an integer), or check whether it is
+empty (zero-length):
 ```
 mesg.size();
-# or equivalently:
+// or equivalently:
 mesg.length();
+// check if empty:
+if (mesg.empty()) ...
 ```
+
+
+---
+
+# Using `std::string`
+
+Retrieve a single character at index `n`:
+```
+mesg[n];
+```
+
+--
+Set the character at index `n` to the letter `a`:
+```
+mesg[n] = 'a';
+```
+
+--
+Set the string to a different set of text, discarding previous contents:
+```
+mesg = "Hello";
+```
+
+--
+.note[Note the use of *single* inverted commas (`'`) to enclose single
+characters, and *double* inverted commas (`"`) for full strings. 
+<br>
+<br>
+This is important: single characters are of type `char`, while full strings are
+*arrays* of `char` &ndash; they are fundamentally different types. ]
+
+
+---
+
+# Using `std::string`
+
+Append text to a string:
+```
+mesg += " World!"    # mesg now contain "Hello World!"
+```
+
+--
+Concatenate two strings together (this returns a new `std::string`):
+```
+mesg + " How are you?";
+
+// typical use case:
+std::cout << mesg + " How are you?\n";
+```
+
+--
+Clear the string (empty it):
+```
+mesg.clear();
+```
+
+---
+
+# Using `std::string`
+
+Check whether two strings are identical:
+```
+if (mesg == "some string") ...
+// or assuming there is another std::string called 'other':
+if (mesg == other) ...
+```
+
+--
+Check whether the string starts with (or ends with) a certain prefix or suffix:
+```
+if (mesg.starts_with ("prefix")) ...
+if (mesg.ends_with ("suffix")) ...
+```
+
+--
+Find the first occurence of a given sub-string:
+```cpp
+size_type n = mesg.find ("World");
+// size_type is an integer type (most likely an alias for 'unsigned long int')
+// note: this returns the special value 'std::string::npos' if no match found
+```
+
+
+---
+
+# Using `std::string`
+
+The `std::string` class offers a lot more functionality than presented here.
+
+However, the information on the previous slides should already provide
+you with the necessary tools to tackle most tasks.
+
+For full details, have a look online:
+- [cppreference](https://en.cppreference.com/w/cpp/string/basic_string)
+- [cplusplus](https://cplusplus.com/reference/string/string/)
+- [GeeksForGeeks](https://www.geeksforgeeks.org/strings-in-cpp/)
+- ...
+
+
+---
+
+# The dot operator
+
+You will already have noticed the use of syntax of this form:
+```
+for (int n = 0; n < `args.size()`; n++)a
+  ...
+
+if (`mesg.starts_with ("prefix")`) ...
+```
+
+--
+
+We are using the *dot operator* for direct member access. It takes this
+general form:
+```
+variable.member
+```
+- `variable` is an *instance* of a class (or struct)
+- `member` is a variable or function that is a member of that class
+
+--
+We will cover this in detail in future sessions. For now, it is sufficient to
+think of the dot operator as a kind of possessive: `variable`'s `member` (or
+the `member` of `variable`)
+- for example, `mesg.size()` is equivalent to: `mesg`'s `size()`
+
+
+---
+
+# Using `std::vector`
+
+The `std::vector` class can be used in a similar way to the `std::string`
+class. The main difference is the way the class is *declared*:
+<br>
+<br>
+
+| code | description |
+|----|----|
+| `std::vector<int> ivec;` | Declare an empty vector of `int` |
+| `std::vector<float> fvec;` | Declare an empty vector of `float` |
+| `std::vector<std::string> svec (10);` | Declare a vector of `std::string`, with 10 elements |
+| `std::vector<int> ivec (20, 0);` | Declare a vector of `int` of size 20, all initialised to zero |
+
+--
+
+Usage is otherwise similar to the `std::string` class:
+```
+std::vector<float> vec (10, 0.0);
+int n = vec.size();
+if (vec.empty()) ...
+float val = vec[3];
+vec[2] = val;
+vec.clear();
+```
+
+---
+
+# Using `std::vector`
+
+The `std::vector` class is an example of a *template* class:
+- It is a *generic* container, which can be used to contain other data types
+- It is part of the [C++ Standard Template
+  Library](https://www.geeksforgeeks.org/the-c-standard-template-library-stl/) (STL)
+
+--
+
+The *contained* data type is part of the type of a `std::vector`:
+- `std::vector` is not a type &ndash; you cannot create a variable of type
+  `std::vector`
+- `std::vector<float>` is a proper data type
+
+--
+
+We will learn more about templates (much) later in the course
+
+--
+
+Look online for further details about the `std::vector` class:
+- [cppreference](https://en.cppreference.com/w/cpp/container/vector)
+- [cplusplus](https://cplusplus.com/reference/vector/vector/)
+- [GeeksForGeeks](https://www.geeksforgeeks.org/vector-in-cpp-stl/)
+- ...
+

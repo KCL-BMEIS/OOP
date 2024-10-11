@@ -18,7 +18,7 @@ with open(argv[1]) as fd:
         if npagebreak >= 2:
             markdown += line
         elif line.startswith ('title:'):
-            title = line.split(maxsplit=1)[1]
+            title = line.split(maxsplit=1)[1].strip().strip('"')
         elif line.startswith ('---'):
             npagebreak +=1
 
