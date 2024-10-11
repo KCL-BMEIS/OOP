@@ -1332,15 +1332,56 @@ Let's go over the main types available in C++
 | type name | description | bits | range |
 |:----:|:-----:|:---:|:----:|
 | `bool` | true/false | ? | `true` or `false` |
-| `char` | signed integer | 8 | -127 to 128 |
-| `unsigned char` | unsigned integer | 8 | 0 to 256 |
-| `short int` | signed integer | 16 | -(2<sup>15</sup>-1) to 2<sup>15</sup> |
-| `short unsigned int` | unsigned integer | 16 | 0 to 2<sup>16</sup> |
-| `int` | *signed* integer | 32 | -(2<sup>31</sup>-1) to 2<sup>31</sup> |
-| `unsigned int` | *unsigned* integer | 32 | 0 to 2<sup>32</sup> |
-| `long int` | higher precision signed integer | 64 | -(2<sup>63</sup>-1) to 2<sup>63</sup> |
-| `long unsigned int` | higher precision unsigned integer | 64 | 0 to 2<sup>64</sup> |
-| `float` | floating-point value | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
-| `double` | higher precision floating-point value | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
+| `char` | integer | 8 | -127 to 128 |
+| `unsigned char` | integer | 8 | 0 to 256 |
+| `short int` | integer | 16 | -32768 to 32767 |
+| `short unsigned int` | integer | 16 | 0 to 65535 |
+| `int` | integer | 32 | &pm;2.15&times;10<sup>9</sup> |
+| `unsigned int` | integer | 32 | 0 to 4294967295 |
+| `long int` | integer | 64 | &pm;9.22&times;10<sup>18</sup> |
+| `long unsigned int` | integer | 64 | 0 to 1.85&times;10<sup>19</sup> |
+| `float` | floating-point | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
+| `double` | floating-point | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
 
 
+---
+
+# More complex data types
+
+We have already encountered some data types that are more advanced:
+
+- `std::string`: a *class* to hold an array of characters, used to represent
+  *text*
+
+- `std::vector<...>`: a *template class* used to hold an array of any other
+  type
+
+--
+We will cover *classes* and *templates* in more detail later in the course.
+For now, we will simply look at how to use them.
+
+
+---
+
+# Using `std::string`
+
+Declare a string called `mesg`:
+```
+std::string mesg;
+```
+
+--
+Declare a string called `mesg`, initialised with the content "hello":
+```
+std::string mesg = hello;
+# or equivalently:
+std::string mesg (hello);
+```
+
+--
+Retrieve the length of the string (returns an integer):
+```
+mesg.size();
+# or equivalently:
+mesg.length();
+```
