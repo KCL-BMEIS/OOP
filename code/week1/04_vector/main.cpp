@@ -10,7 +10,7 @@ int main (int argc, char* argv[])
   int to = std::stoi (args[2]);
 
   std::vector<int> vec;
-  for (int n = from; n < to; n++)
+  for (int n = from; n <= to; n++)
     vec.push_back (n);
 
   for (auto x : vec)

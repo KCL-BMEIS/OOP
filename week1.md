@@ -276,7 +276,7 @@ manager.
 <br>
 <br>
 Try using the Windows Explorer to verify that the listings provided on the
-command-line correspond to the folders on your account.
+command-line correspond to the folders in your account.
 
 <br>
 .note[
@@ -301,7 +301,7 @@ then edit and modify as required (using the left/right arrows)
 --
 
 The **TAB key** asks the shell to complete the current word if it has enough
-information to do so. For example, typing `cd Doc`, then pressing the `TAB` will complete the
+information to do so. For example, typing `cd Doc`, then pressing `TAB` will complete the
   command to `cd Documents` 
   - *provided* there is a `Documents` folder at that location
   - *and* there are no other folders that start with `Doc`
@@ -506,7 +506,7 @@ Now that we produced an executable, we can run it.
 
 --
 
-By default, the shell identifies the command to run by looking through a
+By default, the shell looks for the command to execute by searching through a
 predefined set of folders, as listed in the system `PATH`.
 - simply typing `a.exe` will not (normally) work &ndash; *unless* `a.exe` is
   in one of these folders.
@@ -583,11 +583,12 @@ int main ()
 }
 ```
 
-Lines that start with a `#` symbol are so-called _preprocessor directives_
+Lines that start with a `#` symbol are so-called [preprocessor
+directives](https://www.geeksforgeeks.org/cc-preprocessors/)
 
 --
 
-The `#include` directive requests inclusion of the contents of the `iostream` _header _
+The `#include` directive requests inclusion of the contents of the `iostream` [header file](https://www.geeksforgeeks.org/header-files-in-c-c-with-examples/)
 
 --
 
@@ -681,7 +682,7 @@ We return the value `0` to indicate success (no errors)
 
 --
 
-This value is the *exit code* of our program. It can be used by other programs, or
+This value is the *exit code* of our program. It can be queried by other programs, or
 by the shell, to detect any errors during execution
 - by convention, any non-zero value signals that an error occurred
 - different error codes can sometimes be used to signal different types of errors
@@ -764,6 +765,8 @@ int main (int argc, char* argv[])
 --
 
 Unfortunately, the arguments are provided as a C-style array of pointers &ndash; features that we are trying hard to avoid on this course!
+
+--
 
 For this reason, we recommend immediately converting these arguments into a more modern form: a vector of strings
 
@@ -1069,7 +1072,9 @@ int main (int argc, char* argv[])
 }
 ```
 
-Modify your own code to match and try it out. 
+Modify your own code to match and try it out.
+
+Question: what is the *type* of `a` in the code above?
 
 
 ---
@@ -1080,10 +1085,13 @@ The range-based for loop we just saw is a special case of the `for` loop
 - more convenient and safer when iterating over *containers*
 --
 - it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+--
+- if you can use a range-based for loop, please do so &ndash; this is why we
+  introduced it first
 
 --
 
-The original `for` loop takes this form:
+The original `for` loop is more general, and takes this form:
 ```
 for (init-statement ; condition ; expression)
   statement;
@@ -1093,11 +1101,13 @@ for (init-statement ; condition ; expression)
 
 # The original for loop
 
-The range-based for loop is a special case of the `for` loop
+The range-based for loop we just saw is a special case of the `for` loop
 - more convenient and safer when iterating over *containers*
 - it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+- if you can use a range-based for loop, please do so &ndash; this is why we
+  introduced it first
 
-The original `for` loop takes this form:
+The original `for` loop is more general, and takes this form:
 ```
 for (`init-statement` ; condition ; expression)
   statement;
@@ -1110,11 +1120,13 @@ for (`init-statement` ; condition ; expression)
 
 # The original for loop
 
-The range-based for loop is a special case of the `for` loop
+The range-based for loop we just saw is a special case of the `for` loop
 - more convenient and safer when iterating over *containers*
 - it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+- if you can use a range-based for loop, please do so &ndash; this is why we
+  introduced it first
 
-The original `for` loop takes this form:
+The original `for` loop is more general, and takes this form:
 ```
 for (init-statement ; `condition` ; expression)
   statement;
@@ -1128,11 +1140,13 @@ for (init-statement ; `condition` ; expression)
 
 # The original for loop
 
-The range-based for loop is a special case of the `for` loop
+The range-based for loop we just saw is a special case of the `for` loop
 - more convenient and safer when iterating over *containers*
 - it is also more modern (introduced in [C++11](https://en.cppreference.com/w/cpp/11))
+- if you can use a range-based for loop, please do so &ndash; this is why we
+  introduced it first
 
-The original `for` loop takes this form:
+The original `for` loop is more general, and takes this form:
 ```
 for (init-statement ; condition ; `expression`)
   statement;
@@ -1286,6 +1300,42 @@ int main (int argc, char* argv[])
 
 Modify your own code to match, compile it, and run your program with different
 arguments to verify that everything works as expected.
+
+
+---
+
+# Array indexing
+
+In the previous example, you may have noticed that the first entry in the
+`args` vector is at index `0`
+- this differs from Matlab, where the first element is at index `1`
+- starting at zero is how arrays are indexed in many programming languages
+
+--
+
+For a vector `vec` of size `N`:
+- the first element is at `vec[0]`
+- the last element is at `vec[N-1]` (or alternatively: `vec[vec.size()-1]`)
+
+--
+
+What happens if you use an index less than zero, or greater than `N-1`?
+--
+- there is [no bounds checking](https://www.geeksforgeeks.org/accessing-array-bounds-ccpp/) (by default) in C++!
+--
+- an *out-of-bounds access* leads to so-called [undefined behaviour](https://en.wikipedia.org/wiki/Undefined_behavior):
+  - the program may run fine with no visible side-effects
+  - the program may crash
+  - the program may run fine at that point, but crash later
+
+--
+
+.note[
+An out-of-bounds access can be exploited by hackers, and is [the biggest
+  security risk in
+software](https://www.theregister.com/2023/06/29/cwe_top_25_2023/)!<br>
+This is why you should use a range-based for loop if you can: it automatically uses
+  the correct bounds]
 
 
 ---
@@ -1554,4 +1604,271 @@ Look online for further details about the `std::vector` class:
 - [cplusplus](https://cplusplus.com/reference/vector/vector/)
 - [GeeksForGeeks](https://www.geeksforgeeks.org/vector-in-cpp-stl/)
 - ...
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+  for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+Let's modify our code to demonstrate the use of the `std::vector` class to hold
+a different data type
+
+This program will create a vector containing all integers from the first
+command-line argument provided to the second command-line argument provided.
+
+Let's go through the code
+]
+]
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+* int from = std::stoi (args[1]);
+* int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+  for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+First, we need to grab the two command-line arguments provided by the user to
+specify the first and last values
+
+We use the [std::stoi()](https://cplusplus.com/reference/string/stoi/) function to convert *text* to *integer* 
+
+This take a `std::string` and returns an `int`
+
+If the string cannot be interpreted as an integer, this will cause an error
+- an *exception* will be thrown (we will cover this later in the course)
+
+]
+]
+
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+* std::vector<int> vec;
+  for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+We declare the variable `vec` of type `std::vector<int>`: a vector of integers
+
+`vec` will initially be empty
+]
+]
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+* for (int n = from; n <= to; n++)
+*   vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+We then iterate over all values from the first argument provided (`from`) to
+the second argument provided (`to`)
+
+Note that in this case, we keep iterating while the value is less than *or equal*
+to `to`
+- This ensures the vector contains all values between `from` & `to`, *including*
+  both `from` & `to` themselves
+
+We use the [push_back()](https://cplusplus.com/reference/vector/vector/push_back/) 
+method to add each value to the end of the vector
+- the vector increases in size dynamically to accommodate each new value
+
+]
+]
+
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+  for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+* for (auto x : vec)
+*   std::cout << x << " ";
+* std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+Finally, we iterate over the contents of our vector to print out its elements
+- the values are separated by spaces, with a final newline at the end
+
+Note the use of the range-based for loop here
+- its use is possible here, and hence recommended
+
+]
+]
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+  for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+Modify your code as shown here, compile it and run it. 
+
+To run it, you will need to provide it with two arguments for the first and
+last values:
+```
+$ ./main 2 5
+2 3 4 5
+```
+
+What happens if you don't provide both arguments?
+
+What happens if the second argument is *smaller* than the first?
+
+What happens if one or both of the arguments isn't a number?
+]
+]
+
+
+
 
