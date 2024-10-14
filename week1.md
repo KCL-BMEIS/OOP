@@ -682,8 +682,8 @@ We return the value `0` to indicate success (no errors)
 
 --
 
-This value is the *exit code* of our program. It can be queried by other programs, or
-by the shell, to detect any errors during execution
+This value is the [exit code](https://en.wikipedia.org/wiki/Exit_status) of our program. 
+It can be queried by other programs, or by the shell, to detect any errors during execution
 - by convention, any non-zero value signals that an error occurred
 - different error codes can sometimes be used to signal different types of errors
 
@@ -1869,6 +1869,354 @@ What happens if one or both of the arguments isn't a number?
 ]
 ]
 
+---
+
+# Error handling
+
+As you can see from the previous example, when errors are encountered at runtime, there is no useful feedback to the user
+--
+- failing to provide one or both arguments may cause a crash, or nothing at all
+- providing a lower value in the second argument produces no output
+
+--
+In general, it is essential for code to *validate* its inputs and check its assumptions before running the relevant section of code
+--
+- it is also very helpful for users of your program (including yourself!) to quickly figure out what might have gone wrong!
+
+--
+
+Let's add a little bit of error checking to our program
+
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+    std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+    return 1;
+  }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  if (from > to) {
+    std::cerr << "ERROR: max must be greater than min\n";
+    return 1;
+  }
+
+  std::vector<int> vec;
+...
+```
+
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+* if (args.size() < 3) {
+*   std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+*   return 1;
+* }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  if (from > to) {
+    std::cerr << "ERROR: max must be greater than min\n";
+    return 1;
+  }
+
+  std::vector<int> vec;
+...
+```
+
+.explain-bottom[
+First, we check whether enough command-line arguments have been provided. 
+<br>
+<br>
+If we have fewer than 3 arguments, the command can't run
+- remember that the first argument (`argv[0]`) corresponds to the command itself
+
+We use an `if` statement to do the checking
+
+]
+
+---
+
+# Conditional execution: the `if` statement
+
+The `if` statement allows us to execute some code if a condition is `true`. 
+
+In its simplest form, it looks like this:
+```
+if (condition)
+  statement;
+```
+
+---
+
+# Conditional execution: the `if` statement
+
+The `if` statement allows us to execute some code if a condition is `true`. 
+
+In its simplest form, it looks like this:
+```
+`if` (condition)
+  statement;
+```
+The `if` keyword denotes the start of the conditional
+
+
+---
+
+# Conditional execution: the `if` statement
+
+The `if` statement allows us to execute some code if a condition is `true`. 
+
+In its simplest form, it looks like this:
+```
+if (`condition`)
+  statement;
+```
+The `if` keyword denotes the start of the conditional
+
+`condition` is an expression that can evaluate to `true` or `false`
+
+
+---
+
+# Conditional execution: the `if` statement
+
+The `if` statement allows us to execute some code if a condition is `true`. 
+
+In its simplest form, it looks like this:
+```
+if (condition)
+  `statement`;
+```
+The `if` keyword denotes the start of the conditional
+
+`condition` is an expression that can evaluate to `true` or `false`
+
+`statement` is the section of code to run if `condition` is `true`
+
+---
+
+# Conditional execution: the `if` statement
+
+The complete form looks like this:
+```
+if (condition)
+  statement_if_true;
+else
+  statement_if_false;
+```
+
+This form allows code to be executed if `true`, and *different* code to be executed if `false`
+
+---
+
+# Conditional operators
+
+Any expression that can be evaluated to `true` or `false` can be used as the `condition` in an `if` statement
+--
+- this includes any number: zero will evaluate to `false`, anything else to `true`
+
+--
+
+Any of the following operators will return a `bool`:
+```
+a == b        // true if a is equal to b
+a != b        // true if a is NOT equal to b
+a < b         // true if a is less than b
+a > b         // true if a is greater than b
+a <= b        // true if a is less than or equal to b
+a >= b        // true if a is greater than or equal to b
+```
+
+--
+
+These can also be combined using *logical operators* to form compound expressions:
+```
+a && b        // true if a and b are both true
+a || b        // true if either a or b are true
+!a            // true is a is false
+```
+
+---
+
+# Compound statements
+
+The form we gave for the `if` statement only allows for a single statement to be executed:
+```
+if (condition)
+  statement;
+```
+What if we need to execute more than a single statement?
+
+--
+
+We can use curly brackets (braces) to group multiple statements into a single [compound statement](https://www.geeksforgeeks.org/compound-statements-in-cpp/) (also known as a *block*):
+```
+if (condition) `{`
+  statement 1;
+  statement 2;
+  ...
+  statement N;
+`}`
+```
+--
+
+This also applies to the `for` loop!
+
+
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+*   std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+    return 1;
+  }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  if (from > to) {
+    std::cerr << "ERROR: max must be greater than min\n";
+    return 1;
+  }
+
+  std::vector<int> vec;
+...
+```
+--
+
+.explain-bottom[
+If fewer than 3 arguments have been provided:
+- feed an appropriate error message to the [standard error](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr%29) stream
+- the *standard error* stream is similar to *standard output*, but is more appropriate for error messages
+
+.note[
+This is because the *standard output* stream can be [redirected](https://en.wikipedia.org/wiki/Redirection_(computing%29) for use in other applications. In such a situation, the error messages would not be displayed on the terminal, and would corrupt the normal expected output of the program.
+]
+]
+
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+    std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+*   return 1;
+  }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  if (from > to) {
+    std::cerr << "ERROR: max must be greater than min\n";
+    return 1;
+  }
+
+  std::vector<int> vec;
+...
+```
+
+.explain-bottom[
+We then return from the `main()` function with a non-zero [exit code](https://en.wikipedia.org/wiki/Exit_status)
+]
 
 
 
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+   std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+   return 1;
+  }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+* if (from > to) {
+*   std::cerr << "ERROR: max must be greater than min\n";
+*   return 1;
+* }
+
+  std::vector<int> vec;
+...
+```
+.explain-top[
+We also check that the second value provided is greater than (or equal to) the first. Otherwise there will be no output from our program.
+<br>
+<br>
+We do that in the same way as we did for the first `if` statement.
+]
+
+---
+
+## Adding error handling to our code
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+   std::cerr << "ERROR: expected min & max to be provided as arguments\n";
+   return 1;
+  }
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  if (from > to) {
+    std::cerr << "ERROR: max must be greater than min\n";
+    return 1;
+  }
+
+  std::vector<int> vec;
+...
+```
+.explain-bottom[
+Modify your own code to add these checks, then compile and test it
+]

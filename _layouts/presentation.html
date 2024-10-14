@@ -10,7 +10,7 @@
 
       body {
          font-family: 'Droid Sans';
-	 font-size: 24px;
+         font-size: 24px;
       }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
@@ -78,17 +78,34 @@
          align-items: center;
       }
       .col { }
-      .note {
-        width=100%;
-        padding: 0.5em;
-        background-color: #FFFFCC;
+      
+      .note, .explain-top, .explain-bottom {
         border-radius: 0.4em;
-        font-size: 0.9em;
-        color: #666;
         filter: drop-shadow(0.3em 0.3em 0.3em #888888);
         > p {
          margin: 0em;
-	}
+        }
+      }
+      .note {
+        width: 100;
+        background-color: #FFFFCC;
+        font-size: 0.9em;
+        padding: 0.5em;
+        color: #666;
+      }
+      .explain-bottom, .explain-top {
+        width: 80%;
+        position: absolute;
+        background-color: #FFDDDD;
+        padding: 1em;
+        right: 4em;
+        filter: drop-shadow(0.3em 0.3em 0.5em #888888);
+      }
+      .explain-top {
+        top: 5em;
+      }
+      .explain-bottom {
+        bottom: 1.5em;
       }
       .block {
         display: block;
