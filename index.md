@@ -21,8 +21,12 @@ title: Object-Oriented Programming (5CCYB041)
 
 ## Slides
 
-- [Week 1: the Unix command-line, compiling our first C++ programs](https://kcl-bmeis.github.io/OOP/week1)
-- [Week 2: TBC](https://kcl-bmeis.github.io/OOP/week2)
+Week 1:
+- [session 1: the Unix command-line, compiling our first C++ programs](https://kcl-bmeis.github.io/OOP/week1A)
+- [session 2: control flow, functions, exceptions](https://kcl-bmeis.github.io/OOP/week1B)
+
+Week 2:
+- [sesson 1: TBC](https://kcl-bmeis.github.io/OOP/week2A)
 - _in progress..._
 
 ---
