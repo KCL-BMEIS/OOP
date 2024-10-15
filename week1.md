@@ -1301,6 +1301,32 @@ int main (int argc, char* argv[])
 Modify your own code to match, compile it, and run your program with different
 arguments to verify that everything works as expected.
 
+---
+
+# The dot operator
+
+In the previous example, you will have noticed the use of syntax of this form:
+```
+for (int n = 0; n < `args.size()`; n++)
+  ...
+```
+
+--
+
+We are using the *dot operator* for direct member access. It takes this
+general form:
+```
+variable.member
+```
+- `variable` is an *instance* of a class (or struct)
+- `member` is a variable or function that is a member of that class
+
+--
+We will cover this in detail in future sessions. For now, it is sufficient to
+think of the dot operator as a kind of possessive: `variable`'s `member` (or
+the `member` of `variable`)
+- for example, `mesg.size()` is equivalent to: `mesg`'s `size()`
+
 
 ---
 
@@ -1375,6 +1401,86 @@ Let's go over the basic types available in C++
 | `long unsigned int` | integer | 64 | 0 to 1.85&times;10<sup>19</sup> |
 | `float` | floating-point | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
 | `double` | floating-point | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
+
+
+
+---
+
+# Arithmetic operators
+
+Standard operators: `+`, `-`, `*`, `/`
+
+--
+
+Modulus (remainder): `%`
+
+--
+
+combined with assignment: `+=`, `-=`, `*=`, `/=`
+- for example, always use `a += 5;` rather than `a = a + 5;`
+
+--
+
+Increment/decrement: `++x`, `x++`, `--x`, `x--`
+- for example, always use `x++;` rather than `x += 1;` or `x = x + 1;`
+--
+- the difference between `++x` and `x++` is the *return value*
+  - `x++` returns the original value of `x`, while `++x` returns the new value of `x`
+--
+  - this only matters when the return value is used, for example:<br>
+    ```
+    int x = 5;
+    std::cout << ++x << "\n";     // x is now 6, and the value printed will also be 6
+    std::cout << x++ << "\n";     // x is now 7, but the value printed will still be 6!
+    ```
+
+---
+
+# Arithmetic operators
+
+Operator precedence:
+- First: increment, decrement
+- Second: multiply, divide, modulo
+- Third: addition, subtraction
+
+--
+
+For example, what is output of `6 +  3 * 4 / 2 + 2` ?
+--
+- Answer: 14
+
+--
+
+Don't hesitate to use brackets to clarify!
+
+---
+
+# Operators and data types
+
+Some operations only work for certain types
+- e.g. you can add an `int` and a `double`
+- you can't use the modulus operator on a `bool` or `char`
+
+--
+
+Be mindful of [implicit type conversions](https://www.geeksforgeeks.org/type-conversion-in-c/) when mixing data type
+- you can add a `bool` and a `char` &ndash; but they will first be converted to integer values <br>
+(`true`=1, `false`=0 for `bool`, [ASCII](https://en.wikipedia.org/wiki/ASCII) values for `char`)
+--
+- you can add an `int` and a `float`, but the `int` be first be converted to a `float`
+--
+- the [rules for type conversion](https://en.cppreference.com/w/c/language/conversion) are fairly complex <br>
+   but the general principle is to use the type with greatest range and/or precision
+
+--
+
+Integer arithmetic can be different to floating point arithmetic!
+- for example: `1 / 3` evaluates to `0`<br>
+  &rarr; two integer inputs will force an integer output
+--
+- but `1.0 / 3` evaluates to `0.33`<br>
+  &rarr; the `int` will be implicitly converted to `float` thanks to the rules above
+
 
 
 ---
@@ -1519,34 +1625,6 @@ For full details, have a look online:
 - [GeeksForGeeks](https://www.geeksforgeeks.org/strings-in-cpp/)
 - ...
 
-
----
-
-# The dot operator
-
-You will already have noticed the use of syntax of this form:
-```
-for (int n = 0; n < `args.size()`; n++)a
-  ...
-
-if (`mesg.starts_with ("prefix")`) ...
-```
-
---
-
-We are using the *dot operator* for direct member access. It takes this
-general form:
-```
-variable.member
-```
-- `variable` is an *instance* of a class (or struct)
-- `member` is a variable or function that is a member of that class
-
---
-We will cover this in detail in future sessions. For now, it is sufficient to
-think of the dot operator as a kind of possessive: `variable`'s `member` (or
-the `member` of `variable`)
-- for example, `mesg.size()` is equivalent to: `mesg`'s `size()`
 
 
 ---
@@ -2051,9 +2129,9 @@ a >= b        // true if a is greater than or equal to b
 
 These can also be combined using *logical operators* to form compound expressions:
 ```
-a && b        // true if a and b are both true
-a || b        // true if either a or b are true
-!a            // true is a is false
+cond1 && cond2        // true if cond1 and cond2 are both true
+cond1 || cond2        // true if either cond1 or cond2 are true
+!condition            // true is condition is false
 ```
 
 ---
@@ -2118,7 +2196,7 @@ If fewer than 3 arguments have been provided:
 - the *standard error* stream is similar to *standard output*, but is more appropriate for error messages
 
 .note[
-This is because the *standard output* stream can be [redirected](https://en.wikipedia.org/wiki/Redirection_(computing%29) for use in other applications. In such a situation, the error messages would not be displayed on the terminal, and would corrupt the normal expected output of the program.
+*For information only:* this is because the *standard output* stream can be [redirected](https://en.wikipedia.org/wiki/Redirection_(computing%29) for use in other applications. In such a situation, the error messages would not be displayed on the terminal, and would corrupt the normal expected output of the program.
 ]
 ]
 
@@ -2220,3 +2298,59 @@ int main (int argc, char* argv[])
 .explain-bottom[
 Modify your own code to add these checks, then compile and test it
 ]
+
+
+---
+
+# Error handling
+
+The previous example is a simple way to handle errors.
+- we'll learn a better way when we cover *exceptions* later in the course
+
+--
+
+Some general rules about error handling:
+
+- If your code is making assumptions about its inputs, check them!
+  - for example, if your code assumes a parameter is positive, check and alert the user if this is not the case (and exit if appropriate)
+  - *this will save you time later on!*
+
+--
+
+- If you can reasonably handle the error, do so, but warn the user about it
+
+--
+
+- Most of the time, the error will be *fatal* (not recoverable), in which case your program should *not* proceed
+  - issue an informative message about the problem, and exit with a non-zero exit code
+
+--
+
+- try to detect errors as early as possible 
+  - for example: don't start a long batch of processing without first checking that you can create the output file
+
+
+---
+
+# Other forms of iteration
+
+The `for` loop is by far the most commonly-used looping structure, but others exist and are sometimes more appropriate
+
+--
+
+The `while` loop takes this form:
+```
+while (condition)
+  statement;
+```
+This will keep running `statement` as long as `condition` is true
+
+--
+
+The `do ... while` loop takes this form:
+```
+do 
+  statement;
+while (condition);
+```
+This will run `statement` and stop when `condition` is no longer true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
