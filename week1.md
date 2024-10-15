@@ -212,7 +212,7 @@ intrepreter_
 
 <br>
 .note[
-On Windows, the standard shell used to be the DOS shell, though MicroSoft
+On Windows, the standard shell used to be the DOS shell, though Microsoft
 has since introduced the more modern PowerShell &ndash; we won't be using either of
 them on this course!]
 
@@ -502,7 +502,7 @@ a.exe  main.cpp
 
 # Running our program
 
-Now that we produced an executable, we can run it.
+Now that we have an executable, we can run it.
 
 --
 
@@ -764,7 +764,7 @@ int main (int argc, char* argv[])
 
 --
 
-Unfortunately, the arguments are provided as a C-style array of pointers &ndash; features that we are trying hard to avoid on this course!
+Unfortunately, the arguments are provided as an old-school C-style array of pointers &ndash; features that we are trying hard to avoid on this course!
 
 --
 
@@ -1313,13 +1313,13 @@ for (int n = 0; n < `args.size()`; n++)
 
 --
 
-We are using the *dot operator* for direct member access. It takes this
-general form:
+We are using the *dot operator*, which provides direct access to members. 
+It takes this general form:
 ```
 variable.member
 ```
-- `variable` is an *instance* of a class (or struct)
-- `member` is a variable or function that is a member of that class
+- `variable` is an *instance* of an object (a *class* or *struct* &ndash; we'll cover these later)
+- `member` is a variable or function that is a member of that object
 
 --
 We will cover this in detail in future sessions. For now, it is sufficient to
@@ -1386,7 +1386,7 @@ Let's go over the basic types available in C++
 
 ---
 
-# Basic data types (Plain Old Data)
+# Basic data types
 
 | type name | description | bits | range |
 |:----:|:-----:|:---:|:----:|
@@ -1402,7 +1402,9 @@ Let's go over the basic types available in C++
 | `float` | floating-point | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
 | `double` | floating-point | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
 
+--
 
+These are sometimes referred to as *Plain Old Data* (POD) types
 
 ---
 
@@ -1459,7 +1461,7 @@ Don't hesitate to use brackets to clarify!
 
 Some operations only work for certain types
 - e.g. you can add an `int` and a `double`
-- you can't use the modulus operator on a `bool` or `char`
+- you can't use the modulus operator on a `float` or `double`
 
 --
 
@@ -1469,8 +1471,8 @@ Be mindful of [implicit type conversions](https://www.geeksforgeeks.org/type-con
 --
 - you can add an `int` and a `float`, but the `int` be first be converted to a `float`
 --
-- the [rules for type conversion](https://en.cppreference.com/w/c/language/conversion) are fairly complex <br>
-   but the general principle is to use the type with greatest range and/or precision
+- the exact [rules for type conversion](https://en.cppreference.com/w/c/language/conversion) are fairly complex &ndash;
+   but the general principle is simply to use the type with greatest range and/or precision
 
 --
 
@@ -1604,8 +1606,8 @@ if (mesg.ends_with ("suffix")) ...
 --
 Find the first occurence of a given sub-string:
 ```cpp
-size_type n = mesg.find ("World");
-// size_type is an integer type (most likely an alias for 'unsigned long int')
+std::string::size_type n = mesg.find ("World");
+// std::string::size_type is an integer type (most likely an alias for 'unsigned long int')
 // note: this returns the special value 'std::string::npos' if no match found
 ```
 
@@ -1667,7 +1669,7 @@ The `std::vector` class is an example of a *template* class:
 --
 
 The *contained* data type is part of the type of a `std::vector`:
-- `std::vector` is not a type &ndash; you cannot create a variable of type
+- `std::vector` itself is not a type &ndash; you cannot create a variable of type
   `std::vector`
 - `std::vector<float>` is a proper data type
 
@@ -2353,4 +2355,192 @@ do
   statement;
 while (condition);
 ```
-This will run `statement` and stop when `condition` is no longer true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
+This will also run `statement` as long as `condition` is true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (variable) {
+  case value1: 
+    statement;
+    ...
+    statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+`switch` (variable) {
+  case value1: 
+    statement;
+    ...
+    statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+.explain-bottom[
+the `switch` keyword denotes the start of our conditional section of code
+]
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (`variable`) {
+  case value1: 
+    statement;
+    ...
+    statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+.explain-bottom[
+`variable` is the variable whose value will determine the code to run
+]
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (variable) {
+* case value1: 
+    statement;
+    ...
+    statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+.explain-bottom[
+for each value of `variable` that we want to handle (e.g `value1`), we use the `case` keyword to label the matching section of code, using this syntax
+]
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (variable) {
+  case value1: 
+*   statement;
+*   ...
+*   statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+.explain-bottom[
+immediately after the `case` label, we insert the code to be run. This can consist of multiple lines &ndash; no need for braces here.
+]
+
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (variable) {
+  case value1: 
+    statement;
+    ...
+    statement;
+*   break;
+  case value2:
+    statement;
+    break;
+  ...
+  default:
+    statement; 
+}
+```
+.explain-bottom[
+... but we do need to close off the last statement of the code for that case with the `break` keyword!
+
+More on the `break` statement shortly...
+]
+
+---
+
+# Other forms of conditional execution
+
+The `if` statement is by far the most common structure for conditional execution, but other forms exist.
+
+The `switch` statement allows you to execute different section of code depending on the *value* of a variable. It takes this general form:
+```
+switch (variable) {
+  case value1: 
+    statement;
+    ...
+    statement;
+    break;
+  case value2:
+    statement;
+    break;
+  ...
+* default:
+    statement; 
+}
+```
+.explain-top[
+We can also have a catch-all `default` label at the end, which will be executed in case none of the other labels matched
+]
+
