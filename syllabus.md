@@ -6,10 +6,10 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 # Syllabus for Object-Oriented Programming (5CCYB041)
 
 ## The Unix command-line
-- What is the command-line, the terminal, and the shell
-- The filesystem, absolute & relative paths
-- Basic commands: `ls`, `pwd`, `cd`, `cp`, `mv`, `rm`, ...
-- Command structure, arguments & options
+- what is the command-line, the terminal, and the shell
+- the filesystem, absolute & relative paths
+- basic commands: `ls`, `pwd`, `cd`, `cp`, `mv`, `rm`, ...
+- command structure, arguments & options
 
 ## Compiling a C++ program
 - difference between *compiled* and *interpreted* languages
@@ -17,7 +17,7 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 - useful compiler flags: `-o`, `-O2`, `-Wall`, `-c`, `-I`, `-g`
 - different stages of compilation: preprocessor, compiler, linker
 - compiling and linking programs split over multiple files
-- using build systems to simplify building complex programs
+- understand concept of build systems to simplify building complex programs (`Make`, `CMake`, ...)
 - using the `oop_build` script supplied as part of this course
 
 ## Basic structure of a program
@@ -28,7 +28,7 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 - return value / exit code
 
 ## Data types & variables
-- Basic data types: `int`, `short`, `char`, and their `unsigned` versions, `float`, `double`, ...
+- basic data types: `int`, `short`, `char`, and their `unsigned` versions, `float`, `double`, ...
 - declaring a variable
 - defining a variable
 - the `auto` keyword
@@ -75,11 +75,17 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 - special methods: constructor, copy-constructor, destructor
 
 ## Inheritance
-
+- purpose and syntax
+- `public`, `protected` and `private` inheritance
+- function hiding
+- virtual functions
+- pure virtual functions and abstract classes
 
 ## OOP design
+- OOP principles: encapsulation, abstraction, inheritance, polymorphism
 - SOLID principles and others
 - prefer composition over inheritance
+- object lifetime and ownership
 - Resource acquisition is initialisation (RAII)
 
 ## Templates
