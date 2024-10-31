@@ -5,11 +5,14 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 
 # Syllabus for Object-Oriented Programming (5CCYB041)
 
+This is a list of topics to be covered on this module. Note that during the course, topics will *not* necessarily be introduced in the order presented on this page.
+
 ## The Unix command-line
 - what is the command-line, the terminal, and the shell
 - the filesystem, absolute & relative paths
 - basic commands: `ls`, `pwd`, `cd`, `cp`, `mv`, `rm`, ...
 - command structure, arguments & options
+- using an editor (whether terminal-based or external)
 
 ## Compiling a C++ program
 - difference between *compiled* and *interpreted* languages
@@ -60,6 +63,23 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 - lambda capture
 - use of lambda functions in STL algorithms
 
+## File input/output
+- file streams
+- `std::cin`, `std::cout`, `std::cerr` and their use
+- interacting with files: `std::ifstream`, `std::ofstream`
+- converting between text & built-in data types
+- using extraction and insertion operators (`<<`, `>>`)
+- checking for errors
+
+## Error handling using exceptions
+- throwing exceptions
+- catching exceptions
+- catching exceptions by type
+- using multiple `catch` statements
+- rethrowing exceptions
+- what happens when exceptions are thrown: stack unwinding
+- why you should *not* throw exceptions from a destructor
+
 ## Namespaces
 - what they are, and their purpose
 - `using` declaration
@@ -73,6 +93,8 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 - `public`, `protected`, `private`
 - methods / member functions
 - special methods: constructor, copy-constructor, destructor
+- implicit inline methods
+- syntax for defining methods outside class, and where to place method definitions
 
 ## Inheritance
 - purpose and syntax
@@ -83,21 +105,34 @@ title: Syllabus - Object-Oriented Programming (5CCYB041)
 
 ## OOP design
 - OOP principles: encapsulation, abstraction, inheritance, polymorphism
+- UML, focussing on UML class diagrams
+- aggregation, composition, inheritance
 - SOLID principles and others
 - prefer composition over inheritance
 - object lifetime and ownership
 - Resource acquisition is initialisation (RAII)
 
 ## Templates
+- what they are, and why they're useful
+- general syntax
+- template type and non-type parameters
+- `typename` & `class` keywords
+- static / compile-time polymorphism
+- template functions
+- template classes
+- template class methods
+- why template functions & methods must all be defined in headers, not cpp files
 
 ## The Standard Template Library
 - useful containers: `std::vector`, `std::array`, `std::string`
+- algorithms & iterators
 - the `std::ranges` library
 - useful algorithms: `std::ranges::sort()`, `std::ranges::max()`, `std::ranges::min()`, `std::ranges::find()`, ...
 
-## Memory management (for information only - not assessed, and *not* to be used in course)
+## Memory management (for information only - not assessed, and *not* to be used on this course)
 - pointers
 - C-style arrays
 - memory allocation & deallocation using `new` & `delete`
 - array allocation & deallocation using `new[]` & `delete[]`
+- allocating on the heap vs. allocating on the stack
 - why use of raw pointers and manual memory management is to be avoided unless absolutely necessary
