@@ -19,6 +19,12 @@ title: Object-Oriented Programming (5CCYB041)
 
 ---
 
+## Syllabus
+
+See [here for the full list of topics covered on this course](https://kcl-bmeis.github.io/OOP/syllabus).
+
+---
+
 ## Slides
 
 Week 1:
