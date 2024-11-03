@@ -39,4 +39,4 @@ Week 2:
 
 ## Code examples
 
-These are stored in the [code folder](https://github.com/kcl-bmeis/oop/code).
+These are stored in the [code folder](https://github.com/kcl-bmeis/oop/tree/main/code/).
