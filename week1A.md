@@ -785,7 +785,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -812,7 +812,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -835,7 +835,7 @@ We need to include two additional headers: `<vector>` and `<string>`
   std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -858,7 +858,7 @@ int main (int argc, char* argv[])
 * std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -884,7 +884,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-* std::cout << "first argument is " << argv[1] << "\n";
+* std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -907,7 +907,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
 * // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -936,7 +936,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
   // now we can access the command-line arguments:
-  std::cout << "first argument is " << argv[1] << "\n";
+  std::cout << "first argument is " << args[1] << "\n";
   
   return 0;
 }
@@ -2035,7 +2035,7 @@ First, we check whether enough command-line arguments have been provided.
 <br>
 <br>
 If we have fewer than 3 arguments, the command can't run
-- remember that the first argument (`argv[0]`) corresponds to the command itself
+- remember that the first argument (`args[0]`) corresponds to the command itself
 
 We use an `if` statement to do the checking
 
