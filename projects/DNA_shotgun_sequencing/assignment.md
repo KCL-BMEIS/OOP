@@ -12,7 +12,7 @@ There has been a huge increase in the use of genetic information for both resear
 
 ---
 
-The task in this project is to implement a simple 'shotgun sequencing' algorithm capable of reconstructing a complete DNA sequence based on the measured fragments. For simplicity, we assume there were **no errors** in the sequencing of the fragments (in a real-world situations, some form of error detection and correction would be necessary). You will also need to take into account the possibility that **fragments may be reversed** &ndash; in otherwords, their sequence may have been measured in the reverse order relative to the complete sequence.
+The task in this project is to implement a simple 'shotgun sequencing' algorithm capable of reconstructing a complete DNA sequence based on the measured fragments. For simplicity, we assume there were **no errors** in the sequencing of the fragments (in a real-world situations, some form of error detection and correction would be necessary). You will also need to take into account the possibility that **fragments may be reversed** &ndash; in other words, their sequence may have been measured in the reverse order relative to the complete sequence.
 
 Your algorithm will need to perform the following steps:
 
