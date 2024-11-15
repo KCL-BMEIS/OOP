@@ -28,10 +28,14 @@ void run (std::vector<std::string>& args)
     }
   }
 
-  if (fragment_with_biggest_overlap >= 0)
+  if (fragment_with_biggest_overlap >= 0) {
     std::cerr << "fragment with biggest overlap is at index " << fragment_with_biggest_overlap
       << ", overlap = " << biggest_overlap << "\n";
 
+    merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
+  }
+
+  std::cerr << "final sequence has length " << sequence.size() << "\n";
   write_sequence (args[2], sequence);
 }
 
