@@ -18,22 +18,34 @@ void run (std::vector<std::string>& args)
   auto sequence = extract_longest_fragment (fragments);
   std::cerr << "initial sequence has size " << sequence.size() << "\n";
 
-  int biggest_overlap = 0;
-  int fragment_with_biggest_overlap = -1;
-  for (int n = 0; n < static_cast<int> (fragments.size()); ++n) {
-    const auto overlap = compute_overlap (sequence, fragments[n]);
-    if (std::abs (biggest_overlap) < std::abs (overlap)) {
-      biggest_overlap = overlap;
-      fragment_with_biggest_overlap = n;
+  while (fragments.size()) {
+    std::cerr << "---------------------------------------------------\n";
+    std::cerr << fragments.size() << " fragments left\n";
+    int biggest_overlap = 0;
+    int fragment_with_biggest_overlap = -1;
+    for (int n = 0; n < static_cast<int> (fragments.size()); ++n) {
+      const auto overlap = compute_overlap (sequence, fragments[n]);
+      if (std::abs (biggest_overlap) < std::abs (overlap)) {
+        biggest_overlap = overlap;
+        fragment_with_biggest_overlap = n;
+      }
     }
-  }
 
-  if (fragment_with_biggest_overlap >= 0) {
+    if (fragment_with_biggest_overlap < 0)
+      break;
+
+    if (std::abs (biggest_overlap) < 10)
+      break;
+
     std::cerr << "fragment with biggest overlap is at index " << fragment_with_biggest_overlap
       << ", overlap = " << biggest_overlap << "\n";
 
     merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
+    fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
   }
+
+  if (fragments.size())
+    std::cerr << "WARNING: " << fragments.size() << " fragments remain unmatched!\n";
 
   std::cerr << "final sequence has length " << sequence.size() << "\n";
   write_sequence (args[2], sequence);
