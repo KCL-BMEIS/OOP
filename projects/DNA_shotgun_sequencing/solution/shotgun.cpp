@@ -3,6 +3,7 @@
 #include <string>
 
 #include "fragments.h"
+#include "overlap.h"
 
 // This function contains our program's core functionality:
 
@@ -16,7 +17,8 @@ void run (std::vector<std::string>& args)
 
   auto sequence = extract_longest_fragment (fragments);
   std::cerr << "initial sequence has size " << sequence.size() << "\n";
-  fragment_statistics (fragments);
+
+  std::cerr << "computed overlap = " << compute_overlap (sequence, fragments[12]) << "\n";
 
   write_sequence (args[2], sequence);
 }
