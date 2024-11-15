@@ -1,26 +1,33 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "fragments.h"
 #include "overlap.h"
+#include "debug.h"
 
 // This function contains our program's core functionality:
 
 void run (std::vector<std::string>& args)
 {
+  debug::verbose = std::erase (args, "-v");
+
   if (args.size() < 3)
     throw std::runtime_error ("missing arguments - expected 2 arguments: input_fragments output_sequence");
 
   auto fragments = load_fragments (args[1]);
-  fragment_statistics (fragments);
+  if (debug::verbose)
+    fragment_statistics (fragments);
 
   auto sequence = extract_longest_fragment (fragments);
   std::cerr << "initial sequence has size " << sequence.size() << "\n";
 
   while (fragments.size()) {
-    std::cerr << "---------------------------------------------------\n";
-    std::cerr << fragments.size() << " fragments left\n";
+    if (debug::verbose) {
+      std::cerr << "---------------------------------------------------\n";
+      std::cerr << fragments.size() << " fragments left\n";
+    }
     int biggest_overlap = 0;
     int fragment_with_biggest_overlap = -1;
     for (int n = 0; n < static_cast<int> (fragments.size()); ++n) {
@@ -37,12 +44,16 @@ void run (std::vector<std::string>& args)
     if (std::abs (biggest_overlap) < 10)
       break;
 
-    std::cerr << "fragment with biggest overlap is at index " << fragment_with_biggest_overlap
-      << ", overlap = " << biggest_overlap << "\n";
+    if (debug::verbose)
+      std::cerr << "fragment with biggest overlap is at index " << fragment_with_biggest_overlap
+        << ", overlap = " << biggest_overlap << "\n";
 
     merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
     fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
   }
+
+  if (debug::verbose)
+    std::cerr << fragments.size() << " fragments remaining unmatched - checking whether already contained in sequence...\n";
 
   int num_unmatched = 0;
   for (const auto& frag : fragments) {
@@ -54,6 +65,7 @@ void run (std::vector<std::string>& args)
     std::cerr << "WARNING: " << num_unmatched << " fragments remain unmatched!\n";
 
   std::cerr << "final sequence has length " << sequence.size() << "\n";
+
   write_sequence (args[2], sequence);
 }
 
