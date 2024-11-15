@@ -18,7 +18,8 @@ void run (std::vector<std::string>& args)
   auto sequence = extract_longest_fragment (fragments);
   std::cerr << "initial sequence has size " << sequence.size() << "\n";
 
-  std::cerr << "computed overlap = " << compute_overlap (sequence, fragments[12]) << "\n";
+  auto overlap = compute_overlap (sequence, fragments[12]);
+  std::cerr << "computed overlap = " << overlap << "\n";
 
   write_sequence (args[2], sequence);
 }
