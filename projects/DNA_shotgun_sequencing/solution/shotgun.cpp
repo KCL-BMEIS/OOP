@@ -44,8 +44,14 @@ void run (std::vector<std::string>& args)
     fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
   }
 
-  if (fragments.size())
-    std::cerr << "WARNING: " << fragments.size() << " fragments remain unmatched!\n";
+  int num_unmatched = 0;
+  for (const auto& frag : fragments) {
+    if (sequence.find (frag) == std::string::npos)
+      ++num_unmatched;
+  }
+
+  if (num_unmatched)
+    std::cerr << "WARNING: " << num_unmatched << " fragments remain unmatched!\n";
 
   std::cerr << "final sequence has length " << sequence.size() << "\n";
   write_sequence (args[2], sequence);
