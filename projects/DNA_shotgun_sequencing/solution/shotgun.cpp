@@ -16,10 +16,7 @@ void run (std::vector<std::string>& args)
   if (args.size() < 3)
     throw std::runtime_error ("missing arguments - expected 2 arguments: input_fragments output_sequence");
 
-  auto fragments = load_fragments (args[1]);
-
-  ShotgunSequencer solver (10);
-  solver.init (fragments);
+  ShotgunSequencer solver (args[1], 10);
 
   std::cerr << "initial sequence has size " << solver.sequence().size() << "\n";
 
@@ -29,7 +26,7 @@ void run (std::vector<std::string>& args)
 
   std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
 
-  write_sequence (args[2], solver.sequence());
+  solver.save (args[2]);
 }
 
 
