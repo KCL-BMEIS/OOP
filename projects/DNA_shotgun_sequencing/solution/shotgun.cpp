@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 
-#include "fragments.h"
-#include "overlap.h"
 #include "debug.h"
 #include "shotgun_sequencer.h"
 
