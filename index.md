@@ -35,6 +35,8 @@ Week 2:
 - [sesson 1: TBC](https://kcl-bmeis.github.io/OOP/week2A)
 - _in progress..._
 
+[Miscellaneous slides, to be inserted or removed](https://kcl-bmeis.github.io/OOP/misc)
+
 ---
 
 ## Code examples
