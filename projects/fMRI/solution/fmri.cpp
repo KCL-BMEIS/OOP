@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <format>
 
 #include "debug.h"
 #include "pgm.h"
@@ -17,6 +18,7 @@ void run (std::vector<std::string>& args)
 
   auto slice = load_pgm (args[1]);
 
+  std::cerr << std::format ("image \"{}\" loaded, size {}x{}\n", args[1], slice.width(), slice.height());
 }
 
 
