@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "debug.h"
+#include "pgm.h"
 
 // This function contains our program's core functionality:
 
@@ -14,7 +15,7 @@ void run (std::vector<std::string>& args)
   if (args.size() < 2)
     throw std::runtime_error ("missing arguments - expected at least 1 argument");
 
-  std::cerr << "reading file \"" << args[1] << "\"\n";
+  auto slice = load_pgm (args[1]);
 
 }
 
