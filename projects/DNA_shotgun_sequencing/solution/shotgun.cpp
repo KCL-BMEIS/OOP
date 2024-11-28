@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <format>
 
 #include "fragments.h"
 #include "overlap.h"
@@ -43,14 +44,15 @@ void run (std::vector<std::string>& args)
     if (std::abs (biggest_overlap) < 10)
       break;
 
-    debug::log ("fragment with biggest overlap is at index " + std::to_string (fragment_with_biggest_overlap)
-        + ", overlap = " + std::to_string (biggest_overlap));
+    debug::log (std::format ("fragment with biggest overlap is at index {}, overlap = {}",
+         fragment_with_biggest_overlap, biggest_overlap));
 
     merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
     fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
   }
 
-  debug::log (std::to_string (fragments.size()) + " fragments remaining unmatched - checking whether already contained in sequence...");
+  debug::log (std::format ("{} fragments remaining unmatched - checking whether already contained in sequence...",
+        fragments.size()));
 
   int num_unmatched = 0;
   for (const auto& frag : fragments) {
