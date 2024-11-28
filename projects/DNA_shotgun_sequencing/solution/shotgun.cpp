@@ -24,10 +24,9 @@ void run (std::vector<std::string>& args)
   std::cerr << "initial sequence has size " << sequence.size() << "\n";
 
   while (fragments.size()) {
-    if (debug::verbose) {
-      std::cerr << "---------------------------------------------------\n";
-      std::cerr << fragments.size() << " fragments left\n";
-    }
+    debug::log ("---------------------------------------------------");
+    debug::log (std::to_string (fragments.size()) + " fragments left");
+
     int biggest_overlap = 0;
     int fragment_with_biggest_overlap = -1;
     for (int n = 0; n < static_cast<int> (fragments.size()); ++n) {
@@ -44,16 +43,14 @@ void run (std::vector<std::string>& args)
     if (std::abs (biggest_overlap) < 10)
       break;
 
-    if (debug::verbose)
-      std::cerr << "fragment with biggest overlap is at index " << fragment_with_biggest_overlap
-        << ", overlap = " << biggest_overlap << "\n";
+    debug::log ("fragment with biggest overlap is at index " + std::to_string (fragment_with_biggest_overlap)
+        + ", overlap = " + std::to_string (biggest_overlap));
 
     merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
     fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
   }
 
-  if (debug::verbose)
-    std::cerr << fragments.size() << " fragments remaining unmatched - checking whether already contained in sequence...\n";
+  debug::log (std::to_string (fragments.size()) + " fragments remaining unmatched - checking whether already contained in sequence...");
 
   int num_unmatched = 0;
   for (const auto& frag : fragments) {
