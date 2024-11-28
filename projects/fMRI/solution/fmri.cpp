@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <format>
 
+#include "terminal_graphics.h"
+
 #include "debug.h"
 #include "pgm.h"
 #include "dataset.h"
@@ -43,6 +45,8 @@ void run (std::vector<std::string>& args)
   for (const auto& val : data.get_timecourse (x,y))
     std::cerr << val << " ";
   std::cerr << "]\n";
+
+  TG::plot().add_line (data.get_timecourse (x,y));
 }
 
 
