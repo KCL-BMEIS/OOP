@@ -14,13 +14,30 @@ void run (std::vector<std::string>& args)
 {
   debug::verbose = std::erase (args, "-v");
 
+  int x = -1, y = -1;
+  auto pixel_option = std::ranges::find (args, "-p");
+  if (pixel_option != args.end()) {
+    if (std::distance (pixel_option, args.end()) < 3)
+      throw std::runtime_error ("not enough arguments to '-p' option (expected '-p x y')");
+    x = std::stoi (*(pixel_option+1));
+    y = std::stoi (*(pixel_option+2));
+    args.erase (pixel_option, pixel_option+3);
+  }
+
   if (args.size() < 2)
     throw std::runtime_error ("missing arguments - expected at least 1 argument");
 
   Dataset data ({ args.begin()+1, args.end() });
 
-  int x = data.get(0).width()/2;
-  int y = data.get(0).height()/2;
+  // default values if x & y not set (<0):
+  if (x < 0 || y < 0) {
+    x = data.get(0).width()/2;
+    y = data.get(0).height()/2;
+  }
+  else {
+    if (x >= data.get(0).width() || y >= data.get(0).height())
+      throw std::runtime_error ("pixel position is out of bounds");
+  }
 
   std::cerr << std::format ("image values at pixel ({},{}) = [ ", x, y);
   for (const auto& val : data.get_timecourse (x,y))
