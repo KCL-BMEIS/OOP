@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -9,6 +10,7 @@
 #include "debug.h"
 #include "pgm.h"
 #include "dataset.h"
+#include "task.h"
 
 // This function contains our program's core functionality:
 
@@ -26,10 +28,14 @@ void run (std::vector<std::string>& args)
     args.erase (pixel_option, pixel_option+3);
   }
 
-  if (args.size() < 2)
-    throw std::runtime_error ("missing arguments - expected at least 1 argument");
+  if (args.size() < 3)
+    throw std::runtime_error ("missing arguments - expected at least 2 arguments: taskfile followed by list of images");
 
-  Dataset data ({ args.begin()+1, args.end() });
+  auto task = load_task (args[1]);
+
+  Dataset data ({ args.begin()+2, args.end() });
+  if (task.size() != data.size())
+    throw std::runtime_error ("number of time points in task file does not match dataset");
 
   // default values if x & y not set (<0):
   if (x < 0 || y < 0) {
@@ -41,12 +47,8 @@ void run (std::vector<std::string>& args)
       throw std::runtime_error ("pixel position is out of bounds");
   }
 
-  std::cerr << std::format ("image values at pixel ({},{}) = [ ", x, y);
-  for (const auto& val : data.get_timecourse (x,y))
-    std::cerr << val << " ";
-  std::cerr << "]\n";
-
   TG::plot().add_line (data.get_timecourse (x,y));
+  TG::plot().add_line (task);
 }
 
 
