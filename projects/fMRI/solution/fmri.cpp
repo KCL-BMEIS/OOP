@@ -6,6 +6,7 @@
 
 #include "debug.h"
 #include "pgm.h"
+#include "dataset.h"
 
 // This function contains our program's core functionality:
 
@@ -16,27 +17,14 @@ void run (std::vector<std::string>& args)
   if (args.size() < 2)
     throw std::runtime_error ("missing arguments - expected at least 1 argument");
 
-  std::vector<Image> slices;
-  for (unsigned int n = 1; n < args.size(); ++n)
-    slices.push_back (load_pgm (args[n]));
+  Dataset data ({ args.begin()+1, args.end() });
 
-  // check that dimensions all match up:
-  for (unsigned int n = 1; n < slices.size(); ++n) {
-    if ( (slices[n].width() != slices[n-1].width()) ||
-         (slices[n].height() != slices[n-1].height()) )
-      throw std::runtime_error ("dimensions do not match across slices");
-  }
-
-  std::cerr << std::format (
-      "loaded {} slices of size {}x{}\n",
-      slices.size(), slices[0].width(), slices[0].height());
-
-  int x = slices[0].width()/2;
-  int y = slices[0].height()/2;
+  int x = data.get(0).width()/2;
+  int y = data.get(0).height()/2;
 
   std::cerr << std::format ("image values at pixel ({},{}) = [ ", x, y);
-  for (const auto& slice : slices)
-    std::cerr << slice.get (x,y) << " ";
+  for (const auto& val : data.get_timecourse (x,y))
+    std::cerr << val << " ";
   std::cerr << "]\n";
 }
 
