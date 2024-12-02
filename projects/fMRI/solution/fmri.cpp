@@ -47,8 +47,12 @@ void run (std::vector<std::string>& args)
       throw std::runtime_error ("pixel position is out of bounds");
   }
 
-  TG::plot().add_line (data.get_timecourse (x,y));
-  TG::plot().add_line (task);
+  auto signal = data.get_timecourse (x,y);
+  auto minval = std::ranges::min (signal);
+  auto maxval = std::ranges::max (signal);
+  TG::plot()
+    .add_line (signal)
+    .add_line (rescale (task, minval, maxval), 3);
 }
 
 
