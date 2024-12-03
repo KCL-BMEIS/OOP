@@ -37,13 +37,15 @@ void run (std::vector<std::string>& args)
   if (task.size() != data.size())
     throw std::runtime_error ("number of time points in task file does not match dataset");
 
+  TG::imshow (TG::magnify (data[0], 4), 0, 4000);
+
   // default values if x & y not set (<0):
   if (x < 0 || y < 0) {
-    x = data.get(0).width()/2;
-    y = data.get(0).height()/2;
+    x = data[0].width()/2;
+    y = data[0].height()/2;
   }
   else {
-    if (x >= data.get(0).width() || y >= data.get(0).height())
+    if (x >= data[0].width() || y >= data[0].height())
       throw std::runtime_error ("pixel position is out of bounds");
   }
 
