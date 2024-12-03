@@ -56,9 +56,13 @@ void run (std::vector<std::string>& args)
   auto signal = data.get_timecourse (x,y);
   auto minval = std::ranges::min (signal);
   auto maxval = std::ranges::max (signal);
+
+  auto rescale_fn = [minval,maxval](int& v) { v = minval+(maxval-minval)*v; };
+  std::ranges::for_each (task, rescale_fn);
+
   TG::plot()
     .add_line (signal)
-    .add_line (rescale (task, minval, maxval), 3);
+    .add_line (task, 3);
 
   std::cerr << std::format ("correlation_coefficient at ({},{}) = {}\n",
       x, y, correlation_coefficient (signal, task));
