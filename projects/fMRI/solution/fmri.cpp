@@ -60,6 +60,9 @@ void run (std::vector<std::string>& args)
 
   std::cerr << std::format ("correlation_coefficient at ({},{}) = {}\n",
      x, y, correlation_coefficient (signal, task));
+
+  auto im_corr = correlation_coefficient (task, data);
+  TG::imshow (TG::magnify (im_corr, 4), -1000, 1000, TG::jet());
 }
 
 
