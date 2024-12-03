@@ -11,6 +11,7 @@
 #include "pgm.h"
 #include "dataset.h"
 #include "task.h"
+#include "utils.h"
 
 // This function contains our program's core functionality:
 
@@ -34,7 +35,6 @@ void run (std::vector<std::string>& args)
   auto task = load_task (args[1]);
 
   Dataset data ({ args.begin()+2, args.end() });
-  std::cerr << data << "\n";
 
   if (task.size() != data.size())
     throw std::runtime_error ("number of time points in task file does not match dataset");
@@ -57,6 +57,9 @@ void run (std::vector<std::string>& args)
   TG::plot()
     .add_line (signal)
     .add_line (rescale (task, minval, maxval), 3);
+
+  std::cerr << std::format ("correlation_coefficient at ({},{}) = {}\n",
+     x, y, correlation_coefficient (signal, task));
 }
 
 
