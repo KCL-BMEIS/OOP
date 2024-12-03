@@ -34,7 +34,7 @@ void run (std::vector<std::string>& args)
 
   auto task = load_task (args[1]);
 
-  Dataset data ({ args.begin()+2, args.end() });
+  Dataset<int> data ({ args.begin()+2, args.end() });
 
   if (task.size() != data.size())
     throw std::runtime_error ("number of time points in task file does not match dataset");
