@@ -41,15 +41,17 @@ void run (std::vector<std::string>& args)
 
   TG::imshow (TG::magnify (data[0], 4), 0, 4000);
 
-  // default values if x & y not set (<0):
   if (x < 0 || y < 0) {
-    x = data[0].width()/2;
-    y = data[0].height()/2;
+    // if no pixel is specified, compute map of correlation coefficient:
+    auto im_corr = correlation_coefficient (task, data);
+    TG::imshow (TG::magnify (im_corr, 4), -1000, 1000, TG::jet());
+
+    return;
   }
-  else {
-    if (x >= data[0].width() || y >= data[0].height())
-      throw std::runtime_error ("pixel position is out of bounds");
-  }
+
+  // otherwise, extract that pixel's timecourse and plot against task:
+  if (x >= data[0].width() || y >= data[0].height())
+    throw std::runtime_error ("pixel position is out of bounds");
 
   auto signal = data.get_timecourse (x,y);
   auto minval = std::ranges::min (signal);
@@ -59,10 +61,7 @@ void run (std::vector<std::string>& args)
     .add_line (rescale (task, minval, maxval), 3);
 
   std::cerr << std::format ("correlation_coefficient at ({},{}) = {}\n",
-     x, y, correlation_coefficient (signal, task));
-
-  auto im_corr = correlation_coefficient (task, data);
-  TG::imshow (TG::magnify (im_corr, 4), -1000, 1000, TG::jet());
+      x, y, correlation_coefficient (signal, task));
 }
 
 
