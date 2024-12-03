@@ -44,7 +44,7 @@ void run (std::vector<std::string>& args)
   if (x < 0 || y < 0) {
     // if no pixel is specified, compute map of correlation coefficient:
     auto im_corr = correlation_coefficient (task, data);
-    TG::imshow (TG::magnify (im_corr, 4), -1000, 1000, TG::jet());
+    TG::imshow (TG::magnify (im_corr, 4), -1.0, 1.0, TG::jet());
 
     return;
   }
