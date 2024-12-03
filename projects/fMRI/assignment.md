@@ -34,7 +34,7 @@ Your task in this coursework is to write a simple program for fMRI analysis to c
 ---
 
 
-The data to be processed are stored in the [data folder](data/). The imaging data are stored as a single file per timepoint, using the [plain PGM format](https://netpbm.sourceforge.net/doc/pgm.html), which is a simple text-only image format. The task information is stored as a simple text file, consisting of 0 & 1 for rest and active time points respectively. 
+The data to be processed are stored in the [data folder](data/). The imaging data are stored as a single file per timepoint, using the [plain PGM format](https://netpbm.sourceforge.net/doc/pgm.html#plainpgm), which is a simple text-only image format. The task information is stored as a simple text file, consisting of 0 & 1 for rest and active time points respectively. 
 
 To display the data, we will rely on the functionality provided by the [terminal graphics project](https://github.com/jdtournier/terminal_graphics), which is a really simple single-file header-only library. It allows simple plots and images to be displayed on a sixel-compatible terminal. Please see the information on [that project's README](https://github.com/jdtournier/terminal_graphics/blob/main/README.md) for details, including [the documentation on how to use it](https://jdtournier.github.io/terminal_graphics/). 
 
