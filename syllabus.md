@@ -72,8 +72,8 @@ This is a list of topics to be covered on this module. Note that during the cour
 - using [insertion](https://learn.microsoft.com/en-us/cpp/standard-library/using-insertion-operators-and-controlling-format) and [extraction](https://learn.microsoft.com/en-us/cpp/standard-library/using-extraction-operators) operators (`<<`, `>>`)
 - [checking for errors](https://www.edureka.co/blog/file-handling-in-cpp/#check-the-file-for-errors)
 
-## [Error handling using exceptions](https://www.geeksforgeeks.org/exception-handling-c/)
-- throwing exceptions
+## Error handling using exceptions
+- [throwing exceptions](https://www.geeksforgeeks.org/exception-handling-c/)
 - catching exceptions
 - catching exceptions by type
 - using multiple `catch` statements
