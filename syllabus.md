@@ -65,21 +65,21 @@ This is a list of topics to be covered on this module. Note that during the cour
 - use of lambda functions in STL algorithms
 
 ## File input/output
-- file streams
-- `std::cin`, `std::cout`, `std::cerr` and their use
+- [file streams](https://cplusplus.com/doc/tutorial/files/) (or alternatively, on [GeeksforGeeks](https://www.geeksforgeeks.org/file-handling-c-classes/))
+- [`std::cin`, `std::cout`, `std::cerr` and their use](https://www.tutorialspoint.com/what-are-cin-cout-and-cerr-streams-in-cplusplus)
 - interacting with files: `std::ifstream`, `std::ofstream`
-- converting between text & built-in data types
-- using extraction and insertion operators (`<<`, `>>`)
-- checking for errors
+- [converting between text & built-in data types](https://www.geeksforgeeks.org/convert-string-to-int-in-cpp/) and [vice-versa](https://www.geeksforgeeks.org/converting-number-to-string-in-cpp/)
+- using [insertion](https://learn.microsoft.com/en-us/cpp/standard-library/using-insertion-operators-and-controlling-format) and [extraction](https://learn.microsoft.com/en-us/cpp/standard-library/using-extraction-operators) operators (`<<`, `>>`)
+- [checking for errors](https://www.edureka.co/blog/file-handling-in-cpp/#check-the-file-for-errors)
 
-## Error handling using exceptions
+## [Error handling using exceptions](https://www.geeksforgeeks.org/exception-handling-c/)
 - throwing exceptions
 - catching exceptions
 - catching exceptions by type
 - using multiple `catch` statements
-- rethrowing exceptions
-- what happens when exceptions are thrown: stack unwinding
-- why you should *not* throw exceptions from a destructor
+- [rethrowing exceptions](https://www.geeksforgeeks.org/rethrowing-an-exception-in-cpp/)
+- what happens when exceptions are thrown: [stack unwinding](https://www.geeksforgeeks.org/stack-unwinding-in-c/)
+- [why you should *not* throw exceptions from a destructor](https://www.experts-exchange.com/articles/18350/C-Throwing-exceptions-from-destructors.html)
 
 ## Namespaces
 - what they are, and their purpose
