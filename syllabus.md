@@ -56,7 +56,8 @@ This is a list of topics to be covered on this module. Note that during the cour
 - function declaration vs. definition
 - general syntax
 - function arguments, default arguments
-- return statement, return type 
+- return statement, return type
+- returning _multiple_ values from functions using [C++17 structured binding](https://www.cppstories.com/2022/structured-bindings/)
 - function overloading
 - `inline` keyword
 - lambda functions
