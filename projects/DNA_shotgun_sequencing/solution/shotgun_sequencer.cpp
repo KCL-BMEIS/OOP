@@ -22,20 +22,20 @@ bool ShotgunSequencer::iterate ()
   debug::log ("---------------------------------------------------");
   debug::log (std::format ("{} fragments left", m_fragments.size()));
 
-  auto overlap = find_biggest_overlap ();
+  auto [ overlap, index ] = find_biggest_overlap ();
 
-  if (overlap.fragment < 0)
+  if (index < 0)
     return false;
 
-  if (std::abs (overlap.size) < m_minimum_overlap)
+  if (std::abs (overlap) < m_minimum_overlap)
     return false;
 
   debug::log (
       std::format ("fragment with biggest overlap is at index {}, overlap = {}",
-      overlap.fragment, overlap.size));
+      index, overlap));
 
-  merge (m_fragments[overlap.fragment], overlap.size);
-  m_fragments.erase (m_fragments.begin() + overlap.fragment);
+  merge (m_fragments[index], overlap);
+  m_fragments.erase (m_fragments.begin() + index);
 
   return true;
 }
