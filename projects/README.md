@@ -1,6 +1,6 @@
 # Projects used on Object-Oriented Programming module
 
-This repo holds project descriptions, data and solutions for the projects to be used for teachign on the [Object-Oriented Programming course](https://github.com/KCL-BMEIS/OOP).
+This repo holds project descriptions, data and solutions for the projects to be used for teaching on the [Object-Oriented Programming course](https://github.com/KCL-BMEIS/OOP).
 
 ## DNA shotgun sequencing
 - [instructions](DNA_shotgun_sequencing/assignment.md)
