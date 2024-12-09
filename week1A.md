@@ -149,12 +149,11 @@ Learning to program can only be done through experience
 
 Good online resources include:
 
-- [cplusplus.com](http://www.cplusplus.com/) C++ tutorial and reference, recommended
-- [Bucky's C++ programming tutorials](https://www.youtube.com/playlist?embed=no&list=PLAE85DE8440AA6B83): collection of helpful videos on different C++ concepts
-- [cprogramming.com](http://www.cprogramming.com/tutorial/c++-tutorial.html): C++ tutorials and discussion forum for questions and answers
+- [geeksforgeeks.org](https://www.geeksforgeeks.org/c-plus-plus/): simple and accessible, strongly recommended
+- [cplusplus.com](http://www.cplusplus.com/): C++ tutorial and reference, recommended
 - [cppreference.com](http://en.cppreference.com/w/cpp): very thorough C++ reference, recommended
-- [Hackerrank](https://www.hackerrank.com/): interactive code exercises
 - [C++ FAQ](https://isocpp.org/faq): great resource with answers to general or specific questions
+- [Hackerrank](https://www.hackerrank.com/): interactive code exercises
 
 ---
 
