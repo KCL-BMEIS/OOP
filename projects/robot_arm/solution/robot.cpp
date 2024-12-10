@@ -2,10 +2,12 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <numbers>
 
 #include "debug.h"
 #include "segment/tip.h"
 #include "segment/straight.h"
+#include "segment/bend.h"
 #include "segment/root.h"
 
 // This function contains our program's core functionality:
@@ -14,9 +16,12 @@ void run (std::vector<std::string>& args)
 {
   debug::verbose = std::erase (args, "-v");
 
-  Segment::Tip tip (20.0);
-  Segment::Straight straight (tip, 30.0);
+  Segment::Tip tip (10.0);
+  Segment::Bend bend (tip, 6.0);
+  Segment::Straight straight (bend, 15.0);
   Segment::Root root (straight);
+
+  bend.set_angle (1.3);
 
   std::cout << "tip position: " << root.tip_position() << "\n";
 }
