@@ -8,6 +8,7 @@
 #include "segment/tip.h"
 #include "segment/straight.h"
 #include "segment/bend.h"
+#include "segment/rotate.h"
 #include "segment/root.h"
 
 // This function contains our program's core functionality:
@@ -19,9 +20,11 @@ void run (std::vector<std::string>& args)
   Segment::Tip tip (10.0);
   Segment::Bend bend (tip, 6.0);
   Segment::Straight straight (bend, 15.0);
-  Segment::Root root (straight);
+  Segment::Rotate rotate (straight, 5.0);
+  Segment::Root root (rotate);
 
   bend.set_angle (1.3);
+  rotate.set_angle (std::numbers::pi/2.0);
 
   std::cout << "tip position: " << root.tip_position() << "\n";
 }
