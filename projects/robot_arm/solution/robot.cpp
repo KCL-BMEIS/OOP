@@ -6,6 +6,8 @@
 #include <chrono>
 #include <thread>
 
+#include "terminal_graphics.h"
+
 #include "debug.h"
 #include "load_parameters.h"
 #include "segment/tip.h"
@@ -56,6 +58,27 @@ void run (std::vector<std::string>& args)
     std::cout << positions.back() << "\n";
   }
 
+  std::vector<double> x, y, z;
+  for (const auto& p : positions) {
+    x.push_back (p[0]);
+    y.push_back (p[1]);
+    z.push_back (p[2]);
+  }
+
+  // plot projections of the tip trajectory
+  // in the x,z plane (yellow)
+  // in the y,z plane (pink)
+  // in the x,y plane (blue)
+  TG::plot(600,600)
+    .set_xlim(-40,80)
+    .set_ylim(-40,120)
+    .set_grid (20, 20)
+    .add_line (x,z,2)
+    .add_line (y,z,3)
+    .add_line (x,y,4)
+    .add_text ("(x,z)",80,120,1,1,2)
+    .add_text ("(y,z)",80,115,1,1,3)
+    .add_text ("(x,y)",80,110,1,1,4);
 }
 
 
