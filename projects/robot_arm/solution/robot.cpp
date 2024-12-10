@@ -4,13 +4,16 @@
 #include <algorithm>
 
 #include "debug.h"
-#include "segment/base.h"
+#include "segment/tip.h"
 
 // This function contains our program's core functionality:
 
 void run (std::vector<std::string>& args)
 {
   debug::verbose = std::erase (args, "-v");
+
+  Segment::Tip tip (20.0);
+  Segment::Base root (tip, "root");
 
 }
 
