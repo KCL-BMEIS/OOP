@@ -46,7 +46,7 @@ The next challenge is to represent 2 (or more) dimensional information using sta
 
 A better solution is to use a one-dimensional vector of data, large enough to contain all $N_{rows} \times N_{columns}$ pixel intensities, and provide functionality to access each pixel intensity based on its $(x,y)$ coordinates. The mapping between the pixel intensity at $(x,y)$ and its offset in the data vector is a common operation, and for 2D arrays, is often referred to as [row-major or column-major ordering](https://en.wikipedia.org/wiki/Row-_and_column-major_order). In C and C++, it is common to use row-major ordering: essentially, we store the first row of pixel intensities as the first block of values in the data vector, then store the second row immediately after that, and so on until the full image has been stored. The offset to the pixel at $(x,y)$ is then simply given as $n = x + n_x \times y$ (where $n_x$ is the number of pixels along the *x*-axis (i.e. the _width_ of the image).
 
-Once you have functionality to access a single image slice, this can be used to access all the image slices. 
+Once you have functionality to access a single image slice, this can be used to access all the image slices. To help you with this, it is recommended to rely on the shell's [globbing functionality](https://www.shell-tips.com/bash/wildcards-globbing/) - specifically the `*` wildcard. 
 
 ### Inspecting the time course information
 
