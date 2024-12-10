@@ -29,7 +29,7 @@ Your task in this coursework is to write a simple program for fMRI analysis to c
 
 ![example output for fMRI project](terminal_output.png)
 
-*Example output for the project, showing the final fMRI correlation image to be produced. In these data, we see clear activation of the visual cortex, in the occipital pole at the back of the brain.*
+*Example output for the project, showing am example image of the original fMRI data (top) and the resulting fMRI correlation image (bottom). In these data, we see clear activation of the visual cortex, in the occipital pole at the back of the brain.*
 
 ---
 
