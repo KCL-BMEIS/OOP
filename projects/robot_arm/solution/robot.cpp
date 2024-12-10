@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "debug.h"
+#include "segment/base.h"
 
 // This function contains our program's core functionality:
 
