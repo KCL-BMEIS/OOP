@@ -5,6 +5,7 @@
 
 #include "debug.h"
 #include "segment/tip.h"
+#include "segment/straight.h"
 
 // This function contains our program's core functionality:
 
@@ -13,7 +14,8 @@ void run (std::vector<std::string>& args)
   debug::verbose = std::erase (args, "-v");
 
   Segment::Tip tip (20.0);
-  Segment::Base root (tip, "root");
+  Segment::Straight straight (tip, 30.0);
+  Segment::Base root (straight, "root");
 
   std::cout << "tip position: " << root.tip_position() << "\n";
 }
