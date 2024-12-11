@@ -17,6 +17,55 @@
 #include "segment/root.h"
 
 
+void plot_trajectory (const std::vector<Point>& positions, const double time_interval)
+{
+  std::vector<double> x, y, z, speed;
+
+  for (int n = 0; n < static_cast<int> (positions.size()); ++n) {
+    const Point& p (positions[n]);
+    const Point& p_prev (n > 0 ? positions[n-1] : p);
+    const Point& p_next (n < static_cast<int>(positions.size())-1 ? positions[n+1] : p);
+
+    speed.push_back (length (p_next-p_prev)/(2.0*time_interval));
+
+    debug::log (
+        std::format ("tip position: [ {:6.3f} {:6.3f} {:6.3f} ], speed: {:6.3f}",
+          p[0], p[1], p[2], speed.back()));
+
+    x.push_back (p[0]);
+    y.push_back (p[1]);
+    z.push_back (p[2]);
+  }
+
+  auto xmin = std::min (std::ranges::min (x), std::ranges::min (y)) - 10;
+  auto xmax = std::max (std::ranges::max (x), std::ranges::max (y)) + 10;
+
+  auto ymin = std::min (std::ranges::min (y), std::ranges::min (z)) - 10;
+  auto ymax = std::max (std::ranges::max (y), std::ranges::max (z)) + 10;
+
+  std::cout << "3D view:\n";
+  TG::plot(600,600)
+    .set_xlim(xmin,xmax)
+    .set_ylim(ymin,ymax)
+    .set_grid (20, 20)
+    .add_line (x,z,2)
+    .add_line (y,z,3)
+    .add_line (x,y,4)
+    .add_text ("(x,z)", 50, 116, 0.5, 0.5, 2)
+    .add_text ("(y,z)", 50, 110, 0.5, 0.5, 3)
+    .add_text ("(x,y)", 50, 104, 0.5, 0.5, 4);
+
+  std::cout << "Tip speed (cm/s):\n";
+  TG::plot()
+    .add_line (speed);
+
+  std::cout << "Final tip position: " << positions.back() << "\n";
+}
+
+
+
+
+
 // This function contains our program's core functionality:
 
 void run (std::vector<std::string>& args)
@@ -55,30 +104,9 @@ void run (std::vector<std::string>& args)
     bend3.set_angle (p[5]);
 
     positions.push_back (root.tip_position());
-    std::cout << positions.back() << "\n";
   }
 
-  std::vector<double> x, y, z;
-  for (const auto& p : positions) {
-    x.push_back (p[0]);
-    y.push_back (p[1]);
-    z.push_back (p[2]);
-  }
-
-  // plot projections of the tip trajectory
-  // in the x,z plane (yellow)
-  // in the y,z plane (pink)
-  // in the x,y plane (blue)
-  TG::plot(600,600)
-    .set_xlim(-40,80)
-    .set_ylim(-40,120)
-    .set_grid (20, 20)
-    .add_line (x,z,2)
-    .add_line (y,z,3)
-    .add_line (x,y,4)
-    .add_text ("(x,z)",80,120,1,1,2)
-    .add_text ("(y,z)",80,115,1,1,3)
-    .add_text ("(x,y)",80,110,1,1,4);
+  plot_trajectory (positions, 0.1);
 }
 
 
