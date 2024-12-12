@@ -11,3 +11,8 @@ This repo holds project descriptions, data and solutions for the projects to be 
 - [instructions](fMRI/assignment.md)
 - [data](fMRI/data/)
 - [solution](https://github.com/KCL-BMEIS/OOP_projects/tree/fmri_solution/fMRI/solution) on branch [fmri_solution](https://github.com/KCL-BMEIS/OOP_projects/tree/fmri_solution) (with [full history](https://github.com/KCL-BMEIS/OOP_projects/commits/fmri_solution/fMRI/solution))
+
+## Modular robot arm control
+- [instructions](robot_arm/assignment.md)
+- [data](robot_arm/data/)
+- [solution](https://github.com/KCL-BMEIS/OOP_projects/tree/robot_solution/robot_arm/solution) on branch [robot_solution](https://github.com/KCL-BMEIS/OOP_projects/tree/robot_solution) (with [full history](https://github.com/KCL-BMEIS/OOP_projects/commits/robot_solution/robot_arm/solution))
