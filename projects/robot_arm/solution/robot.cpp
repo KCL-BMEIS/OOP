@@ -7,6 +7,7 @@
 #include <thread>
 
 #include "debug.h"
+#include "load_parameters.h"
 #include "segment/tip.h"
 #include "segment/straight.h"
 #include "segment/bend.h"
@@ -19,6 +20,9 @@
 void run (std::vector<std::string>& args)
 {
   debug::verbose = std::erase (args, "-v");
+
+  if (args.size() < 2)
+    throw std::runtime_error ("expected parameter file as first argument");
 
   // set up robot arm:
 
@@ -34,11 +38,22 @@ void run (std::vector<std::string>& args)
   Segment::Rotate rotate1 (straight1, 5.0);
   Segment::Root root (rotate1);
 
-  for (int n = 0; n <= 20; ++n) {
-    bend1.set_angle (std::numbers::pi * n / 40.0);
-    rotate1.set_angle (std::numbers::pi * n / 40.0);
-    bend2.set_angle (std::numbers::pi * n / 80.0);
-    std::cout << "tip position: " << root.tip_position() << "\n";
+  // read parameter list:
+  auto params = load_parameters (args[1]);
+
+  std::vector<Point> positions;
+
+  for (const auto& p : params) {
+
+    rotate1.set_angle (p[0]);
+    bend1.set_angle (p[1]);
+    rotate2.set_angle (p[2]);
+    bend2.set_angle (p[3]);
+    rotate3.set_angle (p[4]);
+    bend3.set_angle (p[5]);
+
+    positions.push_back (root.tip_position());
+    std::cout << positions.back() << "\n";
   }
 
 }
