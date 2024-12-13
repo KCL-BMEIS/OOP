@@ -43,6 +43,8 @@ Week 2:
 
 These are stored in the [code folder](https://github.com/kcl-bmeis/oop/tree/main/code/).
 
+---
+
 ## Illustrative projects used on the course
 
 These can be found on the [OOP course code repository](https://github.com/kcl-bmeis/oop/blob/main/projects)
