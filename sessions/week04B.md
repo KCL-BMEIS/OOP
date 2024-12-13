@@ -1,4 +1,4 @@
-# Week 4B: lambda expressions
+# Week 4B: lambda expressions & template programming
 
 - [lambda expressions](https://www.geeksforgeeks.org/lambda-expression-in-c/)
 - [use of lambda expressions with the C++ Standard Template Library (STL)](https://medium.com/@m4xshen/the-beauty-of-c-stl-algorithm-and-lambda-205e6f0d8335)
