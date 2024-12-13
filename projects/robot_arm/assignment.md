@@ -51,7 +51,7 @@ The [data folder](data/) contains 3 parameter files for you to process. These ar
 
 The next challenge is to represent all these different segment types using standard C++ functionality, while ensuring the segments can be arranged in any arbitrary order. There are various ways of doing this, but the most obvious here is to use inheritance. 
 
-The simplest way to track the position of the surgical tip is to request that each segment report the position of the tip relative to the frame of its own connector. For the tip segment, the position reported is simply a vector pointing along the *z*-axis corresponding to the length $l$ of the tip, with no reference to any downstream segments (since the tip should be the last segment):
+The simplest way to track the position of the surgical tip is to request that each segment report the position of the tip relative to the frame of its own connector. For the **tip segment**, the position reported is simply a vector pointing along the *z*-axis corresponding to the length $l$ of the tip, with no reference to any downstream segments (since the tip should be the last segment):
 
 $$p_n = \begin{pmatrix}
 0 \\
