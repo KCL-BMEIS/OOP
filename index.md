@@ -17,6 +17,13 @@ title: Object-Oriented Programming (5CCYB041)
 - Tobias Wood (tobias.wood@kcl.ac.uk)
 - Marc Modat (marc.modat@kcl.ac.uk)
 
+### Teaching assistants
+
+- Charel Junior Mangama Sindzi (charel.mangama_sindzi@kcl.ac.uk)
+- Yovin Yahathugoda (yovin.yahathugoda@kcl.ac.uk)
+- Jakub Grzelak (jakub.grzelak@kcl.ac.uk)
+- Paloma Nashira Rodriguez Baena (paloma.rodriguez_baena@kcl.ac.uk)
+
 ---
 
 ## Syllabus
