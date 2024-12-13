@@ -9,20 +9,20 @@ title: Object-Oriented Programming (5CCYB041)
 
 ### Module leads
 
-- J-Donald Tournier (jacques-donald.tournier@kcl.ac.uk)
-- Michela Antonelli (michela.antonelli@kcl.ac.uk)
+- [J-Donald Tournier](mailto:jacques-donald.tournier@kcl.ac.uk)
+- [Michela Antonelli](mailto:michela.antonelli@kcl.ac.uk)
 
 ### Lecturers
 
-- Tobias Wood (tobias.wood@kcl.ac.uk)
-- Marc Modat (marc.modat@kcl.ac.uk)
+- [Tobias Wood](mailto:tobias.wood@kcl.ac.uk)
+- [Marc Modat](mailto:marc.modat@kcl.ac.uk)
 
 ### Teaching assistants
 
-- Charel Junior Mangama Sindzi (charel.mangama_sindzi@kcl.ac.uk)
-- Yovin Yahathugoda (yovin.yahathugoda@kcl.ac.uk)
-- Jakub Grzelak (jakub.grzelak@kcl.ac.uk)
-- Paloma Nashira Rodriguez Baena (paloma.rodriguez_baena@kcl.ac.uk)
+- [Charel Junior Mangama Sindzi](mailto:charel.mangama_sindzi@kcl.ac.uk)
+- [Yovin Yahathugoda](mailto:yovin.yahathugoda@kcl.ac.uk)
+- [Jakub Grzelak](mailto:jakub.grzelak@kcl.ac.uk)
+- [Paloma Nashira Rodriguez Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk)
 
 ---
 
