@@ -102,6 +102,12 @@ applied in other situations
 
 ---
 
+# What is C++
+
+**TODO**
+
+---
+
 # Course overview
 
 ## It is _not_ intended as a full C++ course
@@ -497,6 +503,12 @@ This should produce a new _executable_ file in the current working directory:
 $ ls
 a.exe  main.cpp
 ```
+
+---
+
+# Difference between compiled and interpreted languages
+
+**TODO**
 
 ---
 
@@ -1313,8 +1325,8 @@ for (int n = 0; n < `args.size()`; n++)
 
 --
 
-We are using the *dot operator*, which provides direct access to members. 
-It takes this general form:
+We are using the *dot operator*, which provides direct access to members of an
+objct. It takes this general form:
 ```
 variable.member
 ```
