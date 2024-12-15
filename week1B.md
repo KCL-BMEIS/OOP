@@ -355,6 +355,144 @@ We can also use the `||` operator, with the opposite meaning:
 
 ---
 
+# Specifying files on the command-line
+
+When we invoke our command, how do we tell it where the file is _exactly_?
+
+```
+$ ./shotgun fragments-no-reverse-1.txt
+ERROR: failed to open file "fragments-no-reverse-1.txt" - aborting
+```
+
+--
+
+We know we have such a file in the `data/` folder, so how do we specify its
+location?
+
+--
+
+To get this right, we need to understand these concepts:
+- the current working directory
+- absolute and relative paths
+
+--
+
+Every program that runs has an associated **current working directory**
+- it can be thought of as the folder within which the program is currently
+  running
+
+---
+
+# Relative and absolute paths
+
+When the program tries to open a file, the filename will be assumed *relative*
+to the _current working directory_
+
+--
+
+For example, if we are currently in the
+`/home/donald/OOP/projects/DNA_shotgun_sequencing` folder:
+```
+$ pwd
+/home/donald/OOP/projects/DNA_shotgun_sequencing
+```
+
+--
+
+and there is a file in the folder called `fragments.txt`:
+```
+$ ls
+data/ fragments.txt  shotgun.cpp shotgun 
+```
+
+--
+
+Then `fragments.txt` would be interpreted by
+the operating system as equivalent to:
+`/home/donald/OOP/projects/DNA_shotgun_sequencing/fragments.txt`
+
+
+---
+
+# Relative and absolute paths
+
+In this example:
+
+- `fragments.txt` is a *relative path*
+  - it is relative to the _current working directory_
+
+- `/home/donald/OOP/projects/DNA_shotgun_sequencing/fragments.txt` is an
+  *absolute path*
+  - it is fully specified, _irrespective_ of the current working directory
+  - on Unix systems, an absolute path starts with a forward slash (`/`): the
+    _root_ of the _filesystem_
+
+
+--
+
+But what if the file is in a different folder from the current working
+directory?
+
+---
+
+# Relative and absolute paths
+
+Let's say we are currently in the folder:<br>
+`/home/donald/OOP/projects/DNA_shotgun_sequencing/solution`
+```
+$ pwd
+/home/donald/OOP/projects/DNA_shotgun_sequencing/solution
+```
+
+--
+
+and the file we wish to load is in the folder:<br>
+`/home/donald/OOP/projects/DNA_shotgun_sequencing/data`
+
+--
+
+We can still access the file using the *relative path* `../data/`:
+```
+$ ls ../data/
+fragments-1.txt              fragments-2.txt 
+fragments-3.txt              fragments-no-reverse-1.txt 
+fragments-no-reverse-2.txt   fragments-no-reverse-3.txt 
+```
+Remember that the special folder `..` corresponds to the current folder's
+parent folder!
+
+---
+
+# Specifying files on the command-line
+
+Therefore, we can run our command using a *relative path* to the neighbouring
+folder as follows:
+```
+$ ./shotgun ../data/fragments-no-reverse-1.txt
+```
+--
+
+.note[
+For more detail about this, please take a look through the relevant section of
+our [Introduction to the Unix
+command-line](https://command-line-tutorial.readthedocs.io/paths.html)]
+
+--
+<br>
+
+Putting it all together, we can write the full compile and run command as:
+```
+$ g++ shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
+```
+
+--
+
+The next time we need to run it, we can simply retrieve it from the command
+history with the up arrow, and hit Enter to run it again!
+
+
+---
+
 # Next step: load data from file
 
 Now we have a `std::ifstream` open and ready to read from, we can use the same
