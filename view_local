@@ -3,6 +3,12 @@
 from sys import argv
 from os import path
 
+if '-no-incremental' in argv:
+    remove_incremental = True
+    argv.remove ('-no-incremental')
+else:
+    remove_incremental = False
+
 if len(argv) < 2 or not argv[1].endswith ('.md'):
     raise ValueError ('expected markdown file with .md suffix')
 
@@ -15,6 +21,8 @@ with open ('_layouts/presentation.html') as fd:
 with open(argv[1]) as fd:
     npagebreak = 0
     for line in fd.readlines():
+        if remove_incremental and line.strip() == '--':
+            continue
         if npagebreak >= 2:
             markdown += line
         elif line.startswith ('title:'):
