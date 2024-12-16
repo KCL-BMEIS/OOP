@@ -82,7 +82,7 @@ The reason there are two output streams is that these can be used as
 independent inputs for other processes. 
 
 One example of this is [shell
-redirection](https://linuxcommand.org/lc3_lts0070.phpP):
+redirection](https://linuxconfig.org/introduction-to-bash-shell-redirections)
  
 - we will learn more about this later in the course
 
@@ -117,7 +117,7 @@ There are two main classes that we can use:
 --
 - there is also the `std::fstream` class which provides both input and output
   functionality
-  - rarely needed, most of the time, we need to read _or_ write, not both. 
+  - rarely needed: most of the time, we need to read _or_ write, not both. 
 --
 
 These are declared in the `<fstream>` header. 
@@ -381,6 +381,12 @@ Every program that runs has an associated **current working directory**
 - it can be thought of as the folder within which the program is currently
   running
 
+
+--
+
+It can be queried using the `pwd` (print working directory) command
+- It is also often shown in the *terminal prompt*
+
 ---
 
 # Relative and absolute paths
@@ -451,15 +457,18 @@ and the file we wish to load is in the folder:<br>
 
 --
 
-We can still access the file using the *relative path* `../data/`:
+Remember that the special folder `..` corresponds to the current folder's
+parent folder!
+
+--
+
+We can still access the file using the *relative path* `../data/`
 ```
 $ ls ../data/
 fragments-1.txt              fragments-2.txt 
 fragments-3.txt              fragments-no-reverse-1.txt 
 fragments-no-reverse-2.txt   fragments-no-reverse-3.txt 
 ```
-Remember that the special folder `..` corresponds to the current folder's
-parent folder!
 
 ---
 
@@ -488,7 +497,7 @@ $ g++ shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
 --
 
 The next time we need to run it, we can simply retrieve it from the command
-history with the up arrow, and hit Enter to run it again!
+history with the Up arrow, and hit Enter to run it again!
 
 
 ---
@@ -580,7 +589,7 @@ file into our variable `frag`
 # Next step: load data from file
 
 But we need to read more than one string from the file. To do this, we are
-going to read the data into a vector strings
+going to read the data into a vector of strings
 
 --
 
@@ -607,7 +616,7 @@ going to read the data into a vector strings
 # Next step: load data from file
 
 But we need to read more than one string from the file. To do this, we are
-going to read the data into a vector strings
+going to read the data into a vector of strings
 
 ```
   ...
@@ -637,7 +646,7 @@ We start by defining a new variable of type `std::vector<std::string>`, called
 # Next step: load data from file
 
 But we need to read more than one string from the file. To do this, we are
-going to read the data into a vector strings
+going to read the data into a vector of strings
 
 ```
   ...
@@ -668,7 +677,7 @@ stream reports `false`
 # Next step: load data from file
 
 But we need to read more than one string from the file. To do this, we are
-going to read the data into a vector strings
+going to read the data into a vector of strings
 
 ```
   ...
@@ -690,7 +699,7 @@ going to read the data into a vector strings
 
 .explain-middle[
 Every time we successfully read a string from the input file, we append it to
-our vector of string (`fragments`) using the `.push_back()` method.
+our vector of strings (`fragments`) using the `.push_back()` method.
 ]
 
 ---
@@ -702,25 +711,30 @@ will not cover in this course. However, the methods below are commonly used:
 
 - `.open(const std::string& filename)`: open the file given the `filename`.
   This is useful when declaring a `std::ifstream` variable with no filename,
-  e.g.:
+  with a view to actually opening the file later, e.g.:
   ```
   std::ifstream infile;
   ...
   infile.open (filename);
   ```
 
+- `.is_open()`: check whether file is open and ready for reading
+
 - `.close()`: close the file once we are done reading. Note that we rarely need
   to invoke this method explicitly since it will be invoked automatically when
   the `infile` variable is destroyed (goes out of scope).
+
 
 
 ---
 
 # Add more error checking and reporting
 
-It is _always_ a good idea to check for errors where relevant. Here, we check
-that the vector of fragments that we just loaded contains at least one entry,
-and report the number of fragments loaded:
+It is _always_ a good idea to check for errors where relevant. Here, we can
+check that the vector of fragments that we just loaded contains at least one
+entry, and report the number of fragments loaded
+
+--
 
 ```
   std::string frag;
@@ -766,6 +780,12 @@ the file.
 
 We can also report basic statistics about the data, such as mean, minimum and
 maximum fragment size
+
+--
+
+.explain-bottom[
+Have a go at implementing the changes required to do this
+]
 
 ---
 
@@ -853,11 +873,68 @@ These are part of the C++ Standard Template Library (STL)
 .explain-bottom[
 Note also the use of a _const reference_ to an `auto` variable (whose type is
 deduced by the compiler from the context). 
-- a reference is essentially an _alias_ for an existing variable
-- this avoids a needless copy of each element of the `fragments` vector for
-  each iteration
-- note the use of the ampersand (`&`) symbol in the declaration
 ]
+
+
+---
+
+# References in C++
+
+A *reference* in C++ is essentially another name for an existing variable. 
+
+It is declared by adding an ampersand (`&`) after the type, and before the name
+of the variable:
+```
+data_type& ref_name = variable;
+```
+
+--
+
+A reference must be initialised at the same time as it is declared
+- we cannot change which variable it refers to later!
+
+--
+
+This is useful in situations where:
+- making a copy of the variable is potentially (computationally) expensive
+- we want to pass a version of a variable that can be modified in other parts
+  of the code (more on that later)
+
+--
+
+*Const references* are most useful to avoid needlessly copying variables, while
+still providing guarantees that the original variable(s) will *not be modified*
+
+---
+
+# *Const* references in C++
+
+In our `for` loop example, we could have written:
+```
+  for (auto f : fragments) {
+```
+--
+
+In this case, the compiler would have deduced the type of `f` as `std::string`
+- each iteration would entail copying the contents of the current element of
+  `fragments` into `f` &#10060; 
+--
+- any modifications made to `f` within the loop would be guaranteed to have no
+  effect on the original &#9989; 
+
+--
+
+
+Instead, we wrote:
+```
+  for (const auto& f : fragments) {
+```
+In this case, the compiler deduces the type of `f` as `const std::string&` &ndash; a *const reference* to a
+`std::string`
+- no copies will be made &#9989;
+- any attempt at modifying `f` will lead to a compiler error &#9989; 
+
+
 
 ---
 
@@ -883,4 +960,317 @@ deduced by the compiler from the context).
 }
 ```
 
+.explain-bottom[
 Try it out and check that the results match expectations
+]
+
+---
+
+# Accessing current version of project code
+
+Throughout the course, we will be gradually merging the code for our solutions
+to the course repository. 
+
+You will find the most up to date version in the project's `solution/` folder. 
+- [click here](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
+  for the DNA shotgun sequencing project
+
+--
+<br>
+
+You can also inspect [the *history* of the changes](https://github.com/KCL-BMEIS/OOP/commits/main/projects/DNA_shotgun_sequencing/solution) by clicking on the *History*
+button 
+
+![:right 30%](images/history_button.png)
+
+---
+
+# Version history
+
+![:right 80%](images/git_history.png)
+
+---
+
+# Changes made in a specific *commit*
+
+![:right 75%](images/git_changes.png)
+
+---
+
+# Next step: identify the longest fragment
+
+Now that we have the data loaded, the next step is to figure out which fragment
+is the longest. 
+
+--
+
+.explain-bottom[
+Have a go at modifying the code to do this
+]
+
+---
+
+# Next step: identify the longest fragment
+
+Possible solution (there are many others!):
+
+```
+  ...
+
+  unsigned int size_of_longest = 0;
+  unsigned int index_of_longest = 0;
+  for (unsigned int n = 0; n < fragments.size(); ++n) {
+    if (fragments[n].size() > size_of_longest) {
+      index_of_longest = n;
+      size_of_longest = fragments[n].size();
+    }
+  }
+  std::string sequence = fragments[index_of_longest];
+  std::cerr << "initial sequence has size " << sequence.size() << "\n";
+
+  return 0;
+}
+```
+
+---
+
+# Next step: write out output DNA sequence
+
+Although we don't yet have code to stitch the full sequence back together, we
+will need the ability to write out the results while we are working on the code
+- we will need to inspect what our code has produced!
+
+--
+
+We can simply print out the result to the terminal via *standard output*
+(`std::cout`)
+- if necessary, we can *redirect* the output to a file of our choice:
+  ```
+  $ ./shotgun ../data/fragments-no-reserve-1.txt > out.txt
+  ```
+
+--
+
+But there is little point in printing the full sequence to terminal, as it
+will be far too long for us to make sense of, and produce far too much output
+for us to process
+
+The best thing to do is to write the output sequence to file, using the
+`std::ofstream` class
+- we will need to provide a second command-line argument to specify the output
+  filename
+
+--
+
+.explain-bottom[
+Have a go at modifying the code to do this
+]
+
+---
+
+# Next step: write out output DNA sequence
+
+```
+* if (args.size() < 3) {
+*   std::cerr << "ERROR: missing arguments - expected 2 arguments: input_fragments output_sequence\n";
+    return 1;
+  }
+```
+```
+* std::cerr << "writing sequence to file \"" << args[2] << "\"...\n";
+* std::ofstream outfile (args[2]);
+* if (!outfile) {
+*   std::cerr << "ERROR: failed to open output file \"" 
+*             << args[2] << "\" - aborting\n";
+*   return 1;
+* }
+* outfile << sequence << "\n";
+* if (!outfile) {
+*   std::cerr << "ERROR: error occurred while writing to output file \"" 
+*             << args[2] << "\" - aborting\n";
+*   return 1;
+* }
+```
+
+---
+
+# The full program so far
+
+```
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  if (args.size() < 3) {
+    std::cerr << "ERROR: missing arguments - expected 2 arguments: input_fragments output_sequence\n";
+    return 1;
+  }
+  std::cerr << "reading fragments from file \"" << args[1] << "\"...\n";
+
+  std::ifstream infile (args[1]);
+  if (!infile) {
+    std::cerr << "ERROR: failed to open file \"" << args[1] << "\" - aborting\n";
+    return 1;
+  }
+
+  std::vector<std::string> fragments;
+  std::string frag;
+  while (infile >> frag)
+    fragments.push_back (frag);
+
+  if (fragments.empty()) {
+    std::cerr << "ERROR: file \"" << args[1] << "\" contains no fragments - aborting\n";
+    return 1;
+  }
+
+  std::cerr << "read " << fragments.size() << " fragments\n";
+
+  double sum = 0.0;
+  std::string::size_type min = fragments[0].size();
+  std::string::size_type max = fragments[0].size();
+  for (const auto& f : fragments) {
+    sum += f.size();
+    min = std::min (min, f.size());
+    max = std::max (max, f.size());
+  }
+  std::cerr << "mean fragment length: " << sum/fragments.size() << ", range [ " << min << " " << max << " ]\n";
+
+
+  unsigned int size_of_longest = 0;
+  unsigned int index_of_longest = 0;
+  for (unsigned int n = 0; n < fragments.size(); ++n) {
+    if (fragments[n].size() > size_of_longest) {
+      index_of_longest = n;
+      size_of_longest = fragments[n].size();
+    }
+  }
+  std::string sequence = fragments[index_of_longest];
+  std::cerr << "initial sequence has size " << sequence.size() << "\n";
+
+
+  std::cerr << "writing sequence to file \"" << args[2] << "\"...\n";
+  std::ofstream outfile (args[2]);
+  if (!outfile) {
+    std::cerr << "ERROR: failed to open output file \"" << args[2] << "\" - aborting\n";
+    return 1;
+  }
+  outfile << sequence << "\n";
+  if (!outfile) {
+    std::cerr << "ERROR: error occurred while writing to output file \"" << args[2] << "\" - aborting\n";
+    return 1;
+  }
+
+  return 0;
+}
+```
+--
+
+.explain-top[
+It's getting a bit too long and difficult to follow &ndash; we need to organise
+it better!
+]
+
+---
+
+# Functions
+
+One way to organise our code is via *functions*
+
+They provide a way to
+- **break up the code** into smaller sections that are easier to manage and reason
+  about
+- **reuse code** in different places
+- **reduce maintenance** by ensuring any changes are made only once in the relevant
+  function
+- **make the code more readable** by using descriptive names for our functions
+
+--
+
+We can use functions to break up the functionality in our program into distinct responsabilities, for example:
+- load the data
+- compute and provide statistics
+- identify longest fragment
+- write out the data
+
+---
+
+# Function declaration
+
+In C++, functions are *declared* using this type of syntax:
+```
+return_type function_name (arg_type1 arg1, arg_type2 arg2, ...);
+```
+
+---
+
+# Function declaration
+
+In C++, functions are *declared* using this type of syntax:
+```
+`return_type` function_name (arg_type1 arg1, arg_type2 arg2, ...);
+```
+
+- `return_type`: the type of the variable returned by the function. In C & C++,
+  functions can return one variable of a type of our chosing. This could be an
+ `int`, or a large `std::vector<std::string>`
+
+---
+
+# Function declaration
+
+In C++, functions are *declared* using this type of syntax:
+```
+return_type `function_name` (arg_type1 arg1, arg_type2 arg2, ...);
+```
+
+- `return_type`: the type of the variable returned by the function. In C & C++,
+  functions can return one variable of a type of our chosing. This could be an
+ `int`, or a large `std::vector<std::string>`
+- `function_name`: the name that we wish to give to our function. Valid
+  characters include all letters (lowercase or uppercase), numbers, and the
+  underscore (`_`). 
+  - function names cannot start with a number
+  - function names should not start with an underscore, as this is reserved for
+    internal use by the C++ standard.
+  - different naming conventions are in use for different projects. In this
+    course, we will tend to use so-called `snake_case` (lowercase, with words
+    separated by underscores). In general, use whichever convention is used
+    by the project you are working on.
+  - make sure to use a *descriptive* name! The name should always reflect what
+    the function does 
+
+---
+
+# Function declaration
+
+In C++, functions are *declared* using this type of syntax:
+```
+return_type function_name (`arg_type1 arg1`, arg_type2 arg2, ...);
+```
+
+- `return_type`: the type of the variable returned by the function. In C & C++,
+  functions can return one variable of a type of our chosing. This could be an
+ `int`, or a large `std::vector<std::string>`
+- `function_name`: the name that we wish to give to our function. Valid
+  characters include all letters (lowercase or uppercase), numbers, and the
+  underscore (`_`). 
+  - function names cannot start with a number
+  - function names should not start with an underscore, as this is reserved for
+    internal use by the C++ standard.
+  - different naming conventions are in use for different projects. In this
+    course, we will tend to use so-called `snake_case` (lowercase, with words
+    separated by underscores). In general, use whichever convention is used
+    by the project you are working on.
+  - make sure to use a *descriptive* name! The name should always reflect what
+    the function does 
+- `arg_typeN argN`: any arguments that should be passed to the function, including
+  their type, and what the corresponding variable will be called within your
+  function. Note that functions can (and often do) have no arguments.
+
+---
+

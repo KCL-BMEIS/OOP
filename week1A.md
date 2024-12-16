@@ -1473,9 +1473,6 @@ Let's go over the basic types available in C++
 | `float` | floating-point | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
 | `double` | floating-point | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
 
---
-
-These are sometimes referred to as *Plain Old Data* (POD) types
 
 ---
 
@@ -1675,10 +1672,9 @@ if (mesg.ends_with ("suffix")) ...
 ```
 
 --
-Find the first occurence of a given sub-string:
+Find the index of the first occurence of a given sub-string:
 ```cpp
-std::string::size_type n = mesg.find ("World");
-// std::string::size_type is an integer type (most likely an alias for 'unsigned long int')
+auto n = mesg.find ("World");
 // note: this returns the special value 'std::string::npos' if no match found
 ```
 
@@ -1903,6 +1899,50 @@ int main (int argc, char* argv[])
 
   std::vector<int> vec;
 * for (int n = from; n <= to; n++)
+    vec.push_back (n);
+
+  for (auto x : vec)
+    std::cout << x << " ";
+  std::cout << "\n";
+
+  return 0;
+}
+```
+]
+.col[
+We then iterate over all values from the first argument provided (`from`) to
+the second argument provided (`to`)
+
+Note that in this case, we keep iterating while the value is less than *or equal*
+to `to`
+- This ensures the vector contains all values between `from` & `to`, *including*
+  both `from` & `to` themselves
+
+]
+]
+
+
+
+---
+
+## A simple `std::vector` example
+
+.columns[
+.col[
+```
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+
+  int from = std::stoi (args[1]);
+  int to = std::stoi (args[2]);
+
+  std::vector<int> vec;
+  for (int n = from; n <= to; n++)
 *   vec.push_back (n);
 
   for (auto x : vec)
@@ -2032,7 +2072,9 @@ As you can see from the previous example, when errors are encountered at runtime
 --
 In general, it is essential for code to *validate* its inputs and check its assumptions before running the relevant section of code
 --
-- it is also very helpful for users of your program (including yourself!) to quickly figure out what might have gone wrong!
+
+It is also important to report the *reasons* for any failures, along with any relevant information
+- this will be very helpful to you and your users when trying to figure out what might have gone wrong!
 
 --
 
@@ -2177,6 +2219,33 @@ else
 ```
 
 This form allows code to be executed if `true`, and *different* code to be executed if `false`
+
+--
+
+If statements can also be *nested* or *chained*:
+
+.columns[
+.col[
+```
+if (condition) {
+  if (some_additional_condition)
+   statement_1;
+  else
+   statement_2;
+}
+```
+]
+.col[
+```
+if (condition)
+  statement_1;
+else if (other_condition)
+  statement_2;
+else
+  statement_3;
+```
+]
+]
 
 ---
 
