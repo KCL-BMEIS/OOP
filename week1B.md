@@ -350,7 +350,7 @@ code is zero (success), run the command on the right
 --
 <br>
 
-We can also use the `||` operator, with the opposite meaning:
+If needed, we can also use the `||` operator, with the opposite meaning:
 - only run the second command if the first reports failure (non-zero exit code)
 
 ---
@@ -709,7 +709,7 @@ our vector of strings (`fragments`) using the `.push_back()` method.
 The `std::ifstream` class provides a lot more functionality, most of which we
 will not cover in this course. However, the methods below are commonly used:
 
-- `.open(const std::string& filename)`: open the file given the `filename`.
+- `.open(const std::string& filename)`: open the file specified in `filename`.
   This is useful when declaring a `std::ifstream` variable with no filename,
   with a view to actually opening the file later, e.g.:
   ```
@@ -735,6 +735,16 @@ check that the vector of fragments that we just loaded contains at least one
 entry, and report the number of fragments loaded
 
 --
+
+.explain-bottom[
+Have a go at modifying the code to do this. 
+]
+
+---
+
+# Add more error checking and reporting
+
+Possible solution:
 
 ```
   std::string frag;
@@ -791,6 +801,7 @@ Have a go at implementing the changes required to do this
 
 # Report basic statistics about the data
 
+Possible solution:
 ```
   ...
 
@@ -815,6 +826,7 @@ Have a go at implementing the changes required to do this
 
 # Report basic statistics about the data
 
+Possible solution:
 ```
   ...
 
@@ -850,6 +862,7 @@ These are part of the C++ Standard Template Library (STL)
 
 # Report basic statistics about the data
 
+Possible solution:
 ```
   ...
 
@@ -934,35 +947,6 @@ In this case, the compiler deduces the type of `f` as `const std::string&` &ndas
 - no copies will be made &#9989;
 - any attempt at modifying `f` will lead to a compiler error &#9989; 
 
-
-
----
-
-# Report basic statistics about the data
-
-```
-  ...
-
-  std::cerr << "read " << fragments.size() << " fragments\n";
-
-  double sum = 0.0;
-  std::string::size_type min = fragments[0].size();
-  std::string::size_type max = fragments[0].size();
-  for (const auto& f : fragments) {
-    sum += f.size();
-    min = std::min (min, f.size());
-    max = std::max (max, f.size());
-  }
-  std::cerr << "mean fragment length: " << sum/fragments.size() 
-            << ", range [ " << min << " " << max << " ]\n";
-
-  return 0;
-}
-```
-
-.explain-bottom[
-Try it out and check that the results match expectations
-]
 
 ---
 
@@ -1273,4 +1257,271 @@ return_type function_name (`arg_type1 arg1`, arg_type2 arg2, ...);
   function. Note that functions can (and often do) have no arguments.
 
 ---
+
+# Function definition
+
+The function *declaration* is also often called the *function prototype*. 
+
+It provides the minimum information required to *use* the
+function:
+- name of function
+- argument number and types
+- return type
+
+--
+
+The function *definition* contains the body of the function
+- It consists of the statements to be executed when the function is invoked
+- These statements are enclosed within a *block*, delimited with *braces*
+  (`{}`)
+
+--
+
+The definition can be provided at the point of declaration, but that is often
+not the case
+- in this case, the definition needs to provide the matching declaration to
+  ensure the compiler can unequivocally match the declaration with its matching
+definition
+- we will cover this later in the course
+
+---
+
+# Our first function: loading the data
+
+Let's set up our first function to load the data from the file, given its
+filename
+
+--
+
+- We'll call it `load_fragments ()`
+--
+- It will only require a single argument: the name of the file
+--
+- It will return a vector of strings containing the fragments loaded from the
+  file
+
+--
+
+The function declaration could therefore be:
+```
+std::vector<std::string> load_fragments (std::string filename);
+```
+--
+
+In practice however, we would typically expect the `filename` to be passed by *const
+reference*
+
+```
+std::vector<std::string> load_fragments (const std::string& filename);
+```
+--
+This is because in C++, function arguments are passed *by copy*
+-  passing a lightweight reference can be much more efficient than passing a
+   full copy
+- marking the reference as `const` provides a compiler-enforced guarantee that
+  the function will not modify the original variable.
+
+---
+
+# Our first function: loading the data
+
+Let's get started on the function definition:
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+{
+  std::vector<std::string> fragments;
+
+  ...
+
+  return fragments;
+}
+```
+
+
+---
+
+# Our first function: loading the data
+
+Let's get started on the function definition:
+```
+*std::vector<std::string> load_fragments (const std::string& filename)
+{
+  std::vector<std::string> fragments;
+
+  ...
+
+  return fragments;
+}
+```
+
+- The definition start with the full declaration
+
+
+---
+
+# Our first function: loading the data
+
+Let's get started on the function definition:
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+*{
+  std::vector<std::string> fragments;
+
+  ...
+
+  return fragments;
+*}
+```
+
+- The definition start with the full declaration
+- The body of the function is enclosed within *braces*
+
+---
+
+# Our first function: loading the data
+
+Let's get started on the function definition:
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+{
+  std::vector<std::string> fragments;
+
+  ...
+
+* return fragments;
+}
+```
+
+- The definition start with the full declaration
+- The body of the function is enclosed within *braces*
+- The `return` statement marks the end of the function, where the return value is
+  provided back to the invoking code
+
+
+---
+
+# Our first function: loading the data
+
+Let's get started on the function definition:
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+{
+* std::vector<std::string> fragments;
+
+  ...
+
+  return fragments;
+}
+```
+
+- The definition start with the full declaration
+- The body of the function is enclosed within *braces*
+- The `return` statement marks the end of the function, where the return value is
+  provided back to the invoking code
+- To be able to return our vector of fragments, we need to declare a *local
+  variable* to hold the data while in the function, which can then be returned
+
+
+---
+
+# Our first function: loading the data
+
+Let's fill in the body of the function:
+
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+{
+  std::vector<std::string> fragments;
+
+  std::ifstream infile (filename);
+
+  std::string frag;
+  while (infile >> frag)
+    fragments.push_back (frag);
+
+  return fragments;
+}
+```
+
+This is essentially what we already had in our `main()` function
+
+--
+
+Note that the above is a very short version of this function
+- in practice, we would also have progress reporting and error handling (full
+  version on next slide)
+
+
+---
+
+
+```
+std::vector<std::string> load_fragments (const std::string& filename)
+{
+* std::cerr << "reading fragments from file \"" << filename << "\"...\n";
+  std::vector<std::string> fragments;
+
+  std::ifstream infile (filename);
+* if (!infile) {
+*   std::cerr << "ERROR: failed to open file \"" << filename << "\" - aborting\n";
+*   std::exit (1);
+* }
+
+  std::string frag;
+  while (infile >> frag)
+    fragments.push_back (frag);
+
+* if (fragments.empty()) {
+*   std::cerr << "ERROR: file \"" << filename 
+*             << "\" contains no fragments - aborting\n";
+*   std::exit (1);
+* }
+
+* std::cerr << "read " << fragments.size() << " fragments\n";
+
+  return fragments;
+}
+```
+
+---
+
+# Using functions
+
+Now that we have defined our function, we can use it elsewhere in our code
+
+For this, we need to ensure the function has been *declared* before the point
+of use
+- if we want to use our new function within our `main()` function, we need to
+  add the declaration *before* `main()`
+
+--
+```
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+
+*std::vector<std::string> load_fragments (const std::string& filename)
+*{
+* ... 
+*}
+
+int main (int argc, char* argv[])
+{
+  ...
+```
+
+---
+
+# The `void` return type
+
+Sometimes we don't need to return anything from our function
+
+In this case, we can specify `void` as the return type
+
+In this case, we don't need to explicitly `return` from our function
+- we can simply reach the end of the function block
+- nonetheless, if we need to return early, we can do this with a simple `return`
+
+
 
