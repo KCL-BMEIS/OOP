@@ -64,7 +64,7 @@ int main (int argc, char* argv[])
 
 Compile with:
 ```
-$ g++ shotgun.cpp -o shotgun
+$ g++ -std=c++20 shotgun.cpp -o shotgun
 ```
 
 ---
@@ -316,7 +316,7 @@ The exit code is used to report success or failure to other programs
 We can query the exit code of the last command in the terminal using the
 special shell variable `$?` - for example:
 ```
-$ g++ shotgun.cpp -o shotgun
+$ g++ -std=c++20 shotgun.cpp -o shotgun
 $ ./shotgun bogus.txt
 ERROR: failed to open file "bogus.txt" - aborting
 $ echo $?
@@ -336,7 +336,7 @@ the program we've just compiled.
 
 We can do this very easily using [the `&&` operator](https://medium.frnn.dev/understanding-and-in-linux-bash-navigating-command-sequences-like-a-pro-fe5e72489da1):
 ```
-$ g++ shotgun.cpp -o shotgun && ./shotgun bogus.txt
+$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun bogus.txt
 ```
 
 --
@@ -491,7 +491,7 @@ command-line](https://command-line-tutorial.readthedocs.io/paths.html)]
 
 Putting it all together, we can write the full compile and run command as:
 ```
-$ g++ shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
+$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
 ```
 
 --
@@ -772,7 +772,7 @@ Possible solution:
 Now that we have code to load the data, we can run it and check that it works:
 
 ```
-$ g++ shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
+$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
 reading fragments from file "../data/fragments-no-reverse-1.txt"...
 read 190 fragments
 ```

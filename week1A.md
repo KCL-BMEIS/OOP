@@ -521,8 +521,10 @@ To use the program, we need to _compile_ it
 
 We do this by running the _compiler_ on our code:
 ```
-$ g++ main.cpp
+$ g++ -std=c++20 main.cpp
 ```
+- the `-std=c++20` option instructs the compiler to use the C++20 version of the
+C++ standard 
 
 --
 
@@ -583,7 +585,7 @@ By default, the compiler will produce an executable called `a.exe`
 We can control the name of the executable using the `-o` [command-line
 option](https://command-line-tutorial.readthedocs.io/introduction.html#command-line-options):
 ```
-g++ main.cpp -o main
+g++ -std=c++20 main.cpp -o main
 ```
 
 --
