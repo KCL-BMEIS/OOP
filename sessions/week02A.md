@@ -14,8 +14,6 @@
 - Error handling using [C++ exceptions](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
 - More practice with functions and string handling
 - More on using STL algorithms: [iterators](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
-- [the `while` loop](https://www.geeksforgeeks.org/cpp-while-loop/)
-- [`do`-`while` loop](https://www.geeksforgeeks.org/cpp-do-while-loop/)
 
 ### Exercises **TODO**
 
