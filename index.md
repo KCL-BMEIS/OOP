@@ -36,10 +36,10 @@ See [here for the full list of topics covered on this course](https://kcl-bmeis.
 
 Week 1:
 - [session 1: the Unix command-line, compiling our first C++ programs](https://kcl-bmeis.github.io/OOP/week1A)
-- [session 2: control flow, functions, exceptions](https://kcl-bmeis.github.io/OOP/week1B)
+- [session 2: Starting our first project](https://kcl-bmeis.github.io/OOP/week1B)
 
 Week 2:
-- [sesson 1: TBC](https://kcl-bmeis.github.io/OOP/week2A)
+- [sesson 1: Multi-file projects, error handling](https://kcl-bmeis.github.io/OOP/week2A)
 - _in progress..._
 
 [Miscellaneous slides, to be inserted or removed](https://kcl-bmeis.github.io/OOP/misc)
