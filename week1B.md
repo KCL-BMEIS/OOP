@@ -1056,7 +1056,7 @@ Have a go at modifying the code to do this
 
 ```
 * if (args.size() < 3) {
-*   std::cerr << "ERROR: missing arguments - expected 2 arguments: input_fragments output_sequence\n";
+*   std::cerr << "ERROR: expected 2 arguments: input_fragments output_sequence\n";
     return 1;
   }
 ```
@@ -1091,7 +1091,7 @@ int main (int argc, char* argv[])
   std::vector<std::string> args (argv, argv+argc);
 
   if (args.size() < 3) {
-    std::cerr << "ERROR: missing arguments - expected 2 arguments: input_fragments output_sequence\n";
+    std::cerr << "ERROR: expected 2 arguments: input_fragments output_sequence\n";
     return 1;
   }
   std::cerr << "reading fragments from file \"" << args[1] << "\"...\n";
@@ -1108,7 +1108,8 @@ int main (int argc, char* argv[])
     fragments.push_back (frag);
 
   if (fragments.empty()) {
-    std::cerr << "ERROR: file \"" << args[1] << "\" contains no fragments - aborting\n";
+    std::cerr << "ERROR: file \"" << args[1] 
+              << "\" contains no fragments - aborting\n";
     return 1;
   }
 
@@ -1122,7 +1123,8 @@ int main (int argc, char* argv[])
     min = std::min (min, f.size());
     max = std::max (max, f.size());
   }
-  std::cerr << "mean fragment length: " << sum/fragments.size() << ", range [ " << min << " " << max << " ]\n";
+  std::cerr << "mean fragment length: " << sum/fragments.size() 
+            << ", range [ " << min << " " << max << " ]\n";
 
 
   unsigned int size_of_longest = 0;
@@ -1140,12 +1142,14 @@ int main (int argc, char* argv[])
   std::cerr << "writing sequence to file \"" << args[2] << "\"...\n";
   std::ofstream outfile (args[2]);
   if (!outfile) {
-    std::cerr << "ERROR: failed to open output file \"" << args[2] << "\" - aborting\n";
+    std::cerr << "ERROR: failed to open output file \"" 
+              << args[2] << "\" - aborting\n";
     return 1;
   }
   outfile << sequence << "\n";
   if (!outfile) {
-    std::cerr << "ERROR: error occurred while writing to output file \"" << args[2] << "\" - aborting\n";
+    std::cerr << "ERROR: error occurred while writing to output file \"" 
+              << args[2] << "\" - aborting\n";
     return 1;
   }
 
@@ -1483,6 +1487,19 @@ std::vector<std::string> load_fragments (const std::string& filename)
 }
 ```
 
+--
+
+.explain-bottom[
+Note the use of `std::exit()` instead of `return` here. Previously, we could
+just return from `main()`, and this would end the program. However, we are no
+longer in `main()`, and returning from this function will not end the program. 
+
+<br>
+Using `std::exit()` will terminate the program immediately, but is not ideal.
+We will introduce better ways to handle errors using exceptions later in the
+course.
+]
+
 ---
 
 # Using functions
@@ -1513,6 +1530,39 @@ int main (int argc, char* argv[])
 
 ---
 
+# Using functions
+
+We can now use our function within `main()`
+
+```
+...
+
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+  if (args.size() < 3) {
+    std::cerr << "ERROR: expected 2 arguments: input_fragments output_sequence\n";
+    return 1;
+  }
+  
+* auto fragments = load_fragments (argv[1]);
+
+  double sum = 0.0;
+  std::string::size_type min = fragments[0].size();
+  std::string::size_type max = fragments[0].size();
+  for (const auto& f : fragments) {
+    ...
+```
+
+
+--
+
+.explain-bottom[
+Have a go at modifying the code to do this
+]
+
+---
+
 # The `void` return type
 
 Sometimes we don't need to return anything from our function
@@ -1521,7 +1571,100 @@ In this case, we can specify `void` as the return type
 
 In this case, we don't need to explicitly `return` from our function
 - we can simply reach the end of the function block
-- nonetheless, if we need to return early, we can do this with a simple `return`
+- nonetheless, if we need to return early, we can do this with a simple `return;`
 
 
+--
+
+.explain-bottom[
+Have a go at writing functions to:
+- report basic statistics about the fragments
+- write out the final sequence
+]
+
+
+---
+
+# Function to report basic statistics
+
+```
+void fragment_statistics (const std::vector<std::string>& fragments)
+{
+  double sum = 0.0;
+  std::string::size_type min = fragments[0].size();
+  std::string::size_type max = fragments[0].size();
+
+  for (const auto& f : fragments) {
+    sum += f.size();
+    min = std::min (min, f.size());
+    max = std::max (max, f.size());
+  }
+
+  std::cerr << "mean fragment length: " << sum/fragments.size() 
+            << ", range [ " << min << " " << max << " ]\n";
+}
+```
+
+
+---
+
+# Function to write out final sequence
+
+```
+void write_sequence (const std::string& filename, const std::string& sequence)
+{
+  std::cerr << "writing sequence to file \"" << filename << "\"...\n";
+  std::ofstream outfile (filename);
+  if (!outfile) {
+    std::cerr << "ERROR: failed to open output file \"" 
+              << filename << "\" - aborting\n";
+    std::exit (1);
+  }
+
+  outfile << sequence << "\n";
+
+  if (!outfile) {
+    std::cerr << "ERROR: error occurred while writing to output file \"" 
+              << filename << "\" - aborting\n";
+    std::exit (1);
+  }
+}
+
+```
+
+---
+
+```
+int main (int argc, char* argv[])
+{
+  std::vector<std::string> args (argv, argv+argc);
+  if (args.size() < 3) {
+    std::cerr << "ERROR: expected 2 arguments: input_fragments output_sequence\n";
+    return 1;
+  }
+
+* auto fragments = load_fragments (args[1]);
+* fragment_statistics (fragments);
+
+  unsigned int size_of_longest = 0;
+  unsigned int index_of_longest = 0;
+  for (unsigned int n = 0; n < fragments.size(); ++n) {
+    if (fragments[n].size() > size_of_longest) {
+      index_of_longest = n;
+      size_of_longest = fragments[n].size();
+    }
+  }
+  std::string sequence = fragments[index_of_longest];
+  std::cerr << "initial sequence has size " << sequence.size() << "\n";
+
+* write_sequence (args[2], sequence);
+  return 0;
+}
+```
+
+---
+
+# Exercises
+
+To be added...
 
