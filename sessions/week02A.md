@@ -1,6 +1,6 @@
 # Week 2A: multi-file project, error handling
 
-- [type aliasing](https://en.cppreference.com/w/cpp/language/type_alias)
+- [type aliasing](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/)
 - [defining separate header and cpp files](https://www.codeproject.com/Articles/5341253/C-Cplusplus-Headers-and-Source-Files-How-Do-They-W)
   - [compiling and linking](https://www.learncpp.com/cpp-tutorial/introduction-to-the-compiler-linker-and-libraries/)
   - what is a [translation (compilation) unit](https://en.wikipedia.org/wiki/Translation_unit_(programming))
@@ -14,8 +14,6 @@
 - Error handling using [C++ exceptions](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
 - More practice with functions and string handling
 - More on using STL algorithms: [iterators](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
-- [the `while` loop](https://www.geeksforgeeks.org/cpp-while-loop/)
-- [`do`-`while` loop](https://www.geeksforgeeks.org/cpp-do-while-loop/)
 
 ### Exercises **TODO**
 
