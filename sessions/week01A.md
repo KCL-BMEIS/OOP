@@ -13,6 +13,8 @@
 - [the `std::vector` class](https://www.geeksforgeeks.org/vector-in-cpp-stl/)
 - [range-based `for` loop](https://www.geeksforgeeks.org/range-based-loop-c/)
 - [regular `for` loop](https://www.geeksforgeeks.org/cpp-for-loop/)
+- [the `while` loop](https://www.geeksforgeeks.org/cpp-while-loop/)
+- [`do`-`while` loop](https://www.geeksforgeeks.org/cpp-do-while-loop/)
 - [type inference](https://www.geeksforgeeks.org/type-inference-in-c-auto-and-decltype/): the `auto` keyword
 - conditional execution: [the `if` statement](https://www.w3schools.com/cpp/cpp_conditions.asp)
 - [statements and compound statements](https://cplusplus.com/doc/tutorial/control/)
