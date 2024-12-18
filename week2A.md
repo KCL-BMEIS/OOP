@@ -582,7 +582,7 @@ $ g++ shotgun.o fragments.o -o shotgun
 The `-c` option instructs `g++` to *compile* only
 
 <br>
-Normally it would both compile *and* link
+Otherwise it would both compile *and* link
 ]
 
 
@@ -708,7 +708,7 @@ The situation becomes much more complex for large projects
 
 To manage this web of dependencies, we use *C++ build systems* &ndash; of which
 there are many...
-- most well-known tools include `GNU make`, `cmake`, `qmake`, `ninja`, `meson`, `scons`, ...
+- well-known build systems include `GNU make`, `cmake`, `qmake`, `ninja`, `meson`, `scons`, ...
 - these can be very complex to understand and manage well
 - some of these tools handle different aspects as well as building
   - external dependencies, different operating systems, testing, packaging, ...
@@ -769,7 +769,7 @@ setting up or editing
 
 --
 
-The project must however follow some simple rules
+The project must however follow some simple rules:
 - `cpp` files have the extension `.cpp`
 - system headers are *all* `#include`d within angled brackets (`<>`)
 - project headers are *all* `#include`d within inverted commas (`""`)
@@ -779,17 +779,13 @@ The project must however follow some simple rules
   needs to have matching header of the same name, and this header needs to be
   `#include`d in at least one other `cpp` file 
 
---
-
-If you follows the conventions taught on this course, the above rules
-should always work for you
 
 ---
 
 # Building our project using `oop_build`
 
 Make sure your code has been split up as shown in this session
-- or fetch the latest version from the website
+- or fetch the latest version [from the website](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
 
 The listing should show (at least) these files:
 ```
@@ -799,7 +795,7 @@ fragments.cpp    fragments.h    shotgun.cpp
 
 --
 
-When ready, run the `oop_build` command and run the resulting executable:
+When ready, run the `oop_build` command:
 ```
 $ oop_build
 g++ -Wall -O2 -DNDEBUG -std=c++20 -I. -c shotgun.cpp -o shotgun.o
@@ -814,4 +810,951 @@ You'll note there are more options in these commands than we've used so far
   them up online!
 
 
+---
+
+# Building our project using `oop_build`
+
+Try running `oop_build` again
+- the script should work out that everything is already up to date, and do nothing
+
+--
+
+Try modifying one of the project files, then run `oop_build` again
+- the script should only perform the minimum actions required to bring the
+  project up to date
+
+--
+
+Have a look at the contents of the project folder after a successful
+`oop_build` run:
+```
+$ ls
+build_log.txt  fragments.cpp  fragments.h  fragments.o  shotgun  shotgun.cpp  shotgun.o
+```
+--
+
+Try clearing out all the temporary outputs:
+```
+$ oop_build clean
+removed 'shotgun'
+removed 'shotgun.o'
+removed 'fragments.o'
+```
+
+
+---
+
+# Building our project using `oop_build`
+
+Try adding a mistake in one of the file, and running `oop_build` again:
+```
+$ oop_build
+g++ -Wall -O2 -DNDEBUG -std=c++20 -I. -c shotgun.cpp -o shotgun.o
+shotgun.cpp: In function ‘int main(int, char**)’:
+shotgun.cpp:9:3: error: ‘wrong’ was not declared in this scope
+    9 |   wrong;
+      |   ^~~~~
+build_log.txt (END)
+```
+Note: these errors will be displayed through an interactive viewer called
+[`less`](https://www.geeksforgeeks.org/less-command-linux-examples/)
+- this is useful when there is a long list of errors...
+- press `q` to exit back to the command prompt
+
+--
+
+These errors will also be recorded in the `build_log.txt` file for you to
+refer to later if necessary
+- You can view the contents using:
+  - `cat build_log.txt` (straight dump of file contents to terminal)
+  - `less build_log.txt` (interactive viewer if the output is too long)
+
+
+---
+
+# Building our project using `oop_build`
+
+Try using the `-verbose` option to see the rationale behind the script's
+actions:
+```
+$ oop_build -verbose
+# target executables detected: shotgun
+# shotgun.o depends on shotgun.cpp fragments.h
+# - shotgun.o is older than dependency shotgun.cpp - needs update
+g++ -Wall -O2 -DNDEBUG -std=c++20 -I. -c shotgun.cpp -o shotgun.o
+# fragments.o depends on fragments.cpp fragments.h
+# - fragments.o is already up to date
+# shotgun depends on shotgun.o fragments.o
+# - shotgun is older than dependency shotgun.o - needs update
+g++ shotgun.o fragments.o -o shotgun
+```
+--
+
+You can view the help page for the script
+[online](https://github.com/jdtournier/simple_build), or using the special `help`
+target:
+```
+$ oop_build help
+```
+
+--
+
+.explain-bottom[
+If you find anything isn't working as it should, please get in touch with 
+[J-Donald Tournier](mailto:jacques-donald.tournier@kcl.ac.uk)!
+]
+
+
+---
+
+# What is the compiler really doing?
+
+When everything works, programming in C++ is great
+- but things rarely work first time...
+
+For you to understand what has gone wrong and how to fix it, we need to explain
+what is going on in more detail
+
+--
+
+What we call the compiler is itself composed of several programs:
+- the *preprocessor*
+- the *compiler*
+- the *linker*
+
+--
+
+Problems can occur at each stage, and may manifest differently. It really helps
+to understand the role of each of these stages to quickly identify the source
+of any potential problem
+
+--
+<br>
+.note[
+The following slides are included for your information &ndash; you will *not* be
+assessed on the technical details of how a compiler works!
+]
+
+---
+
+# The preprocessor
+
+We have already used two *preprocessor directives* in our project:
+- `#include`
+- `#pragma once`
+
+[Many more preprocessor directives are
+available](https://www.geeksforgeeks.org/cpp-preprocessors-and-directives/), although their use is
+discouraged in modern C++
+
+--
+
+The preprocessor's task is to process all the preprocessor directives it comes
+across, and feed the resulting output as a single input to the compiler
+
+--
+
+The output of the preprocessor is a single text file
+- this single chunk of C++ code is called a [*translation
+unit*](https://tinyurl.com/ytas97jp)
+- a *translation unit* is the actual input to the compiler
+- all the code in a translation unit is to be compiled as a single independent
+  batch
+
+---
+
+# The preprocessor
+
+## `#include`
+
+The `#include` directive instructs the preprocessor to find the specified
+header file and insert its contents wholesale into the output translation unit
+
+--
+
+We can see the output of the preprocessor using `g++`'s `-E` option:
+```
+$ g++ -E shotgun.cpp | less
+```
+You'll see that the output of this stage is very long (~42,000 lines on my
+system) &ndash; which is why the command above
+[*pipes*](https://www.geeksforgeeks.org/piping-in-unix-or-linux/) its output
+through to the `less` interactive text viewer.
+- you'll find the code we wrote at the very end: all the rest is code that has imported
+  through our `#include` directives
+
+
+---
+
+# The preprocessor
+
+## `#pragma once` 
+
+The `#pragma once` directive is actually *not* part of the C++ standard
+- but it is very widely supported
+
+--
+
+It instructs the preprocessor to only `#include` this file once per translation
+unit, at the point where it is first encountered
+- even if it is `#include`d by multiple headers
+
+--
+
+For example, imagine we introduce another header file `debug.h` to our
+project
+- it may be `#include`d by both `shotgun.cpp` and `fragments.h`
+- but `shotgun.cpp` already `#include`s `fragments.h`
+- without the `#pragma once` directive, the contents of `debug.h` would be
+  included twice, potentially leading to compiler errors
+
+---
+
+# The preprocessor
+
+## Header guards
+
+The standard way of dealing with the multiple header inclusion problem is via *header guards*:
+```
+#ifndef __my_header_h__
+#define __my_header_h__
+
+// header contents
+
+#endif
+```
+We will not be using header guards on this course, but you may encounter this form in other projects
+
+--
+
+The `#pragma once` directive is preferred since header guards require the use
+of three other preprocessor directives, and are more error prone
+- there is no guarantee that the *preprocessor macro* we used
+  (`__my_header_h__`) is not already in use in some other part of the code
+
+
+---
+
+# The compiler
+
+The actual compiler's task is to translate our human-readable C++ code into
+machine instructions in binary format that can be directly executed by the
+target architecture
+
+--
+
+The compiler operates on a single *translation unit* at a time, and performs
+lots of checks and optimisations in the process to ensure the code is both
+correct and efficient
+
+--
+
+The output of the compiler is an *object file*, which is essentially a
+collection of our functions and global variables translated into the target
+architecture's instruction set.
+- these are stored in a specific format that make it easy to list the contents
+  and locate the binary code for these functions
+
+
+---
+
+# The linker
+
+The linker's task is to produce an executable (or *library*) from a collection
+of object files. 
+
+--
+
+For our executable, the linker needs to locate:
+- the `main()` function: this is the entry point for any program
+- any functions used in `main()`, and any functions they use, etc.
+- any libraries that our program will need
+- any functions within these libraries that are in use in any part of our code
+
+Errors will occur is the linker can't find any function that our code refers
+to, or if it finds duplicate versions of the same function
+
+--
+
+It will then collate all the *symbols* (functions or global variables) into the
+output executable file, in the format expected by the operating system
+
+--
+<br>
+.note[
+Technically, we are talking about the *static linker* here &ndash; the *dynamic
+linker* is a different process relevant when *running* our program
+]
+
+---
+
+# Error handling in C++: exceptions
+
+We have already seen some simple error handling &ndash; but there were issues
+with it:
+- We can use the return value of each function to indicate success or failure 
+  - but then the return code of every function call needs to be checked for errors at the point of use
+  - we can't use the return value to return any other useful information
+--
+- We can simply terminate the program via e.g. `std::exit()`
+  - but this does not allow our code to handle the error more gracefully
+  - it may also prevent our program for performing any tidying up operations
+    that it might need to do upon exit
+
+--
+
+C++ does however provide a framework for error handling using *exceptions*
+
+---
+
+# Throwing exceptions
+
+```
+#include <stdexcept>
+
+...
+
+*if (some_error) 
+* throw std::runtime_error ("something horrible happened!");
+
+...
+```
+
+If an error is detected, the code may *throw* an exception
+
+---
+
+# Throwing exceptions
+
+```
+#include <stdexcept>
+
+...
+
+if (some_error) 
+  `throw` std::runtime_error ("something horrible happened!");
+
+...
+```
+
+If an error is detected, the code may *throw* an exception
+- this is done using the `throw` keyword
+
+
+---
+
+# Throwing exceptions
+
+```
+#include <stdexcept>
+
+...
+
+if (some_error) 
+  throw `std::runtime_error ("something horrible happened!")`;
+
+...
+```
+
+If an error is detected, the code may *throw* an exception
+- this is done using the `throw` keyword
+- followed by an instance of the exception we wish to throw
+  - technically this can be any variable of any type
+  - in practice, it is best to use the dedicated classes provided for this
+    purpose by the standard, such as `std::runtime_error`
+
+---
+
+# Throwing exceptions
+
+```
+*#include <stdexcept>
+
+...
+
+if (some_error) 
+  throw std::runtime_error ("something horrible happened!");
+
+...
+```
+
+If an error is detected, the code may *throw* an exception
+- this is done using the `throw` keyword
+- followed by an instance of the exception we wish to throw
+  - technically this can be any variable of any type
+  - in practice, it is best to use the dedicated classes provided for this
+    purpose by the standard, such as `std::runtime_error`
+  - the standard exceptions are declared in the `<stdexcept>` header, which
+    needs to be `#include`d
+
+---
+
+# Throwing exceptions
+
+```
+#include <stdexcept>
+
+...
+
+if (some_error) 
+  throw std::runtime_error (`"something horrible happened!"`);
+
+...
+```
+
+If an error is detected, the code may *throw* an exception
+- this is done using the `throw` keyword
+- followed by an instance of the exception we wish to throw
+  - technically this can be any variable of any type
+  - in practice, it is best to use the dedicated classes provided for this
+    purpose by the standard, such as `std::runtime_error`
+  - the standard exceptions are declared in the `<stdexcept>` header, which
+    needs to be `#include`d
+  - standard exceptions allow a message to be provided, which will then be
+    accessible to the error handling code
+
+---
+
+# Handling exceptions
+
+```
+#include <stdexcept>
+
+*try {
+...
+  if (some_error) 
+    throw std::runtime_error ("something horrible happened!");
+...
+*}
+catch (std::exception& except) {
+  // handle the error here
+}
+```
+
+To handle the exception:
+- we need to enclose the code that might throw an exception within a `try`
+  block
+
+---
+
+# Handling exceptions
+
+```
+#include <stdexcept>
+
+try {
+...
+  if (some_error) 
+    throw std::runtime_error ("something horrible happened!");
+...
+}
+*catch (std::exception& except) {
+*  // handle the error here
+*}
+```
+
+To handle the exception:
+- we need to enclose the code that might throw an exception within a `try`
+  block
+- if an exception is thrown, control passes to the matching `catch` block
+
+---
+
+# Handling exceptions
+
+```
+#include <stdexcept>
+
+try {
+...
+  if (some_error) 
+    throw `std::runtime_error` ("something horrible happened!");
+...
+}
+catch (`std::exception`& except) {
+  // handle the error here
+}
+```
+
+To handle the exception:
+- we need to enclose the code that might throw an exception within a `try`
+  block
+- if an exception is thrown, control passes to the matching `catch` block
+- by *matching*, we mean that the *type* of the exception thrown matches the
+  argument type stated in the `catch()` call
+  - note that `std::runtime_error` is *derived* from the more generic `std::exception`
+    class, and is therefore itself a type of `std::exception` (we will learn
+    about this later when we cover *inheritance*)
+
+---
+
+# Handling exceptions
+
+```
+#include <stdexcept>
+
+try {
+...
+  if (some_error) 
+    throw std::runtime_error ("something horrible happened!");
+...
+}
+catch (std::exception& except) {
+  // handle the error here
+}
+*catch (...) {
+* // unexpected exception type! 
+*}
+```
+
+We can specify multiple `catch` blocks to handle different types of exceptions
+
+
+---
+
+# Handling exceptions
+
+```
+#include <stdexcept>
+
+try {
+...
+  if (some_error) 
+    throw std::runtime_error ("something horrible happened!");
+...
+}
+catch (std::exception& except) {
+  // handle the error here
+}
+catch (`...`) {
+  // unexpected exception type! 
+}
+```
+
+We can specify multiple `catch` blocks to handle different types of exceptions
+- the special notation `...` is used to denote the catch-all block:
+  an exception that doesn't match any of the previous blocks will be handled
+  here
+
+
+---
+
+# Unhandled exceptions
+
+What happens if we throw an exception in one of our functions *outside* of a
+`try`/`catch` block?
+- or if the exception we threw doesn't match any of our `catch` blocks?
+
+--
+
+In this case, control returns to the parent function
+- importantly, all the local variables in our current function will be properly
+  *destroyed* (we will cover exactly what this means later on)
+
+--
+
+If the parent function catches the exception, it will handle it there
+
+--
+
+If the parent function *doesn't* catch the expection, control returns to *its*
+parent function, and so on
+- this is called *stack unwinding* &ndash; we will see why later in the course
+  when we cover the *call stack*
+
+--
+
+If the exception reaches our `main()` function and still isn't handled there,
+the *default handler* will be invoked
+- this typically terminates the program and prints out the message contained in
+  the exception 
+  - assuming it was of a standard type
+- For some reason, this isn't the case on our MSYS2 installs...
+
+---
+
+# How to handle exceptions once caught?
+
+
+```
+...
+}
+catch (std::exception& except) {
+* // what to do?!?
+}
+```
+
+What do you put in a `catch` block?
+
+--
+
+This depends on what the error is, and whether there is anything that *can*
+be done 
+
+--
+
+If the error is a failure to interpret some user input, it may be appropriate
+to report this to the user and ask them to try again 
+
+--
+
+Often however, there isn't much that the program can do to recover
+- in this case, the best course of action is to provide the most informative
+  error message possible so the user can understand what the problem is
+- and terminate the program cleanly...
+
+
+---
+
+# Adding exception handling to our project
+
+Let's use exceptions in our `load_fragments()` function (in `fragments.cpp`):
+```
+#include <fstream>
+#include <vector>
+#include <string>
+*#include <stdexcept>
+
+...
+  std::cerr << "reading fragments from file \"" << filename << "\"...\n";
+
+  std::ifstream infile (filename);
+* if (!infile)
+*   throw std::runtime_error ("failed to open file \"" + filename + "\"");
+
+  ...
+}
+```
+
+--
+
+.explain-bottom[
+Have a go at modifying the `fragments.cpp` file to throw appropriate exceptions
+at each point where relevant
+]
+
+---
+
+# Adding exception handling to our project
+
+We then need to handle these exceptions (in `shotgun.cpp`):
+```
+  ...
+* try {
+    if (args.size() < 3)
+*     throw std::runtime_error ("expected 2 arguments: fragments_in sequence_out");
+    ...
+    write_sequence (args[2], sequence);
+* }
+* catch (std::exception& excp) {
+*   std::cerr << "ERROR: " << excp.what() << " - aborting\n";
+*   return 1;
+* }
+* catch (...) {
+*   std::cerr << "ERROR: unknown exception thrown - aborting\n";
+*   return 1;
+* }
+  return 0;
+}
+```
+---
+
+# Adding exception handling to our project
+
+We then need to handle these exceptions (in `shotgun.cpp`):
+```
+  ...
+  try {
+*   if (args.size() < 3)
+*     throw std::runtime_error ("expected 2 arguments: fragments_in sequence_out");
+*   ...
+*   write_sequence (args[2], sequence);
+  }
+  catch (std::exception& excp) {
+    std::cerr << "ERROR: " << excp.what() << " - aborting\n";
+    return 1;
+  }
+  catch (...) {
+    std::cerr << "ERROR: unknown exception thrown - aborting\n";
+    return 1;
+  }
+  return 0;
+}
+```
+
+.explain-bottom[
+All of our code is concentrated together within the `try` block, without any error
+handling getting in the way &ndash; the logic of the program can be kept clear
+and easily understood
+]
+
+
+---
+
+# Adding exception handling to our project
+
+We then need to handle these exceptions (in `shotgun.cpp`):
+```
+  ...
+  try {
+    if (args.size() < 3)
+      throw std::runtime_error ("expected 2 arguments: fragments_in sequence_out");
+    ...
+    write_sequence (args[2], sequence);
+  }
+* catch (std::exception& excp) {
+*   std::cerr << "ERROR: " << excp.what() << " - aborting\n";
+*   return 1;
+* }
+  catch (...) {
+    std::cerr << "ERROR: unknown exception thrown - aborting\n";
+    return 1;
+  }
+  return 0;
+}
+```
+
+.explain-bottom[
+For any standard exceptions, report the error message, formatted appropriately,
+and return with a non-zero exit code to indicate failure
+]
+
+
+---
+
+# Adding exception handling to our project
+
+We then need to handle these exceptions (in `shotgun.cpp`):
+```
+  ...
+  try {
+    if (args.size() < 3)
+      throw std::runtime_error ("expected 2 arguments: fragments_in sequence_out");
+    ...
+    write_sequence (args[2], sequence);
+  }
+  catch (std::exception& excp) {
+    std::cerr << "ERROR: " << excp.what() << " - aborting\n";
+    return 1;
+  }
+* catch (...) {
+*   std::cerr << "ERROR: unknown exception thrown - aborting\n";
+*   return 1;
+* }
+  return 0;
+}
+```
+
+.explain-middle[
+For any other exception of unknown type, there is no specific error message to
+report, but we should nonetheless report that something has gone wrong!
+As before, we return with a non-zero exit code to indicate failure
+]
+
+
+
+
+---
+
+# Adding exception handling to our project
+
+We then need to handle these exceptions (in `shotgun.cpp`):
+```
+  ...
+  try {
+    if (args.size() < 3)
+      throw std::runtime_error ("expected 2 arguments: fragments_in sequence_out");
+    ...
+    write_sequence (args[2], sequence);
+  }
+  catch (std::exception& excp) {
+    std::cerr << "ERROR: " << excp.what() << " - aborting\n";
+    return 1;
+  }
+  catch (...) {
+    std::cerr << "ERROR: unknown exception thrown - aborting\n";
+    return 1;
+  }
+  return 0;
+}
+```
+
+.explain-bottom[
+Have a go at modifying your code as shown
+]
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+void run (std::vector<std::string>& args)
+{
+  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+    std::vector<std::string> args (argv, argv+argc);
+    run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+*void run (std::vector<std::string>& args)
+{
+  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+    std::vector<std::string> args (argv, argv+argc);
+    run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+.explain-bottom[
+We define a new function `run()`, which accepts our arguments in a modern C++
+format: a `std::vector<std::string>`
+]
+
+
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+void run (std::vector<std::string>& args)
+{
+*  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+    std::vector<std::string> args (argv, argv+argc);
+    run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+.explain-bottom[
+We place all our core functionality within this function. This is what was
+previously within our `try` block
+]
+
+
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+void run (std::vector<std::string>& args)
+{
+  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+*   std::vector<std::string> args (argv, argv+argc);
+*   run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+.explain-bottom[
+In `main()`, we simply invoke this new `run()` function within the `try` block,
+passing the command-line arguments in the expected format. 
+]
+
+
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+void run (std::vector<std::string>& args)
+{
+  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+    std::vector<std::string> args (argv, argv+argc);
+    run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+.explain-bottom[
+Now, our `main()` function's role is purely to convert the command-line
+arguments, and to handle any exceptions that haven't already been handled.
+
+<br>
+We can now focus our effort on the new `run()` function
+]
+
+
+---
+
+# Separating error handling from core functionality
+
+We can further separate function from error handling:
+```
+void run (std::vector<std::string>& args)
+{
+  // core function goes here
+}
+
+
+int main (int argc, char* argv[])
+{
+  try {
+    std::vector<std::string> args (argv, argv+argc);
+    run (args);
+  }
+  catch (std::exception& excp) {
+    ...
+}
+```
+.explain-bottom[
+Have a go at making these modifications on your own version of the code
+]
+
+
+
+---
+
+# Exercises
+
+To be added...
 
