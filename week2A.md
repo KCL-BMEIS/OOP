@@ -110,7 +110,7 @@ We've barely started on our project, and our `.cpp` file is already ~100 lines
 
 --
 
-In practice, projects are spread over multiple files
+In practice, C++ projects are spread over many files
 - it helps to keep our code logically organised
 - it keeps each individual file small enough to manage
 - it allows for incremental and/or parallel compilation
@@ -130,7 +130,7 @@ current code
 --
 
 Files designed to be `#include`d in this way are called *header files*
-- they typically have extension `.h` (though `.hpp`, `.H` are also sometimes
+- they typically have the `.h` extension (though `.hpp`, `.H` are also sometimes
   used)
 
 --
@@ -749,7 +749,7 @@ This needs to be done *recursively*:
 
 ---
 
-# What build system is used in this course?
+# What C++ build system is used in this course?
 
 
 To keep things as simple as possible on this course, we will use a simple
@@ -758,6 +758,8 @@ script of our own design (the
 
 On KCL systems, this script has already been made available as the command
 `oop_build`
+- if you need to install this on your own system, please [follow the
+  instructions here](https://kcl-bmeis.github.io/OOP/install_build_script)
 
 --
 
@@ -780,7 +782,7 @@ The project must however follow some simple rules
 --
 
 If you follows the conventions taught on this course, the above rules
-will always work for you
+should always work for you
 
 ---
 
