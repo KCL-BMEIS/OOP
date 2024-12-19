@@ -13,7 +13,7 @@
   - introduce [our custom `oop_build` script](https://github.com/jdtournier/simple_build)
 - Error handling using [C++ exceptions](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
 - More practice with functions and string handling
-- More on using STL algorithms: [iterators](https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
+- More on using STL algorithms: [iterators](https://www.geeksforgeeks.org/iterators-c-stl/)
 
 ### Exercises **TODO**
 
