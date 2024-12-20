@@ -191,6 +191,12 @@ Good online resources include:
 
 ---
 
+class: section
+
+# The Unix command-line
+
+---
+
 # The command-line
 
 ![:right 50%](images/MSYS.png)
@@ -349,6 +355,15 @@ particular our own [Introduction to the Unix
 command-line](https://command-line-tutorial.readthedocs.io/)]
 
 ---
+
+class: section
+
+# Coding in C++
+
+## Compiling and running our first program
+
+---
+
 
 # Writing our first C++ program
 
@@ -598,6 +613,14 @@ Hello, world!
 
 ---
 
+class: section
+
+# Coding in C++
+
+## Understanding our code
+
+---
+
 # Understanding our 'hello world' example
 
 ```C++
@@ -788,6 +811,14 @@ this later
 
 - Modify `main.cpp` to remove the semicolon after `return 0;`, then compile.
   What effect does this have?
+
+---
+
+class: section
+
+# Coding in C++
+
+## Handling command-line arguments
 
 ---
 
@@ -986,6 +1017,14 @@ int main (int argc, char* argv[])
 Now modify your own code as shown above, compile it, and run it.
 - What happens if you *don't* provide at least one command-line argument?
 
+
+---
+
+class: section
+
+# Control flow
+
+## Iteration
 
 ---
 
@@ -1367,6 +1406,12 @@ do
 while (condition);
 ```
 This will also run `statement` as long as `condition` is true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
+
+---
+
+class: section
+
+# C++ fundamentals
 
 ---
 
@@ -2148,6 +2193,14 @@ If we have fewer than 3 arguments, the command can't run
 We use an `if` statement to do the checking
 
 ]
+
+---
+
+class: section
+
+# Control flow
+
+## Conditional execution
 
 ---
 

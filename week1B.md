@@ -98,6 +98,14 @@ and progress reporting.
 
 ---
 
+class: section
+
+# File input & output
+
+## Using the C++ streams library
+
+---
+
 # Next step: load data from file
 
 The next logical thing to do is add code to load some data. 
@@ -325,6 +333,8 @@ $ echo $?
 
 ---
 
+class: info
+
 # Using exit code with the shell `&&` operator
 
 We can already use these exit codes to make our lives a little bit easier:
@@ -352,6 +362,14 @@ code is zero (success), run the command on the right
 
 If needed, we can also use the `||` operator, with the opposite meaning:
 - only run the second command if the first reports failure (non-zero exit code)
+
+---
+
+class: section
+
+# The filesystem
+
+## Absolute & relative paths
 
 ---
 
@@ -499,6 +517,14 @@ $ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-revers
 The next time we need to run it, we can simply retrieve it from the command
 history with the Up arrow, and hit Enter to run it again!
 
+
+---
+
+class: section
+
+# File input & output
+
+## Back to loading data
 
 ---
 
@@ -725,6 +751,13 @@ will not cover in this course. However, the methods below are commonly used:
   the `infile` variable is destroyed (goes out of scope).
 
 
+---
+
+class: section
+
+# Progress and error reporting
+
+## How to keep track of what's going on
 
 ---
 
@@ -950,6 +983,12 @@ In this case, the compiler deduces the type of `f` as `const std::string&` &ndas
 
 ---
 
+class: section
+
+# The project repository
+
+---
+
 # Accessing current version of project code
 
 Throughout the course, we will be gradually merging the code for our solutions
@@ -978,6 +1017,12 @@ button
 # Changes made in a specific *commit*
 
 ![:right 75%](images/git_changes.png)
+
+---
+
+class: section
+
+# Back to the project
 
 ---
 
@@ -1162,6 +1207,14 @@ int main (int argc, char* argv[])
 It's getting a bit too long and difficult to follow &ndash; we need to organise
 it better!
 ]
+
+---
+
+class: section
+
+# Functions
+
+## How to keep code organised
 
 ---
 

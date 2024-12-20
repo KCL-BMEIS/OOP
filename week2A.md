@@ -12,7 +12,7 @@ class: title
 
 ---
 
-# What we covered so far
+# What we covered last week
 
 - The Unix command-line
 - Writing C++ code using a simple text editor
@@ -98,8 +98,14 @@ void fragment_statistics (const `Fragments`& fragments)
 
 .explain-bottom[
 Have a go at modifying your code as shown here
-
 ]
+
+
+---
+
+class: section
+
+# Multi-file projects
 
 ---
 
@@ -513,6 +519,8 @@ How do we compile this project?
 
 ---
 
+class: info
+
 # Building a multi-file project
 
 We could compile everything in one go:
@@ -542,15 +550,19 @@ online](https://www.geeksforgeeks.org/static-and-dynamic-linking-in-operating-sy
 
 ---
 
-# The compile & link process
+class: info
 
-![:right 65%](images/compile_link.png)
+## The compile & link process
+
+![:scale 70%](images/compile_link.png)
 
 
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -565,7 +577,9 @@ $ g++ shotgun.o fragments.o -o shotgun
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -589,7 +603,9 @@ Otherwise it would both compile *and* link
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -610,7 +626,9 @@ Note that the output files from these commands are now *object files*, with the
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -631,7 +649,9 @@ executable
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -662,7 +682,9 @@ in its inputs
 
 ---
 
-# Commands to perform the compile & link process
+class: info
+
+# Commands to compile & link
 
 Compile:
 ```
@@ -681,6 +703,8 @@ linking the different files using the commands above
 ]
 
 ---
+
+class: info
 
 # When do we need to recompile?
 
@@ -714,6 +738,8 @@ there are many...
   - external dependencies, different operating systems, testing, packaging, ...
 
 ---
+
+class: info
 
 # How do C++ build systems work?
 
@@ -907,6 +933,16 @@ If you find anything isn't working as it should, please get in touch with
 
 ---
 
+class: section
+
+# The preprocessor,<br>compiler, and linker
+
+## What is *really* going on?
+
+---
+
+class: info
+
 # What is the compiler really doing?
 
 When everything works, programming in C++ is great
@@ -927,13 +963,6 @@ What we call the compiler is itself composed of several programs:
 Problems can occur at each stage, and may manifest differently. It really helps
 to understand the role of each of these stages to quickly identify the source
 of any potential problem
-
---
-<br>
-.note[
-The following slides are included for your information &ndash; you will *not* be
-assessed on the technical details of how a compiler works!
-]
 
 ---
 
@@ -1010,6 +1039,8 @@ project
 
 ---
 
+class: info
+
 # The preprocessor
 
 ## Header guards
@@ -1035,6 +1066,8 @@ of three other preprocessor directives, and are more error prone
 
 ---
 
+class: info
+
 # The compiler
 
 The actual compiler's task is to translate our human-readable C++ code into
@@ -1057,6 +1090,8 @@ architecture's instruction set.
 
 
 ---
+
+class: info
 
 # The linker
 
@@ -1085,6 +1120,14 @@ output executable file, in the format expected by the operating system
 Technically, we are talking about the *static linker* here &ndash; the *dynamic
 linker* is a different process relevant when *running* our program
 ]
+
+---
+
+class: section
+
+# Exception handling
+
+## Error handling in C++
 
 ---
 
@@ -1750,11 +1793,135 @@ int main (int argc, char* argv[])
 Have a go at making these modifications on your own version of the code
 ]
 
+---
 
+class: section
+
+# Back to the project
+
+---
+
+# Next steps
+
+We are going to write a function to:
+- identify the longest fragment from the list
+- *remove* it from the list
+- return the fragment as a string
+
+--
+
+To do the second step, we need to know how to remove an element from a `std::vector`
+
+--
+
+The `std::vector` class provides a method called `.erase()` to do this. To
+erase a single element, this method takes this form:
+```
+iterator erase (iterator position);
+```
+
+--
+
+But what is an *iterator*???
+
+---
+
+# Understanding STL iterators
+
+The STL relies heavily on the concept of *iterators* to allow the same
+*algorithms* to operate on different types of *containers*
+- `std::vector` is an STL container, but there are [other types of
+  containers](https://www.geeksforgeeks.org/containers-cpp-stl/)
+  - `std::array`, `std::list`, `std::set`, `std::map`, ...
+
+--
+
+An *iterator* is a small object whose function is to *point to* or *refer to*
+an element from a container
+- It also provides functionality to *iterate* to the next element (hence the
+name)
+
+--
+
+To get an *iterator* to the first element of a container, use the `.begin()`
+method:
+```
+auto first = fragments.begin();
+```
+--
+
+Similarly, the `.end()` method provide an iterator to the end of the container
+- note this is *not* the last element, but one *beyond* the last element
+  &ndash; it does *not* refer to a valid element!
+
+```
+auto end = fragments.end();
+```
+
+---
+
+# Removing an element from a `std::vector`
+
+We can *add* a number *n* to an iterator to get an iterator to the element *n*
+positions further along:
+```
+auto element = fragments.begin() + 5;
+```
+
+--
+
+With all this, we are now in a position to erase the element at a given `index`:
+```
+fragments.erase (fragments.begin() + index);
+```
+
+--
+
+.explain-bottom[
+Have a go at writing a function to:
+- identify the longest fragment from the list
+- remove it from the list
+- return the fragment as a string
+]
+
+---
+
+# Possible solution
+
+```
+std::string extract_longest_fragment (Fragments& fragments)
+{
+  unsigned int size_of_longest = 0;
+  unsigned int index_of_longest = 0;
+
+  for (unsigned int n = 0; n < fragments.size(); ++n) {
+    if (fragments[n].size() > size_of_longest) {
+      index_of_longest = n;
+      size_of_longest = fragments[n].size();
+    }
+  }
+
+  std::string longest_fragment = fragments[index_of_longest];
+  fragments.erase (fragments.begin()+index_of_longest);
+
+  return longest_fragment;
+}
+```
 
 ---
 
 # Exercises
 
-To be added...
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
+
+Use this function to identify the candidate fragment with the largest overlap
+  with current sequence
+
+Add a function to merge this candidate fragment with the current sequence,
+  given the computed overlap
+
+
 
