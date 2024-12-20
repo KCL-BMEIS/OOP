@@ -85,7 +85,7 @@ We have a match with an overlap of 5 bases!
                              `CTGAATGCTTGGGCTGAA`AGGGCGCGAGACGTATTCCCCGGTTGC
                  CCCTCATCACAA`CTGAATGCTTGGGCTGAA`
 ```
-No! If we carry on, we'll find larger overlap
+No! If we carry on, we'll find a larger overlap
 
 
 ---
@@ -462,17 +462,14 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
   ...
 
-  int largest_overlap = 0;
   for (int overlap = fragment.size(); overlap > 0; --overlap) {
     const auto seq_start = sequence.substr(0, overlap);
     const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) {
-      largest_overlap = overlap;
-      break;
-    }
+    if (seq_start == frag_end) 
+      return overlap;
   }
 
-  return largest_overlap;
+  return 0;
 }
 ```
 
@@ -483,244 +480,123 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
   ...
 
-* int largest_overlap = 0;
-  for (int overlap = fragment.size(); overlap > 0; --overlap) {
-    const auto seq_start = sequence.substr(0, overlap);
-    const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) {
-      largest_overlap = overlap;
-      break;
-    }
-  }
-
-* return largest_overlap;
-}
-
-```
-.explain-bottom[
-We declare an integer to hold the value of the computed overlap. 
-- we give this variable an initial value of zero
--  this is the value that will be returned 
-- *unless* we find a valid overlap
-]
-
----
-
-# Computing the overlap
-
-```
-  ...
-
-  int largest_overlap = 0;
 * for (int overlap = fragment.size(); overlap > 0; --overlap) {
     const auto seq_start = sequence.substr(0, overlap);
     const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) {
-      largest_overlap = overlap;
-      break;
-    }
+    if (seq_start == frag_end) 
+      return overlap;
 * }
 
-  return largest_offset;
+  return 0;
 }
-
 ```
 .explain-bottom[
 We then iterate over the range of valid overlaps. 
 
-<br>At this point, we need to be clear about how we are going to represent the
-overlap
+<br>As discussed in the previous slides, we start with the largest overlap, and
+gradually reduce the size of the overlap.
 ]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-Next, we create the `overlap.cpp` file to hold our function *definition*
+# Computing the overlap
 
 ```
-*int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
+  ...
 
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
-
-  int largest_offset = 0;
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+*   const auto seq_start = sequence.substr(0, overlap);
+*   const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end) 
+      return overlap;
   }
 
-  return largest_offset;
+  return 0;
 }
 
 ```
-
 .explain-bottom[
-
+Within the loop, we extract the portion of the main `sequence` and candidate
+`fragment` that are being checked for overlap
 ]
 
----
-
-Next, we create the `overlap.cpp` file to hold our function *definition*
-
-```
-int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
-
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
-
-  int largest_offset = 0;
-
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
-  }
-
-  return largest_offset;
-}
-
-```
 
 ---
 
-Next, we create the `overlap.cpp` file to hold our function *definition*
+# Computing the overlap
 
 ```
-int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
+  ...
 
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
-
-  int largest_offset = 0;
-
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+*   if (seq_start == frag_end) 
+*     return overlap;
   }
 
-  return largest_offset;
+  return 0;
 }
 
 ```
+.explain-bottom[
+We can then compare the extracted portions using the `==` 
+*comparison operator*
+
+<br>
+If they match, we can immediately return the value of the overlap
+]
+
 
 ---
 
-Next, we create the `overlap.cpp` file to hold our function *definition*
+# Computing the overlap
 
 ```
-int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
+  ...
 
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
-
-  int largest_offset = 0;
-
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end) 
+      return overlap;
   }
 
-  return largest_offset;
+* return 0;
 }
 
 ```
+.explain-bottom[
+If we make through to the last iteration, there is no match, so we simply
+`return 0;`
+]
+
+
 
 ---
 
-Next, we create the `overlap.cpp` file to hold our function *definition*
+# Exercises
 
-```
-int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
 
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
+Have a go at making these changes, and try out your function with different
+fragments from the data
 
-  int largest_offset = 0;
+Modify the function to also check for overlap at the *end* of the current
+sequence
+- hint: you can use a *negative* overlap to represent this case
 
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
-  }
+Modify your code to iterate over all candidate fragments and identity the
+fragment with the largest overap
 
-  return largest_offset;
-}
+Add a function to merge a candidate fragment into the current sequence, given
+the value of the overlap
 
-```
 
----
 
-Next, we create the `overlap.cpp` file to hold our function *definition*
 
-```
-int compute_overlap (const std::string& sequence, const std::string& fragment)
-{
-  if (fragment.size() > sequence.size())
-    throw std::runtime_error ("fragment size larger than current sequence!");
 
-  std::cerr << "sequence is \"" << sequence << "\"\n";
-  std::cerr << "trying fragment \"" << fragment << "\"\n";
 
-  int largest_offset = 0;
-
-  for (int offset = fragment.size(); offset > 0; --offset) {
-    const auto seq_start = sequence.substr(0, offset);
-    const auto frag_end = fragment.substr(fragment.size()-offset);
-    if (seq_start == frag_end) {
-      largest_offset = offset;
-      break;
-    }
-  }
-
-  return largest_offset;
-}
-
-```
 
 
 
@@ -744,7 +620,7 @@ $ g++ `-std=c++20` shotgun.cpp `-o` shotgun
 
 --
 
-The purpose of command-line options is typically to *alter the behaviour* of the
+The purpose of a command-line option is typically to *alter the behaviour* of the
 command in some way
 
 --
@@ -770,7 +646,7 @@ There are many ways to handle command-line options
 
 --
 
-Here, we are going to use a very simple approach:
+Have a go at implementing this simple approach to detect the `-v` option:
 - start by checking whether the option has been provided in the arguments list
 - if it has, then:
   - take whatever action is appropriate (e.g. set a `verbose` variable `true`)
@@ -780,15 +656,330 @@ Here, we are going to use a very simple approach:
 --
 
 .explain-bottom[
-Have a go at modifying your code to detect the `-v` option
+Hint: there are many ways of doing this, but you may find the new C++20
+[`std::erase()`](https://en.cppreference.com/w/cpp/container/vector/erase2)
+function very useful here (if you can work out how to use it from the
+documentation...)
 ]
 
 ---
 
 # Detecting the `-v` option
 
+Possible solution:
+
+```
+...
+
+void run (std::vector<std::string>& args)
+{
+* bool verbose = std::erase (args, "-v");
+
+  if (args.size() < 3)
+    throw std::runtime_error ("expected 2 arguments: input_fragments output_sequence");
+
+  ...
+}
 ```
 
+--
+
+`std::erase()` will erase any occurence of the value (`"-v"`) from the
+container (`args`), and return the *number* of occurences removed. 
+- if no `-v` in the argument list, the return value is zero, which equates to
+  `false` when assigned to a `bool`
+- if there were *any* occurences of `-v`, a non-zero value will be returned,
+  which equates to `true`
+
+---
+
+# Global variables
+
+One problem with the previous solution is that `verbose` is a *local* variable
+- it is only accessible within the `run()` function
+
+--
+
+If we call other functions, the code in these functions will have no knowledge
+or access to our `verbose` variable
+
+--
+
+We could pass our `verbose` variable as an argument to all relevant functions
+- but this *very* rapidly becomes cumbersome and impractical
+
+--
+
+A better option in this particular case is to use a *global* variable
+
+
+---
+
+# Global variables
+
+A global variable is declared outside of any function and is accessible
+from anywhere in the code
+- provided its *declaration* is encountered before the point of use within each
+  translation unit
+
+--
+
+ 
+In general, global variables are *strongly* discouraged
+- they introduce scope for state changes that may affect how different part of
+  the program operate, and make it difficult to ensure predictable behaviour
+(see e.g. [this
+article](https://embeddedartistry.com/fieldatlas/the-problems-with-global-variables/)
+for details)
+
+--
+
+There are however cases where they make sense: when they represent a truly
+unique entity
+- examples include `std::cout`, `std::cerr`: there can only be one of each in
+  any program
+- in our case, there can only ever be one setting representing verbose mode!
+
+---
+
+# Global variables
+
+We could declare our global variable like this:
+
+```
+...
+
+*bool verbose = false;
+
+...
+
+void run (std::vector<std::string>& args)
+{
+* verbose = std::erase (args, "-v");
+
+  ...
+```
+
+But there are still issues with this:
+- this is declared within our `shotgun.cpp` file &ndash; it won't be accessible
+  in our other `cpp` files
+  - they won't be in the same *translation unit*
+--
+- what happens if another function declares their own local variable called
+  `verbose`?
+
+---
+
+# Variable scope and shadowing
+
+The scope of a variable determines its lifetime and where it can be accessed
+from. 
+
+**Global scope**
+
+- Variables are *instantiated* (created) before `main()` starts, and destroyed
+  after `main()` returns
+- they are accessible from any part of the code
+  - provided their declaration occurs before their point of use in the current
+    translation unit
+
+--
+
+**Function scope**
+
+- Variables are instantiated when declared, and
+  destroyed when the function returns
+- They are only accessible within their enclosing function, after their
+  declaration
+- Each invocation of a given function will have its own version of its local
+  variables
+
+--
+
+**Block scope**
+- Block scope means within a compound statement (e.g. within a `for` loop or `if` statement)
+- Variables are instantiated when declared, and destroyed at the end of the
+  block
+- They are only accessible within their block, after their declaration
+
+
+---
+
+# Variable scope and shadowing
+
+*Variable shadowing* occurs when two variables of the same name co-exist in
+different scopes
+
+```
+int count = 0;   // <- global scope
+
+...
+
+void compute ()
+{
+  int count = 10;   // <- function scope
+  ...
+
+  for (int count = 0; count < 20; ++count) {    // <- block scope
+    std::cout << count << "\n";
+    ...
+  }
+  std::cout << count << "\n";
+}
+```
+
+--
+
+This is perfectly legal in C++!
+
+---
+
+# Variable scope and shadowing
+
+*Variable shadowing* occurs when two variables of the same name co-exist in
+different scopes
+
+```
+*int count = 0;   // <- global scope
+
+...
+
+void compute ()
+{
+* int count = 10;   // <- function scope
+  ...
+
+  for (int count = 0; count < 20; ++count) {    // <- block scope
+    std::cout << count << "\n";
+    ...
+  }
+  std::cout << count << "\n";
+}
+```
+
+This is perfectly legal in C++!
+
+.explain-bottom[
+The variable at function scope *shadows* the variable of the same name at
+global scope
+- at this point, any reference to `count` is assumed to refer to the *function scope* variable
+- the global scope version of `count` still exists, but is no longer accessible
+  by that name
+]
+
+---
+
+# Variable scope and shadowing
+
+*Variable shadowing* occurs when two variables of the same name co-exist in
+different scopes
+
+```
+int count = 0;   // <- global scope
+
+...
+
+void compute ()
+{
+* int count = 10;   // <- function scope
+  ...
+
+* for (int count = 0; count < 20; ++count) {    // <- block scope
+    std::cout << count << "\n";
+    ...
+  }
+  std::cout << count << "\n";
+}
+```
+
+This is perfectly legal in C++!
+
+.explain-top[
+Similarly, the variable at block scope *shadows* the variable of the same name at
+function scope
+- at this point, any reference to `count` is assumed to refer to the *block scope* variable
+- the function and global scope versions of `count` still exist, but are no longer accessible
+  by that name
+]
+
+---
+
+# Variable scope and shadowing
+
+*Variable shadowing* occurs when two variables of the same name co-exist in
+different scopes
+
+```
+int count = 0;   // <- global scope
+
+...
+
+void compute ()
+{
+  int count = 10;   // <- function scope
+  ...
+
+  for (int count = 0; count < 20; ++count) {    // <- block scope
+*   std::cout << count << "\n";
+    ...
+  }
+  std::cout << count << "\n";
+}
+```
+
+This is perfectly legal in C++!
+
+.explain-top[
+This line will print the *block scope* version of `count`
+]
+
+---
+
+# Variable scope and shadowing
+
+*Variable shadowing* occurs when two variables of the same name co-exist in
+different scopes
+
+```
+int count = 0;   // <- global scope
+
+...
+
+void compute ()
+{
+  int count = 10;   // <- function scope
+  ...
+
+  for (int count = 0; count < 20; ++count) {    // <- block scope
+    std::cout << count << "\n";
+    ...
+  }
+* std::cout << count << "\n";
+}
+```
+
+This is perfectly legal in C++!
+
+.explain-top[
+... but this line will print the *function scope* version of `count`, since it
+is outside the block
+- the block scope version has been destroyed by that point
+]
+
+
+---
+
+# Variable scope and shadowing
+
+Variable shadowing can lead to subtle errors
+- especially when combined with global variables that may have been declared in
+  some other header!
+
+--
+
+[Name collisions](https://en.wikipedia.org/wiki/Name_collision) are a general
+problem in computing
+- naming things can take up an inordinate amount of developpers' time...
 
 
 
