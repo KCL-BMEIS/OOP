@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 2, session 2: debugging, advanced string formatting"
+title: "Week 2, session 2: more string handling, basic debugging"
 ---
 
 class: title
@@ -8,23 +8,22 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 2, session 2
-## Debugging<br>Advanced string formatting
-
+## More string handling<br>Basic debugging
 
 ---
 
-# Exercises
+# Picking up where we left off
 
-Add a function to compute the overlap between the current sequence and a
-  candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+We continue working on our [DNA shotgun sequencing
+project](https://github.com/KCL-BMEIS/OOP/blob/main/projects/DNA_shotgun_sequencing/assignment.md)
 
-Use this function to identify the candidate fragment with the largest overlap
-with current sequence
+You can find the most up to date version in [the project's `solution/`
+folder](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
 
-Add a function to merge this candidate fragment with the current sequence,
-given the computed overlap
+.explain-bottom[
+Make sure your code is up to date now!
+]
+
 
 ---
 layout: true
@@ -191,12 +190,36 @@ reduce it
 ```
 Now as soon as we find an overlap, it is guaranteed to be the largest
 
---
-
-Let's implement code to do this
 
 ---
 layout: false
+
+# Exercises
+
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
+
+Use this function to identify the candidate fragment with the largest overlap
+with current sequence
+
+Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap
+
+Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain
+
+Check that all unmerged fragments are already contained within the sequence
+
+--
+
+.explain-bottom[
+Have a go at implementing code to do this
+]
+
+
+---
 
 # Computing the overlap
 
@@ -413,6 +436,9 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   std::cerr << "trying fragment \"" << fragment << "\"\n";
 
   ...
+
+  return 0;
+}
 ```
 
 ---
@@ -430,6 +456,9 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   std::cerr << "trying fragment \"" << fragment << "\"\n";
 
   ...
+
+  return 0;
+}
 ```
 - it's always a good to check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
@@ -449,53 +478,172 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 * std::cerr << "trying fragment \"" << fragment << "\"\n";
 
   ...
+
+  return 0;
+}
 ```
 - it's always a good to check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
 - when in development mode, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
 
+
 ---
 
 # Computing the overlap
 
+Now we fill out the body of our `compute_overlap()` function
 ```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
+
   ...
 
-  for (int overlap = fragment.size(); overlap > 0; --overlap) {
-    const auto seq_start = sequence.substr(0, overlap);
-    const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) 
-      return overlap;
-  }
+* return 0;
+}
+```
+- it's always a good to check any assumptions and expectations upfront &ndash;
+  this can save you a lot of frustration later...
+- when in development mode, don't hesitate to display lots of information, it
+  will often alert you to where things might be going wrong.
+- we need to return an integer, so let's return a value of zero (no overlap) by
+  default
+
+---
+
+# Computing the overlap
+
+Now we fill out the body of our `compute_overlap()` function
+```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
+
+* ...
 
   return 0;
 }
 ```
+- it's always a good to check any assumptions and expectations upfront &ndash;
+  this can save you a lot of frustration later...
+- when in development mode, don't hesitate to display lots of information, it
+  will often alert you to where things might be going wrong.
+- we need to return an integer, so let's return a value of zero (no overlap) by
+  default
+
+.explain-bottom[
+Now we can focus on what happens here...
+]
 
 ---
 
 # Computing the overlap
 
 ```
-  ...
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end)
+      return overlap;
+  }
+```
 
+---
+
+# Computing the overlap
+
+```
 * for (int overlap = fragment.size(); overlap > 0; --overlap) {
     const auto seq_start = sequence.substr(0, overlap);
     const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) 
+    if (seq_start == frag_end)
       return overlap;
 * }
-
-  return 0;
-}
 ```
-.explain-bottom[
-We then iterate over the range of valid overlaps. 
+We iterate over the range of valid overlaps:
+- starting from the *largest* possible overlap (the size of the candidate
+  fragment)
+- *reducing* the size of the overlap at each iteration
+- until the overlap is zero
 
-<br>As discussed in the previous slides, we start with the largest overlap, and
-gradually reduce the size of the overlap.
-]
+---
+
+# Computing the overlap
+
+```
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+*   const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end)
+      return overlap;
+  }
+```
+We iterate over the range of valid overlaps:
+- starting from the *largest* possible overlap (the size of the candidate
+  fragment)
+- *reducing* the size of the overlap at each iteration
+- until the overlap is zero
+
+We extract the part of the current sequence that corresponds to that overlap
+- to do this, we use the string [`substr()` method](https://www.geeksforgeeks.org/substring-in-cpp/)
+
+---
+
+# Computing the overlap
+
+```
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+*   const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end)
+      return overlap;
+  }
+```
+We iterate over the range of valid overlaps:
+- starting from the *largest* possible overlap (the size of the candidate
+  fragment)
+- *reducing* the size of the overlap at each iteration
+- until the overlap is zero
+
+We extract the part of the current sequence that corresponds to that overlap
+- to do this, we use the string [`substr()` method](https://www.geeksforgeeks.org/substring-in-cpp/)
+- and likewise for the candidate sequence &ndash; though it is now the *end* of
+  the string
+
+---
+
+# Computing the overlap
+
+```
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+*   if (seq_start == frag_end)
+*     return overlap;
+  }
+```
+We iterate over the range of valid overlaps:
+- starting from the *largest* possible overlap (the size of the candidate
+  fragment)
+- *reducing* the size of the overlap at each iteration
+- until the overlap is zero
+
+We extract the part of the current sequence that corresponds to that overlap
+- to do this, we use the string [`substr()` method](https://www.geeksforgeeks.org/substring-in-cpp/)
+- and likewise for the candidate sequence &ndash; though it is now the *end* of
+  the string
+
+Finally, we check whether both substrings match
+- If so, we can immediately return the size of the current overlap
 
 
 ---
@@ -503,23 +651,89 @@ gradually reduce the size of the overlap.
 # Computing the overlap
 
 ```
-  ...
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = `fragment.substr(fragment.size()-overlap)`;
+    if (seq_start == frag_end)
+      return overlap;
+  }
+```
+We iterate over the range of valid overlaps:
+- starting from the *largest* possible overlap (the size of the candidate
+  fragment)
+- *reducing* the size of the overlap at each iteration
+- until the overlap is zero
+
+We extract the part of the current sequence that corresponds to that overlap
+- to do this, we use the string [`substr()` method](https://www.geeksforgeeks.org/substring-in-cpp/)
+- and likewise for the candidate sequence &ndash; though it is now the *end* of
+  the string
+
+Finally, we check whether both substrings match
+- If so, we can immediately return the size of the current overlap
+
+.explain-bottom[
+Note that in this call to `substr()`, we only provided one argument, whereas we
+had provided two arguments in the previous call (position and length of the
+substring).
+
+<br>
+This is because the arguments for this call have been given *default values*:
+- if unspecified, the position is zero, and the length is the maximum value
+possible.
+- we will cover [default arguments in
+  C++](https://www.geeksforgeeks.org/default-arguments-c/) later in the course.
+]
+
+
+
+
+
+---
+
+# Computing the overlap
+
+Here is our function definition in full:
+
+```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
 
   for (int overlap = fragment.size(); overlap > 0; --overlap) {
-*   const auto seq_start = sequence.substr(0, overlap);
-*   const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) 
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end)
       return overlap;
   }
 
   return 0;
 }
-
 ```
-.explain-bottom[
-Within the loop, we extract the portion of the main `sequence` and candidate
-`fragment` that are being checked for overlap
-]
+
+---
+
+# Exercises
+
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- **make sure it works for both ends of the string**
+- ignore the possibility that fragments might be reversed for now
+
+Use this function to identify the candidate fragment with the largest overlap
+with current sequence
+
+Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap
+
+Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain
+
+Check that all unmerged fragments are already contained within the sequence
 
 
 ---
@@ -527,16 +741,421 @@ Within the loop, we extract the portion of the main `sequence` and candidate
 # Computing the overlap
 
 ```
-  ...
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
 
   for (int overlap = fragment.size(); overlap > 0; --overlap) {
     const auto seq_start = sequence.substr(0, overlap);
     const auto frag_end = fragment.substr(fragment.size()-overlap);
-*   if (seq_start == frag_end) 
+    if (seq_start == frag_end)
+      return overlap;
+  }
+
+  return 0;
+}
+```
+
+.explain-bottom[
+We need to modify our code to also check for overlap at the other end of the
+sequence
+]
+
+---
+
+# Computing the overlap
+
+```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
+
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end)
 *     return overlap;
   }
 
   return 0;
+}
+```
+.explain-bottom[
+We can no longer return the overlap here, since there may be a larger overlap
+at the other end. 
+
+<br>
+We need to check both ends, and return the larger of the two.
+]
+
+---
+
+# Computing the overlap
+
+```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
+
+* int largest_overlap = 0;
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  ...
+```
+.explain-top[
+To do this, we declare an integer variable to hold the value of the largest
+overlap detected so far, and record that value in the loop.
+]
+
+---
+
+# Computing the overlap
+
+```
+int compute_overlap (const std::string& sequence, const std::string& fragment)
+{
+  if (fragment.size() > sequence.size())
+    throw std::runtime_error ("fragment size larger than current sequence!");
+
+  std::cerr << "sequence is \"" << sequence << "\"\n";
+  std::cerr << "trying fragment \"" << fragment << "\"\n";
+
+  int largest_overlap = 0;
+  for (int overlap = fragment.size(); overlap > 0; --overlap) {
+    const auto seq_start = sequence.substr(0, overlap);
+    const auto frag_end = fragment.substr(fragment.size()-overlap);
+*   if (seq_start == frag_end) {
+*     largest_overlap = overlap;
+*     break;
+*   }
+  }
+
+  ...
+```
+.explain-top[
+Now, instead of returning the value of the current overlap, we record this
+value, and use the `break` statement to stop the enclosing loop and
+proceed with the following code.
+]
+
+---
+
+# Computing the overlap
+
+```
+    ...
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  for (int overlap = fragment.size(); overlap > largest_overlap; --overlap) {
+    const auto seq_end = sequence.substr(sequence.size() - overlap);
+    const auto frag_start = fragment.substr(0, overlap);
+    if (seq_end == frag_start) {
+      largest_overlap = -overlap;
+      break;
+    }
+  }
+
+  return largest_overlap;
+}
+```
+
+--
+
+.explain-top[
+We now check the other end of the string, using the same idea as before
+&ndash; with a few differences
+]
+
+---
+
+# Computing the overlap
+
+```
+    ...
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  for (int overlap = fragment.size(); overlap > largest_overlap; --overlap) {
+*   const auto seq_end = sequence.substr(sequence.size() - overlap);
+*   const auto frag_start = fragment.substr(0, overlap);
+    if (seq_end == frag_start) {
+      largest_overlap = -overlap;
+      break;
+    }
+  }
+
+  return largest_overlap;
+}
+```
+
+.explain-top[
+This time, we extract the substrings from the *opposite* ends of both the current
+sequence and the candidate fragment
+]
+
+---
+
+# Computing the overlap
+
+```
+    ...
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  for (int overlap = fragment.size(); overlap > `largest_overlap`; --overlap) {
+    const auto seq_end = sequence.substr(sequence.size() - overlap);
+    const auto frag_start = fragment.substr(0, overlap);
+    if (seq_end == frag_start) {
+      largest_overlap = -overlap;
+      break;
+    }
+  }
+
+  return largest_overlap;
+}
+```
+
+.explain-top[
+There is no point iterating all the way to zero, since we already know the size
+of the largest overlap from the previous loop
+- there is no point checking smaller overlaps!
+]
+
+---
+
+# Computing the overlap
+
+```
+    ...
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  for (int overlap = fragment.size(); overlap > largest_overlap; --overlap) {
+    const auto seq_end = sequence.substr(sequence.size() - overlap);
+    const auto frag_start = fragment.substr(0, overlap);
+    if (seq_end == frag_start) {
+*     largest_overlap = -overlap;
+      break;
+    }
+  }
+
+  return largest_overlap;
+}
+```
+
+.explain-top[
+... and we record the overlap as a *negative* value.
+- this will be our way of representing an overlap at the tail end of the
+  sequence
+- this is already guaranteed to be the largest overlap, since we are only
+  considering overlaps larger than the previous check in this `for` loop
+]
+
+---
+
+# Computing the overlap
+
+```
+    ...
+    if (seq_start == frag_end) {
+      largest_overlap = overlap;
+      break;
+    }
+  }
+
+  for (int overlap = fragment.size(); overlap > largest_overlap; --overlap) {
+    const auto seq_end = sequence.substr(sequence.size() - overlap);
+    const auto frag_start = fragment.substr(0, overlap);
+    if (seq_end == frag_start) {
+      largest_overlap = -overlap;
+      break;
+    }
+  }
+
+* return largest_overlap;
+}
+```
+
+.explain-top[
+Finally, we end by returning the largest overlap recorded in both loops
+]
+
+---
+
+# Exercises
+
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
+
+**Use this function to identify the candidate fragment with the largest overlap
+with current sequence**
+
+Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap
+
+Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain
+
+Check that all unmerged fragments are already contained within the sequence
+
+
+---
+
+# Identifying fragment with the largest overlap
+
+```
+  ...
+
+  int biggest_overlap = 0;
+  int fragment_with_biggest_overlap = -1;
+  for (int n = 0; n < fragments.size(); ++n) {
+    const auto overlap = compute_overlap (sequence, fragments[n]);
+    if (std::abs (biggest_overlap) < std::abs (overlap)) {
+      biggest_overlap = overlap;
+      fragment_with_biggest_overlap = n;
+    }
+  }
+
+  if (fragment_with_biggest_overlap >= 0)
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+  write_sequence (args[2], sequence);
+}
+
+```
+
+---
+
+# Identifying fragment with the largest overlap
+
+```
+  ...
+
+  int biggest_overlap = 0;
+  int fragment_with_biggest_overlap = -1;
+* for (int n = 0; n < fragments.size(); ++n) {
+    const auto overlap = compute_overlap (sequence, fragments[n]);
+    if (std::abs (biggest_overlap) < std::abs (overlap)) {
+      biggest_overlap = overlap;
+      fragment_with_biggest_overlap = n;
+    }
+* }
+
+  if (fragment_with_biggest_overlap >= 0)
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+  write_sequence (args[2], sequence);
+}
+
+```
+.explain-bottom[
+We iterate over all candidate fragments
+- we use a regular `for` loop (rather than a range-based `for` loop) since we
+  want to keep track of the *index* of the fragment
+]
+
+---
+
+# Identifying fragment with the largest overlap
+
+```
+  ...
+
+  int biggest_overlap = 0;
+  int fragment_with_biggest_overlap = -1;
+  for (int n = 0; n < fragments.size(); ++n) {
+*   const auto overlap = compute_overlap (sequence, fragments[n]);
+    if (std::abs (biggest_overlap) < std::abs (overlap)) {
+      biggest_overlap = overlap;
+      fragment_with_biggest_overlap = n;
+    }
+  }
+
+  if (fragment_with_biggest_overlap >= 0)
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+  write_sequence (args[2], sequence);
+}
+
+```
+
+.explain-bottom[
+We use our new function to compute the overlap for the current candidate
+fragment
+- we store the result in a *block scope* variable
+- we declare this variable `const` since we have no intention of modifying it
+  any further 
+  - this is good practice as we can rely on the compiler to check that we do
+    not trip ourselves up!
+- we allow the compiler to deduce the type using the `auto` keyword
+  - the compiler will assume we want to use the type returned by
+    `compute_overlap()`
+  - we could just easily have declared it as `int`...
+]
+
+---
+
+# Identifying fragment with the largest overlap
+
+```
+  ...
+
+* int biggest_overlap = 0;
+  int fragment_with_biggest_overlap = -1;
+  for (int n = 0; n < fragments.size(); ++n) {
+    const auto overlap = compute_overlap (sequence, fragments[n]);
+*   if (std::abs (biggest_overlap) < std::abs (overlap)) {
+      biggest_overlap = overlap;
+      fragment_with_biggest_overlap = n;
+    }
+  }
+
+  if (fragment_with_biggest_overlap >= 0)
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+  write_sequence (args[2], sequence);
 }
 
 ```
@@ -549,21 +1168,39 @@ If they match, we can immediately return the value of the overlap
 ]
 
 
+.explain-bottom[
+We check whether the overlap for the current fragment exceeds the biggest
+overlap we have detected so far
+- since we have allowed overlaps to be negative, we need to take the *absolute*
+  value of the overlaps prior to comparison
+- we also need to make sure we have declared a variable to hold the value of
+  the biggest overlap detected so far, and initialise it with the smallest
+value possible
+]
+
 ---
 
-# Computing the overlap
+# Identifying fragment with the largest overlap
 
 ```
   ...
 
-  for (int overlap = fragment.size(); overlap > 0; --overlap) {
-    const auto seq_start = sequence.substr(0, overlap);
-    const auto frag_end = fragment.substr(fragment.size()-overlap);
-    if (seq_start == frag_end) 
-      return overlap;
+  int biggest_overlap = 0;
+* int fragment_with_biggest_overlap = -1;
+  for (int n = 0; n < fragments.size(); ++n) {
+    const auto overlap = compute_overlap (sequence, fragments[n]);
+    if (std::abs (biggest_overlap) < std::abs (overlap)) {
+*     biggest_overlap = overlap;
+*     fragment_with_biggest_overlap = n;
+    }
   }
 
-* return 0;
+  if (fragment_with_biggest_overlap >= 0)
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+  write_sequence (args[2], sequence);
 }
 
 ```
@@ -574,31 +1211,139 @@ If we make through to the last iteration, there is no match, so we simply
 
 
 
+.explain-bottom[
+If the overlap is the biggest so far, record its value, and the index of the
+corresponding fragment
+- to do this, we also need to declare a variable to hold the index of the
+  corresponding fragment
+- we also need to initialise the value of this index. In this case, it's best
+  to assign it an *invalid* value (for example, a negative index)
+]
+
 ---
 
 # Exercises
 
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
 
-Have a go at making these changes, and try out your function with different
-fragments from the data
+Use this function to identify the candidate fragment with the largest overlap
+with current sequence
 
-Modify the function to also check for overlap at the *end* of the current
-sequence
-- hint: you can use a *negative* overlap to represent this case
+**Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap**
 
-Modify your code to iterate over all candidate fragments and identity the
-fragment with the largest overap
+Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain
 
-Add a function to merge a candidate fragment into the current sequence, given
-the value of the overlap
-
-
-
-
+Check that all unmerged fragments are already contained within the sequence
 
 
+---
 
+# Merge fragment with current sequence
 
+Add function *declaration* to `overlap.h`:
+```
+void merge (std::string& sequence, const std::string& fragment, const int overlap);
+```
+
+Add function *definition* to `overlap.h`:
+```
+void merge (std::string& sequence, const std::string& fragment, const int overlap)
+{
+  if (overlap < 0) {
+    sequence += fragment.substr (-overlap);
+  }
+  else if (overlap > 0) {
+    sequence = fragment.substr (0, fragment.size()-overlap) + sequence;
+  }
+}
+```
+
+--
+.explain-bottom[
+- we *concatenate* the non-overlapping portion of the fragment with the
+  sequence
+- the *sign* of overlap indicates which end the overlap corresponds to
+  - hence whether to *append* or *prepend* the fragment to the sequence
+]
+
+---
+
+# Merge fragment with current sequence
+
+Use `merge()` function in `main()`:
+
+```
+  ...
+
+  if (fragment_with_biggest_overlap >= 0) {
+    std::cerr << "fragment with biggest overlap is at index " 
+      << fragment_with_biggest_overlap
+      << ", overlap = " << biggest_overlap << "\n";
+
+*   merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
+  }
+
+  std::cerr << "final sequence has length " << sequence.size() << "\n";
+  write_sequence (args[2], sequence);
+}
+```
+
+---
+
+# Exercises
+
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
+
+Use this function to identify the candidate fragment with the largest overlap
+with current sequence
+
+Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap
+
+**Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain**
+
+Check that all unmerged fragments are already contained within the sequence
+
+---
+
+# Iteratively merge fragments into sequence
+
+**TODO**
+
+---
+
+# Exercises
+
+Add a function to compute the overlap between the current sequence and a
+  candidate fragment
+- make sure it works for both ends of the string
+- ignore the possibility that fragments might be reversed for now
+
+Use this function to identify the candidate fragment with the largest overlap
+with current sequence
+
+Add a function to merge this candidate fragment with the current sequence,
+given the computed overlap
+
+Use these functions to iteratively merge candidates fragments until no
+overlapping fragments remain
+
+**Check that all unmerged fragments are already contained within the sequence**
+
+---
+
+# Check all unmerged fragments are already in sequence
+
+**TODO**
 
 ---
 
@@ -606,7 +1351,7 @@ class: section
 
 # Command-line options
 
-## Requesting addtional debugging information
+## Requesting additional debugging information
 
 ---
 
@@ -772,7 +1517,7 @@ But there are still issues with this:
 
 ---
 
-# Variable scope and shadowing
+# Variable scope
 
 The scope of a variable determines its lifetime and where it can be accessed
 from. 
@@ -807,22 +1552,22 @@ from.
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 *Variable shadowing* (also called *name hiding*) occurs when two variables of
 the same name co-exist in different scopes
 
 ```
-int count = 0;   // <- global scope
+int count = 0;   // <= global scope
 
 ...
 
 void compute ()
 {
-  int count = 10;   // <- function scope
+  int count = 10;   // <= function scope
   ...
 
-  for (int count = 0; count < 20; ++count) {    // <- block scope
+  for (int count = 0; count < 20; ++count) {    // <= block scope
     std::cout << count << "\n";
     ...
   }
@@ -836,22 +1581,22 @@ This is perfectly legal in C++!
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 *Variable shadowing* (also called *name hiding*) occurs when two variables of
 the same name co-exist in different scopes
 
 ```
-*int count = 0;   // <- global scope
+*int count = 0;   // <= global scope
 
 ...
 
 void compute ()
 {
-* int count = 10;   // <- function scope
+* int count = 10;   // <= function scope
   ...
 
-  for (int count = 0; count < 20; ++count) {    // <- block scope
+  for (int count = 0; count < 20; ++count) {    // <= block scope
     std::cout << count << "\n";
     ...
   }
@@ -871,22 +1616,22 @@ global scope
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 *Variable shadowing* (also called *name hiding*) occurs when two variables of
 the same name co-exist in different scopes
 
 ```
-int count = 0;   // <- global scope
+int count = 0;   // <= global scope
 
 ...
 
 void compute ()
 {
-* int count = 10;   // <- function scope
+* int count = 10;   // <= function scope
   ...
 
-* for (int count = 0; count < 20; ++count) {    // <- block scope
+* for (int count = 0; count < 20; ++count) {    // <= block scope
     std::cout << count << "\n";
     ...
   }
@@ -906,22 +1651,22 @@ function scope
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 *Variable shadowing* (also called *name hiding*) occurs when two variables of
 the same name co-exist in different scopes
 
 ```
-int count = 0;   // <- global scope
+int count = 0;   // <= global scope
 
 ...
 
 void compute ()
 {
-  int count = 10;   // <- function scope
+  int count = 10;   // <= function scope
   ...
 
-  for (int count = 0; count < 20; ++count) {    // <- block scope
+  for (int count = 0; count < 20; ++count) {    // <= block scope
 *   std::cout << count << "\n";
     ...
   }
@@ -937,22 +1682,22 @@ This line will print the *block scope* version of `count`
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 *Variable shadowing* (also called *name hiding*) occurs when two variables of
 the same name co-exist in different scopes
 
 ```
-int count = 0;   // <- global scope
+int count = 0;   // <= global scope
 
 ...
 
 void compute ()
 {
-  int count = 10;   // <- function scope
+  int count = 10;   // <= function scope
   ...
 
-  for (int count = 0; count < 20; ++count) {    // <- block scope
+  for (int count = 0; count < 20; ++count) {    // <= block scope
     std::cout << count << "\n";
     ...
   }
@@ -971,7 +1716,7 @@ is outside the block
 
 ---
 
-# Variable scope and shadowing
+# Variable shadowing
 
 
 Variable shadowing allows a function to use local variables without worrying about
@@ -979,9 +1724,7 @@ whether some other global variable exists elsewhere with the same name
 
 --
 
-... but it can also lead to subtle errors
-- especially in the case of block scope variables hiding function scope
-  variables
+... but it can also lead to subtle errors!
 
 --
 
@@ -1013,7 +1756,7 @@ declarations
 
 --
 
-We have been using a namespace from the start: the `std` namespace
+We have already been using a namespace from the start: the `std` namespace
 - this namespace is where all the functionality provided by the C++ standard is
   declared
 
@@ -1093,3 +1836,515 @@ std`::`cout
 - these are both declared within the `std` namespace
 - accessing members of a namespace is done with the [*scope resolution
   operator*](https://www.geeksforgeeks.org/scope-resolution-operator-in-c/)
+(`::`)
+
+---
+
+# Why would we want to use namespaces?
+
+The main purpose of C++ namespace is:
+- to organise your code into logical units
+- to avoid name collisions
+
+--
+
+For example, we may very well want to declare a variable or function called
+`count()` 
+- but there is already a [C++ STL `count()`
+  algorithm](https://www.geeksforgeeks.org/std-count-cpp-stl/)!
+
+Thankfully, it is declared within the `std` namespace
+- we can declare our variable or function `count` without the risk of name
+  collisions with `std::count()`!
+
+---
+
+# Declaring namespaces
+
+Declaring variables or functions within a namespace is simply a matter of
+declaring them *within the scope of our namespace*. 
+
+--
+
+For example:
+```
+namespace debug {
+
+  bool verbose = false;
+
+}
+```
+
+This declares our variable `verbose` to be within the `debug` namespace
+- this also implicitly declares the `debug` namespace if it hadn't already been
+  encountered
+
+---
+
+# Working with namespaces
+
+Any code also declared within our `debug` namespace can already access our
+`verbose` variable directly.
+
+--
+
+When accessing our variable outside of the `debug` namespace, we can refer to
+it using its *fully qualified name*:
+```
+if (debug::verbose)
+  ...
+```
+
+--
+
+Alternatively, we can selectively bring one identifier (variable or function)
+into the current scope with the `using` declaration:
+```
+using debug::verbose;
+
+...
+
+if (verbose)
+  ...
+```
+
+---
+
+# Working with namespaces
+
+We can also bring *all* identifiers declared in a namespace into the current scope with the `using namespace` declaration:
+```
+using namespace debug;
+
+...
+
+if (verbose)
+  ...
+```
+
+--
+
+The use of the `using namespace` declaration can be problematic
+- the general recommendation is to avoid its use
+- especially at *global scope*
+
+--
+
+It is much better to use the fully qualified name, or if it really helps code
+readability, use the selective `using` declaration for the specific identifiers you
+  need
+- and only use it at *function* or *block* scope
+
+
+---
+
+# The problem with `using namespace std;`
+
+In spite of the general recommendation to avoid blanket `using namespace`
+declaration, you will find that many (if not most) C++ tutorials make use of
+this declaration from the very beginning, starting at 'hello world':
+```
+#include <iostream>
+
+*using namespace std;
+
+int main() {
+  cout << "Hello World!\n";
+  return 0;
+}
+```
+
+--
+
+This brings *everything* declared within the `std` namespace into the *global* scope
+- this helps to keep the code cleaner by avoiding the need for
+  `std::` as a prefix for `std::cerr`, `std::vector`, `std::string`, ...
+- it makes it a bit easier when getting started with C++
+
+
+---
+
+# The problem with `using namespace std;`
+
+So why do we not follow this convention on this course?
+- because [its use is considered bad practice](https://www.geeksforgeeks.org/using-namespace-std-considered-bad-practice/)
+--
+- on this course, we try to teach best practice from the outset so you pick up
+  the right habits
+
+--
+
+In general, the use of the `using namespace` declaration is not recommended
+- it bring *everything* from that namespace into the current scope
+- *including* variables or functions you might not have known about!
+- it negates the name collision benefits that C++ namespaces were meant to
+  address!
+
+--
+
+It is particularly bad practice to make use of `using namespace` declarations
+at global scope within header files
+- it's acceptable to use `using namespace` within your own `cpp` files
+  - it would still not be considered good practice!
+  - but you can manage name collisions within your own project
+--
+- but header files are supposed to be used by other code!
+  - any such global declaration will *pollute* the namespace of any code that
+    `#include`s your header
+  - it will affect the entire *translation unit* from the point your header is
+    `#include`d
+
+---
+
+# Working with namespaces
+
+For the reasons outlined in the previous slides, we recommend to always use the
+*fully qualified name* to access members of a namespace
+
+--
+
+Coming back to our project, we can declare our `verbose` variable within a new
+`debug` namespace to avoid name collisions
+```
+namespace debug {
+  bool verbose = false;
+}
+```
+and refer to this variable by its fully qualified name: `debug::verbose`
+
+--
+
+But we still need to work out *where* to declare this variable
+
+---
+
+# Working with global variables
+
+As previously mentioned, our `debug::verbose` variable must be *declared* prior
+to its point of use in any *translation unit* where it is needed
+- this means it needs to be *declared* in a header file
+
+--
+
+Let's create a header file `debug.h` to hold this variable:
+```
+#pragma once
+
+namespace debug {
+  bool verbose = false;
+}
+```
+
+--
+
+We can now `#include` it in `shotgun.cpp`, `fragments.h` and `overlap.cpp`
+
+--
+
+.explain-bottom[
+Have a go at implementing these changes in your code
+]
+
+---
+
+# Working with global variables
+
+When trying to do this, you will most likely have encountered errors of this nature:
+```
+/usr/bin/ld: fragments.o:(.bss+0x0): multiple definition of `debug::verbose'; 
+    shotgun.o:(.bss+0x0): first defined here
+/usr/bin/ld: overlap.o:(.bss+0x0): multiple definition of `debug::verbose'; 
+    shotgun.o:(.bss+0x0): first defined here
+collect2: error: ld returned 1 exit status
+```
+
+--
+
+The issue is that we have declared and *implicitly defined* our
+`debug::verbose` variable once per *translation unit*
+- we now have 3 versions of the same *global* variable, each independently listed in the
+  object files `shotgun.o`, `fragments.o` and `overlap.o`
+--
+- this causes an error at the *linker stage*, when the contents of all the
+  compiled object files are brought together to form the final executable:
+  which version is the right one to use?
+
+--
+
+There are 2 ways to get around this:
+- ensure the variable is *only declared* in the header, and provide a *single*
+  definition in a separate `cpp` file
+- tell the compiler to allow multiple definitions of this variable
+
+---
+
+# Working with global variables
+
+**First approach:**
+
+Use the [`extern`
+keyword](https://www.geeksforgeeks.org/understanding-extern-keyword-in-c/) in
+`debug.h` to make it clear that we are *only declaring* our variable at this
+point:
+```
+#pragma once
+
+namespace debug {
+  `extern` bool verbose;
+}
+```
+
+--
+
+and place the full definition and initialisation in a new file `debug.cpp`:
+```
+#include "debug.h"
+
+namespace debug {
+  bool verbose = false;
+}
+```
+
+---
+
+# Working with global variables
+
+**Second approach (much simpler):**
+
+Use the `inline` keyword in our `debug.h` header file to allow multiple definitions 
+of the same variable to be provided across multiple translation units:
+```
+#pragma once
+
+namespace debug {
+  `inline` bool verbose = false;
+}
+```
+We do not need an additional `cpp` file in this case, and the initial value can
+now be specified at the same time
+
+--
+
+Note that [this use of the `inline` keyword was introduced in the C++17 version
+of the standard](https://www.geeksforgeeks.org/cpp-17-inline-variables/)
+
+--
+
+.explain-bottom[
+Let's go ahead and use the `inline` keyword in our project
+]
+
+---
+
+# Enabling the verbose option
+
+We now have all the pieces required to implement our verbose option
+- we add the `debug.h` header file as per the previous slide
+--
+- in `main()`:
+  - we use the `std::erase()` call to detect and handle the `-v` option
+  - and set `debug::verbose` to `true` if detected
+  - we do this *before* any attempt at using the command-line arguments
+--
+- everywhere else:
+  - `#include "debug.h"` so the `debug::verbose` variable is declared at the
+    point of use
+  - check if `debug::verbose` is `true`, and if so print out appropriate information 
+
+--
+
+For example, in `fragments.cpp`:
+```
+...
+Fragments load_fragments (const std::string& filename)
+{
+* if (debug::verbose)
+    std::cerr << "reading fragments from file \"" << filename << "\"...\n";
+  ...
+```
+
+.explain-bottom[
+Have a go at implementing these changes to your own code
+]
+
+---
+
+# Using the verbose option
+
+We can now run our code as normal:
+```
+$ ./shotgun ../data/fragments-no-reverse-1.txt out
+initial sequence has size 1000
+final sequence has length 20108
+```
+which provides a clean output, showing just as much information as we might
+expect when everything works correctly
+
+---
+
+# Using the verbose option
+
+... or we can run it with the verbose option to see exactly what is going on:
+```
+$ ./shotgun ../data/fragments-no-reverse-1.txt out `-v`
+reading fragments from file "../data/fragments-no-reverse-1.txt"...
+read 190 fragments
+190 fragments, mean fragment length: 529.158, range [ 51 1000 ]
+initial sequence has size 1000
+---------------------------------------------------
+189 fragments left
+fragment with biggest overlap is at index 41, overlap = -824
+---------------------------------------------------
+
+...
+
+fragment with biggest overlap is at index 37, overlap = 51
+---------------------------------------------------
+104 fragments left
+104 fragments remaining unmatched - checking whether already contained in sequence...
+final sequence has length 20108
+writing sequence to file "out"...
+```
+
+---
+
+# Using the verbose option
+
+The availability of a verbose option allows you and your users to quickly
+narrow down problems
+
+- the default output can be kept clean and minimal
+
+- when issues occur, running in verbose mode provide useful information:
+  - in the case of crashes, it provides a more precise indication of *when* the
+    problem occurred (as indicated by the last message), and hence *where* to
+    look in the code to figure out the problem
+  - in the case of unexpected output, the information reported may point out
+    issues with the input data, or provide clues as to where to look for errors in the
+    code
+
+- when there are performance issues, verbose mode can provide an indication of
+  which stage is taking longer to complete than expected
+
+- ...
+
+--
+
+In general, it is recommended to provide some mechanism to allow users
+to get detailed information about the processing, whether using a verbose
+option, or by way of a separate log file
+
+---
+
+# Adding convenience functions for debugging
+
+Now that we have the option to provide debugging output, we can wrap up this
+functionality more cleanly to avoid having lots of `if (debug::verbose)`
+statements throughout our code
+
+Let's implement a `debug::log()` function, which will take a `std::string` as
+its argument, and print it to the standard error stream if in debug mode
+- it can additionally format its output to more clearly label it as debugging
+  information (for example, by prefixing each line with `[DEBUG]`)
+
+
+--
+
+.explain-bottom[
+Have a go at implementing and using such a function in your own code
+]
+
+---
+
+# Adding convenience functions for debugging
+
+In `debug.h`:
+```
+#pragma once
+
+*include <iostream>
+*include <string>
+
+namespace debug {
+  inline bool verbose = false;
+
+* inline void log (const std::string& message) {
+*   if (verbose)
+*     std::cerr << "[DEBUG] " << message << "\n";
+* }
+}
+```
+
+---
+
+# Adding convenience functions for debugging
+
+In `debug.h`:
+```
+#pragma once
+
+include <iostream>
+include <string>
+
+namespace debug {
+  inline bool verbose = false;
+
+  `inline` void log (const std::string& message) {
+    if (verbose)
+      std::cerr << "[DEBUG] " << message << "\n";
+  }
+}
+```
+
+
+Note the use of the `inline` keyword here, this time to allow multiple definitions of the same *function*
+
+---
+
+# A word about `inline`
+
+Historically, the `inline` keyword was considered more as a performance
+optimisation feature
+- it was used for functions only, to indicate that a given function was
+  suitable for *inlining*
+- this would suggest to the compiler that the required code could be
+  *substituted* directly at the point of use, rather than *calling* that function
+  explicitly
+- There is always a small overhead to calling a function, and for functions
+  that perform small operations and are called very often, this can impact
+  performance
+- declaring such functions as `inline` can help avoid the overhead of dedicated
+  function calls, and so improve performance
+- For further details, refer to other online sources (e.g.
+  [GeeksForGeeks](https://www.geeksforgeeks.org/inline-functions-cpp/))
+
+--
+
+In modern C++ (particularly since C++17), the `inline` keyword is used to allow multiple definitions of
+functions or variables across multiple translation units
+- although it does allow the compiler to perform the kinds of optimisation
+mentioned above, the compiler is free to treat this merely as a *hint*
+
+
+---
+
+# Adding convenience functions for debugging
+
+We can now use our convenience function in our code, for example in `fragments.cpp`:
+```
+...
+Fragments load_fragments (const std::string& filename)
+{
+* if (debug::verbose)
+*   std::cerr << "reading fragments from file \"" << filename << "\"...\n";
+  ...
+```
+becomes simply:
+```
+...
+Fragments load_fragments (const std::string& filename)
+{
+* debug::log ("reading fragments from file \"" + filename + "\"...");
+  ...
+```
+
