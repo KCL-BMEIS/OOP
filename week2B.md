@@ -1346,6 +1346,7 @@ overlapping fragments remain
 **TODO**
 
 ---
+name: cmdline_options
 
 class: section
 
@@ -1516,6 +1517,7 @@ But there are still issues with this:
   `verbose`?
 
 ---
+name: scope
 
 # Variable scope
 
@@ -1551,6 +1553,7 @@ from.
 
 
 ---
+name: shadowing
 
 # Variable shadowing
 
@@ -1742,6 +1745,7 @@ Most of these problems can be avoided by:
 
 
 ---
+name: namespace
 
 class: section
 
@@ -2106,6 +2110,7 @@ namespace debug {
 ```
 
 ---
+name: inline_variable
 
 # Working with global variables
 
@@ -2276,6 +2281,7 @@ namespace debug {
 ```
 
 ---
+name: inline_function
 
 # Adding convenience functions for debugging
 

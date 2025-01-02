@@ -1,4 +1,6 @@
-# Week 1A: Introduction to the command-line, first steps
+# Week 1
+
+## Introduction to the command-line, first steps
 
 - [what is C++, relationship with C](https://www.geeksforgeeks.org/history-of-c/)
 - [the command-line](https://command-line-tutorial.readthedocs.io/)
@@ -20,9 +22,8 @@
 - [statements and compound statements](https://cplusplus.com/doc/tutorial/control/)
 - basic error handling
 
-### Exercises **TODO**
 
-# Week 1B: first project, input/output, functions
+## First project: DNA shotgun sequencing, input/output, functions
 
 - Introduce [DNA shotgun sequencing](https://github.com/KCL-BMEIS/OOP_coursework/tree/main/DNA_shotgun_sequencing) project
 - [std::cin, std::cout, std::cerr and their use](https://www.tutorialspoint.com/what-are-cin-cout-and-cerr-streams-in-cplusplus)
@@ -33,9 +34,12 @@
 - [Using and defining functions](https://www.geeksforgeeks.org/functions-in-cpp/)
 - [returning values from functions](https://www.geeksforgeeks.org/return-statement-in-cpp-with-examples/)
 
-### Exercises **TODO**
 
-# Week 2A: multi-file project, error handling
+---
+
+# Week 2
+
+## Multi-file project, error handling
 
 - [type aliasing](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/)
 - [defining separate header and cpp files](https://www.codeproject.com/Articles/5341253/C-Cplusplus-Headers-and-Source-Files-How-Do-They-W)
@@ -52,29 +56,37 @@
 - More practice with functions and string handling
 - More on using STL algorithms: [iterators](https://www.geeksforgeeks.org/iterators-c-stl/)
 
-### Exercises **TODO**
 
-# Week 2B: more string handling, basic debugging
+## More string handling, basic debugging
 
 - adding functions to perform required operations to our project
+- [variable scope](https://www.geeksforgeeks.org/scope-of-variables-in-c/): global, block, function
+- [namespaces](https://www.geeksforgeeks.org/namespace-in-c/)
+- [the `inline` keyword](https://www.accu.org/journals/overload/29/166/collyer/) and the [One Definition Rule](https://ryonaldteofilo.medium.com/inline-and-one-definition-rule-in-c-db760ec81fb2)
 - adding debugging functionality to our project
   - More command-line handling: [options](https://command-line-tutorial.readthedocs.io/introduction.html#command-line-options)
-  - [variable scope](https://www.geeksforgeeks.org/scope-of-variables-in-c/): global, block, function
-  - [namespaces](https://www.geeksforgeeks.org/namespace-in-c/)
-  - [the `inline` keyword](https://www.accu.org/journals/overload/29/166/collyer/) and the [One Definition Rule](https://ryonaldteofilo.medium.com/inline-and-one-definition-rule-in-c-db760ec81fb2)
+
+---
+
+# Week 3
+
+## Advanced string formatting, grouping data
+
 - advanced string formatting using [`std::format()`](https://www.accu.org/journals/overload/29/166/collyer/)
 - [grouping data into a `struct`](https://www.geeksforgeeks.org/structures-in-cpp/)
 - returning multiple values from functions using [C++17 structured binding](https://www.cppstories.com/2022/structured-bindings/)
 - [using `std::string_view` to avoid copies](https://www.geeksforgeeks.org/class-stdstring_view-in-cpp-17/)
-
-### Exercises **TODO**
-
-# Week 3A: classes
-
 - Introducing classes
   - [methods](https://www.geeksforgeeks.org/cpp-class-methods/)
-  - [class constructor](https://www.geeksforgeeks.org/constructors-c/)
   - [access specifiers](https://www.geeksforgeeks.org/constructors-c/)
+- OOP design features:
+  - [encapsulation](https://www.geeksforgeeks.org/encapsulation-in-cpp/)
+  - [abstraction](https://www.geeksforgeeks.org/abstraction-in-cpp/)
+
+## Classes in C++
+
+- More on classes
+  - [class constructor](https://www.geeksforgeeks.org/constructors-c/)
   - [initialiser list](https://www.geeksforgeeks.org/when-do-we-use-initializer-list-in-c/)
 - [Default function arguments](https://www.geeksforgeeks.org/default-arguments-c/)
 - [Constructor delegation](https://www.geeksforgeeks.org/constructor-delegation-c/) (aka constructor chaining)
@@ -83,13 +95,12 @@
  - for function arguments
  - [for methods](https://www.geeksforgeeks.org/const-member-functions-c/)
  - [why pass by `const` reference](https://www.geeksforgeeks.org/const-reference-vs-normal-parameter-passing-in-cpp/)
-- OOP features: 
-  - [encapsulation](https://www.geeksforgeeks.org/encapsulation-in-cpp/)
-  - [abstraction](https://www.geeksforgeeks.org/abstraction-in-cpp/)
 
-### Exercises **TODO**
+---
 
-# Week 3B: fMRI project
+# Week 4
+
+## fMRI project
 
 - more practice with:
   - basic program structure and command-line argument handling
@@ -104,9 +115,7 @@
   - [command-line globbing and wildcards](https://www.shell-tips.com/bash/wildcards-globbing/)
 
 
-### Exercises **TODO**
-
-# Week 4A: introduction to operator overloading and templates
+## Using external libraries, operator overloading
 
 - more practice with: 
   - handling command-line arguments and options
@@ -118,22 +127,24 @@
 - [overloading the subscript or array indexing operator](https://www.geeksforgeeks.org/overloading-subscript-or-array-index-operator-in-c/)
 - [overloading the function call operator](https://www.geeksforgeeks.org/overload-function-call-operator-in-cpp/)
 - [overloading the stream insertion operator](https://www.geeksforgeeks.org/overloading-stream-insertion-operators-c/)
+
+
+---
+
+# Week 5
+
+## Lambda expressions & template programming
+
 - [class templates](https://www.geeksforgeeks.org/templates-cpp/)
 - [the `<cmath>` header](https://www.w3schools.com/cpp/cpp_ref_math.asp) and associated functions
-
-### Exercises **TODO**
-
-# Week 4B: lambda expressions & template programming
-
 - [lambda expressions](https://www.geeksforgeeks.org/lambda-expression-in-c/)
 - [use of lambda expressions with the C++ Standard Template Library (STL)](https://medium.com/@m4xshen/the-beauty-of-c-stl-algorithm-and-lambda-205e6f0d8335)
 - [the C++20 `std::ranges` library](https://www.geeksforgeeks.org/cpp-20-ranges-library/)
 - [function templates](https://www.geeksforgeeks.org/templates-cpp/)
 - finishing touches to fMRI project
 
-### Exercises **TODO**
 
-# Week 5A: robot arm project & inheritance
+## Robot arm project & inheritance
 
 - introduce the modular robot arm project
 - [inheritance](https://www.geeksforgeeks.org/inheritance-in-c/)
@@ -144,17 +155,12 @@
   - abstract and concrete classes
 - [class vs. object vs. instance](https://www.codementor.io/@stevedonovan/class-vs-object-vs-instance-14i2s2lu6r)
 
-### Exercises **TODO**
 
-# Week 5B: stringstream, finalise robot arm project
+---
 
-- more practise with `for` loops, functions, and file I/O
-- Introduce [std::istringstream](https://www.geeksforgeeks.org/processing-strings-using-stdistringstream/)
-- finalise robot arm project
+# Week 6
 
-### Exercises **TODO**
-
-# Week 6A: Object-oriented design
+## Object-oriented design
 
 - aggregation, composition, inheritance
 - object lifetime & ownership
@@ -173,13 +179,49 @@
 - UML class diagrams
 - typical workflow for the OOP design
   - [blog abour OOP design process](https://www.mdfaisal.com/blog/first-5-steps-of-object-oriented-design)
-# Week 6B: Peer marking
+
+## Peer marking
 
 - Peer marking
 - go through solution and marking scheme
 - ...?
 
-# Week 10A: pointers and manual memory management
+---
+
+# Week 7
+
+
+## stringstream, finalise robot arm project
+
+- more practise with `for` loops, functions, and file I/O
+- Introduce [std::istringstream](https://www.geeksforgeeks.org/processing-strings-using-stdistringstream/)
+- finalise robot arm project
+
+## TBC
+
+---
+
+# Week 8
+
+## Practice session: design and initial implementation
+
+## Practice session: finalise project
+
+---
+
+# Week 9
+
+## TBC
+
+## TBC
+
+
+---
+
+
+# Week 10
+
+## pointers and manual memory management
 
 - pointers
 - C-style arrays
@@ -188,9 +230,15 @@
 - memory leaks
 - double free
 - array `new[]` & `delete[]`
-- using constructor / destructor / copy constructor / assignment operator to manage memory
 
-# Week 10B: pointers and manual memory management
+
+## Pointers and manual memory management
+
+- using constructor / destructor / copy constructor / assignment operator to manage memory
+- smart pointers? 
+- RAII?
+
+---
 
 # Topics not yet covered:
 
