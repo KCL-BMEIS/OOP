@@ -196,21 +196,21 @@ layout: false
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+  - make sure it works for both ends of the string
+  - ignore the possibility that fragments might be reversed for now
 
-Use this function to identify the candidate fragment with the largest overlap
+- Use this function to identify the candidate fragment with the largest overlap
 with current sequence
 
-Add a function to merge this candidate fragment with the current sequence,
+- Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap
 
-Use these functions to iteratively merge candidates fragments until no
+- Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain
 
-Check that all unmerged fragments are already contained within the sequence
+- Check that all unmerged fragments are already contained within the sequence
 
 --
 
@@ -460,7 +460,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   return 0;
 }
 ```
-- it's always a good to check any assumptions and expectations upfront &ndash;
+- always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
 
 ---
@@ -482,7 +482,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   return 0;
 }
 ```
-- it's always a good to check any assumptions and expectations upfront &ndash;
+- always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
 - when in development mode, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
@@ -507,7 +507,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 * return 0;
 }
 ```
-- it's always a good to check any assumptions and expectations upfront &ndash;
+- always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
 - when in development mode, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
@@ -533,7 +533,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   return 0;
 }
 ```
-- it's always a good to check any assumptions and expectations upfront &ndash;
+- always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
 - when in development mode, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
@@ -719,21 +719,21 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- **make sure it works for both ends of the string**
-- ignore the possibility that fragments might be reversed for now
+  - **make sure it works for both ends of the string**
+  - ignore the possibility that fragments might be reversed for now
 
-Use this function to identify the candidate fragment with the largest overlap
+- Use this function to identify the candidate fragment with the largest overlap
 with current sequence
 
-Add a function to merge this candidate fragment with the current sequence,
+- Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap
 
-Use these functions to iteratively merge candidates fragments until no
+- Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain
 
-Check that all unmerged fragments are already contained within the sequence
+- Check that all unmerged fragments are already contained within the sequence
 
 
 ---
@@ -823,7 +823,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
 .explain-top[
 To do this, we declare an integer variable to hold the value of the largest
-overlap detected so far, and record that value in the loop.
+overlap detected so far
 ]
 
 ---
@@ -1016,21 +1016,21 @@ Finally, we end by returning the largest overlap recorded in both loops
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+  - make sure it works for both ends of the string
+  - ignore the possibility that fragments might be reversed for now
 
-**Use this function to identify the candidate fragment with the largest overlap
+- **Use this function to identify the candidate fragment with the largest overlap
 with current sequence**
 
-Add a function to merge this candidate fragment with the current sequence,
+- Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap
 
-Use these functions to iteratively merge candidates fragments until no
+- Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain
 
-Check that all unmerged fragments are already contained within the sequence
+- Check that all unmerged fragments are already contained within the sequence
 
 
 ---
@@ -1224,33 +1224,33 @@ corresponding fragment
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+  - make sure it works for both ends of the string
+  - ignore the possibility that fragments might be reversed for now
 
-Use this function to identify the candidate fragment with the largest overlap
+- Use this function to identify the candidate fragment with the largest overlap
 with current sequence
 
-**Add a function to merge this candidate fragment with the current sequence,
+- **Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap**
 
-Use these functions to iteratively merge candidates fragments until no
+- Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain
 
-Check that all unmerged fragments are already contained within the sequence
+- Check that all unmerged fragments are already contained within the sequence
 
 
 ---
 
 # Merge fragment with current sequence
 
-Add function *declaration* to `overlap.h`:
+Add our function *declaration* to `overlap.h`:
 ```
 void merge (std::string& sequence, const std::string& fragment, const int overlap);
 ```
 
-Add function *definition* to `overlap.h`:
+Add our function *definition* to `overlap.cpp`:
 ```
 void merge (std::string& sequence, const std::string& fragment, const int overlap)
 {
@@ -1297,21 +1297,21 @@ Use `merge()` function in `main()`:
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+  - make sure it works for both ends of the string
+  - ignore the possibility that fragments might be reversed for now
 
-Use this function to identify the candidate fragment with the largest overlap
+- Use this function to identify the candidate fragment with the largest overlap
 with current sequence
 
-Add a function to merge this candidate fragment with the current sequence,
+- Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap
 
-**Use these functions to iteratively merge candidates fragments until no
+- **Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain**
 
-Check that all unmerged fragments are already contained within the sequence
+- Check that all unmerged fragments are already contained within the sequence
 
 ---
 
@@ -1323,21 +1323,21 @@ Check that all unmerged fragments are already contained within the sequence
 
 # Exercises
 
-Add a function to compute the overlap between the current sequence and a
+- Add a function to compute the overlap between the current sequence and a
   candidate fragment
-- make sure it works for both ends of the string
-- ignore the possibility that fragments might be reversed for now
+  - make sure it works for both ends of the string
+  - ignore the possibility that fragments might be reversed for now
 
-Use this function to identify the candidate fragment with the largest overlap
+- Use this function to identify the candidate fragment with the largest overlap
 with current sequence
 
-Add a function to merge this candidate fragment with the current sequence,
+- Add a function to merge this candidate fragment with the current sequence,
 given the computed overlap
 
-Use these functions to iteratively merge candidates fragments until no
+- Use these functions to iteratively merge candidates fragments until no
 overlapping fragments remain
 
-**Check that all unmerged fragments are already contained within the sequence**
+- **Check that all unmerged fragments are already contained within the sequence**
 
 ---
 
@@ -1928,7 +1928,7 @@ if (verbose)
 
 --
 
-The use of the `using namespace` declaration can be problematic
+The `using namespace` declaration can be problematic
 - the general recommendation is to avoid its use
 - especially at *global scope*
 
@@ -1945,7 +1945,7 @@ readability, use the selective `using` declaration for the specific identifiers 
 # The problem with `using namespace std;`
 
 In spite of the general recommendation to avoid blanket `using namespace`
-declaration, you will find that many (if not most) C++ tutorials make use of
+declarations, you will find that many (if not most) C++ tutorials make use of
 this declaration from the very beginning, starting at 'hello world':
 ```
 #include <iostream>
@@ -1978,7 +1978,7 @@ So why do we not follow this convention on this course?
 
 --
 
-In general, the use of the `using namespace` declaration is not recommended
+In general, the `using namespace` declaration is not recommended
 - it bring *everything* from that namespace into the current scope
 - *including* variables or functions you might not have known about!
 - it negates the name collision benefits that C++ namespaces were meant to
@@ -2167,6 +2167,8 @@ Fragments load_fragments (const std::string& filename)
     std::cerr << "reading fragments from file \"" << filename << "\"...\n";
   ...
 ```
+
+--
 
 .explain-bottom[
 Have a go at implementing these changes to your own code
