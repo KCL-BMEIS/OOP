@@ -734,11 +734,13 @@ for details)
 
 --
 
-There are however cases where they make sense: when they represent a truly
-unique entity
-- examples include `std::cout`, `std::cerr`: there can only be one of each in
-  any program
-- in our case, there can only ever be one setting representing verbose mode!
+There are however cases where they make sense: 
+- for constants (in which case they would also be declared `const`)
+--
+- when they represent a truly unique entity
+  - examples include `std::cout`, `std::cerr`: there can only be one of each in
+    any program
+  - in our case, there can only ever be one setting representing verbose mode!
 
 ---
 
@@ -807,8 +809,8 @@ from.
 
 # Variable scope and shadowing
 
-*Variable shadowing* occurs when two variables of the same name co-exist in
-different scopes
+*Variable shadowing* (also called *name hiding*) occurs when two variables of
+the same name co-exist in different scopes
 
 ```
 int count = 0;   // <- global scope
@@ -836,8 +838,8 @@ This is perfectly legal in C++!
 
 # Variable scope and shadowing
 
-*Variable shadowing* occurs when two variables of the same name co-exist in
-different scopes
+*Variable shadowing* (also called *name hiding*) occurs when two variables of
+the same name co-exist in different scopes
 
 ```
 *int count = 0;   // <- global scope
@@ -860,7 +862,7 @@ void compute ()
 This is perfectly legal in C++!
 
 .explain-bottom[
-The variable at function scope *shadows* the variable of the same name at
+The variable at function scope *hides* the variable of the same name at
 global scope
 - at this point, any reference to `count` is assumed to refer to the *function scope* variable
 - the global scope version of `count` still exists, but is no longer accessible
@@ -871,8 +873,8 @@ global scope
 
 # Variable scope and shadowing
 
-*Variable shadowing* occurs when two variables of the same name co-exist in
-different scopes
+*Variable shadowing* (also called *name hiding*) occurs when two variables of
+the same name co-exist in different scopes
 
 ```
 int count = 0;   // <- global scope
@@ -895,7 +897,7 @@ void compute ()
 This is perfectly legal in C++!
 
 .explain-top[
-Similarly, the variable at block scope *shadows* the variable of the same name at
+Similarly, the variable at block scope *hides* the variable of the same name at
 function scope
 - at this point, any reference to `count` is assumed to refer to the *block scope* variable
 - the function and global scope versions of `count` still exist, but are no longer accessible
@@ -906,8 +908,8 @@ function scope
 
 # Variable scope and shadowing
 
-*Variable shadowing* occurs when two variables of the same name co-exist in
-different scopes
+*Variable shadowing* (also called *name hiding*) occurs when two variables of
+the same name co-exist in different scopes
 
 ```
 int count = 0;   // <- global scope
@@ -937,8 +939,8 @@ This line will print the *block scope* version of `count`
 
 # Variable scope and shadowing
 
-*Variable shadowing* occurs when two variables of the same name co-exist in
-different scopes
+*Variable shadowing* (also called *name hiding*) occurs when two variables of
+the same name co-exist in different scopes
 
 ```
 int count = 0;   // <- global scope
@@ -971,15 +973,123 @@ is outside the block
 
 # Variable scope and shadowing
 
-Variable shadowing can lead to subtle errors
-- especially when combined with global variables that may have been declared in
-  some other header!
+
+Variable shadowing allows a function to use local variables without worrying about
+whether some other global variable exists elsewhere with the same name
+
+--
+
+... but it can also lead to subtle errors
+- especially in the case of block scope variables hiding function scope
+  variables
 
 --
 
 [Name collisions](https://en.wikipedia.org/wiki/Name_collision) are a general
 problem in computing
-- naming things can take up an inordinate amount of developpers' time...
+- many projects will rely on functionality provided by other projects
+- difficult to avoid using the same names across different projects!
+
+--
+
+Most of these problems can be avoided by:
+- not using global variables in the first place!
+--
+- using a dedicated *C++ namespace*
 
 
+---
 
+class: section
+
+# C++ namespaces
+
+---
+
+# What is a namespace?
+
+A namespace is essentially a *named scope* for your function and variable
+declarations
+
+--
+
+We have been using a namespace from the start: the `std` namespace
+- this namespace is where all the functionality provided by the C++ standard is
+  declared
+
+--
+
+.columns[
+.col[
+```
+std::vector
+```
+- the vector class (a *type*) declared within the `std` namespace
+]
+.col[
+```
+std::cout
+```
+- a variable (actually of type `std::ostream`) called `cout`
+  declared within the `std` namespace
+]
+]
+
+---
+
+# What is a namespace?
+
+A namespace is essentially a *named scope* for your function and variable
+declarations
+
+We have been using a namespace from the start: the `std` namespace
+- this namespace is where all the functionality provided by the C++ standard is
+  declared
+
+.columns[
+.col[
+```
+`std`::vector
+```
+- the vector class (a *type*) declared within the `std` namespace
+]
+.col[
+```
+`std`::cout
+```
+- a variable (actually of type `std::ostream`) called `cout`
+  declared within the `std` namespace
+]
+]
+
+- these are both declared within the `std` namespace
+---
+
+# What is a namespace?
+
+A namespace is essentially a *named scope* for your function and variable
+declarations
+
+We have been using a namespace from the start: the `std` namespace
+- this namespace is where all the functionality provided by the C++ standard is
+  declared
+
+.columns[
+.col[
+```
+std`::`vector
+```
+- the vector class (a *type*) declared within the `std` namespace
+]
+.col[
+```
+std`::`cout
+```
+- a variable (actually of type `std::ostream`) called `cout`
+  declared within the `std` namespace
+]
+]
+
+- these are both declared within the `std` namespace
+- accessing members of a namespace is done with the [*scope resolution
+  operator*](https://www.geeksforgeeks.org/scope-resolution-operator-in-c/)
