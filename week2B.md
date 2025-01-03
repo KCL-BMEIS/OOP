@@ -2355,6 +2355,44 @@ Fragments load_fragments (const std::string& filename)
 * debug::log ("reading fragments from file \"" + filename + "\"...");
   ...
 ```
+
+--
+.explain-top[
+Note the use of the `+` string concatenation operator instead of the stream
+insertion operator (`<<`)
+
+<br>
+This is because our `debug::log()` function expects a single `std::string`
+argument
+]
+
+---
+
+# Adding convenience functions for debugging
+
+How do we handle this case?
+```
+  if (debug::verbose)
+    std::cerr << "read " << fragments.size() << " fragments\n";
+```
+
+--
+
+We can't write:
+```
+  debug::log ("read " + fragments.size() + " fragments");
+```
+since `fragment.size()` returns an `int`, and we can't concatenate a
+`std::string` with an `int`!
+
+--
+
+Use `std::to_string()`, which returns a `std::string` representation of a
+variable:
+```
+  debug::log ("read " + std::to_string (fragments.size()) + " fragments");
+```
+
 --
 .explain-bottom[
 Have a go at implementing these changes in your own code
