@@ -11,6 +11,7 @@ class: title
 ## Introduction
 
 ---
+name: team
 
 # Teaching team
 
@@ -78,6 +79,7 @@ class: title
 ] ]
 
 ---
+name: course
 
 # Course overview
 
@@ -133,22 +135,48 @@ It will provide you with an understanding of:
 Where possible, the course aims to provide you with transferable skills that can be
 applied in other situations
 
---
-
 - for many of you, these skills will prove valuable for your final project
 - _even if you don't use C++!_
 
 ---
 
-# What is C++
+# What is C++?
 
-**TODO**
+C++ is a widely-used general-purpose programming language. 
+- ranked second on the [TIOBE programming community index](https://www.tiobe.com/tiobe-index/) (after [Python](https://www.python.org/))
+- used for high-performance and/or resource-constrained software
+- can be used for a wide range of applications: embedded systems, operating systems, desktop
+  applications, telecoms infrastructure, ...
+
+--
+
+C++ was first released in 1985 by Bjarne Stroustrup as an extension to the [C language](https://en.wikipedia.org/wiki/C_(programming_language%29)
+- first standardised by the [International Organization for Standardization (ISO)](https://www.iso.org/) in 1998
+- There have been many versions of the standard since (bold denotes
+  fundamental changes):
+  - **C++98**, C++03, **C++11**, C++14, C++17, **C++20**, C++23, **C++26** (under development)
+
+--
+
+Secific features of C++:
+- it supports [Object-Oriented Programming (OOP)](https://www.geeksforgeeks.org/introduction-of-object-oriented-programming/), as well as [generic](https://www.geeksforgeeks.org/generics-in-c/) and [functional programming](https://www.geeksforgeeks.org/functional-programming-paradigm/)
+- it is a [compiled
+  language](https://www.geeksforgeeks.org/difference-between-compiled-and-interpreted-language/)
+(the code you write must be *compiled* to machine code before execution)
+- it uses [static
+  typing](https://www.geeksforgeeks.org/type-systemsdynamic-typing-static-typing-duck-typing/)
+(data types are known and checked at compile-time, not runtime)
+
+--
+
+On this course, we will be using the **C++20 version of the standard**
+
 
 ---
 
 # Course overview
 
-## It is _not_ intended as a full C++ course
+## This is an *introductory* course to C++
 
 --
 
@@ -172,7 +200,9 @@ Why are we avoiding these topics?
 
 --
 
-Many other C++ topics will also not be covered as they are too advanced
+We will initially cover a lot of topics quickly and superficially
+- the point is to appreciate how the language works as a whole to solve problems
+- **not everything will immediately make sense - but hang in there!**
 
 ---
 
@@ -187,7 +217,8 @@ Learning to program can only be done through experience
 --
 - search online for examples and explanations!
   - but bear in mind that online sources may use concepts we have
-    deliberately left out of the course!
+    deliberately left out of the course, or rely on a different version of the
+    C++ standard!
 
 --
 
@@ -200,6 +231,7 @@ Good online resources include:
 - [Hackerrank](https://www.hackerrank.com/): interactive code exercises
 
 ---
+name: cmdline
 
 class: section
 
@@ -262,6 +294,11 @@ intrepreter_
 
 <br>
 .note[
+On macOS, the standard shell is now the [Z
+shell](https://en.wikipedia.org/wiki/Z_shell) (`zsh`), which is an extension of the
+Bourne shell, and broadly compatible with `bash`.
+
+<br>
 On Windows, the standard shell used to be the DOS shell, though Microsoft
 has since introduced the more modern PowerShell &ndash; we won't be using either of
 them on this course!]
@@ -365,6 +402,7 @@ particular our own [Introduction to the Unix
 command-line](https://command-line-tutorial.readthedocs.io/)]
 
 ---
+name: first_program
 
 class: section
 
@@ -398,8 +436,8 @@ To do this, we need to use a **text editor**
 --
 
 .note[
-We do not recommend the use of full-blown _integrated development environments_
-(IDE) early on. While convenient, these hide the processes involved, making
+We do not recommend the use of full-blown [integrated development environments
+(IDE)](https://www.geeksforgeeks.org/what-is-ide/) early on. While convenient, these hide the processes involved, making
 it difficult for newcomers to understand where things might go wrong.
 <br>
 <br>
@@ -532,19 +570,20 @@ for the complete listing.
 
 # Compiling our program
 
-The code we have written in the file `main.cpp` cannot be executed as it is.
+The *source code* we have written in the file `main.cpp` cannot be executed as it is.
 - it is _human readable_ code, designed for us to more conveniently express
   what the program should do
 
 --
 
 To use the program, we need to _compile_ it
-- in simple terms, we need to translate our code into _machine instructions_ that
+- we need to translate our code into _machine instructions_ that
   the computer can execute directly
 
 --
 
-We do this by running the _compiler_ on our code:
+We do this by running the appropriate
+[compiler](https://www.geeksforgeeks.org/introduction-to-compilers/) on our code ([`g++`](https://gcc.gnu.org/)):
 ```
 $ g++ -std=c++20 main.cpp
 ```
@@ -563,7 +602,32 @@ a.exe  main.cpp
 
 # Difference between compiled and interpreted languages
 
-**TODO**
+[*Interpreted* programming languages](https://www.geeksforgeeks.org/difference-between-compiled-and-interpreted-language/) do not need to be compiled prior to execution
+- examples include [Python](https://www.python.org/), [Java](https://www.java.com/), [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), [Perl](https://www.perl.org/), [Ruby](https://www.ruby-lang.org/), and even our [`bash` shell](https://www.geeksforgeeks.org/bash-scripting-introduction-to-bash-and-bash-scripting/)
+
+--
+
+Programs written using interpreted languages cannot executed by themselves &ndash;
+they need to be run via another program called the *interpreter*
+- the source code needs to be [parsed](https://en.wikipedia.org/wiki/Parsing) by the interpreted at run-time
+- if the code is deemed valid, the interpreter will perform the actions
+  specified
+- the interpreter must be installed and available on all target systems
+
+--
+
+In contrast, *compiled* languages are first translated into native machine
+instructions
+- examples include [C](https://en.wikipedia.org/wiki/C_(programming_language%29), C++, [Fortran](https://en.wikipedia.org/wiki/Fortran), [Pascal](https://en.wikipedia.org/wiki/Pascal_(programming_language%29), [Rust](https://www.rust-lang.org/), [Go](https://go.dev/), ...
+- this (in theory) provides the highest performance, avoiding the overhead of
+  interpreting the instructions at runtime
+- it also provides an opportunity to detect certain classes of errors at an earlier stage
+- it can also produce more efficient code through various optimisation
+  techniques that would be too time-consuming to perform at runtime
+--
+- ... but the compile cycle can be lengthy, slowing down the development process
+
+
 
 ---
 
@@ -622,6 +686,7 @@ Hello, world!
 ```
 
 ---
+name: hello_world
 
 class: section
 
@@ -667,7 +732,7 @@ The `#include` directive requests inclusion of the contents of the `iostream` [h
 
 --
 
-Header files are normal C++ files that declare functionality that we might need to use
+Header files are normal C++ files that *declare* functionality that we might need to use
 
 --
 
@@ -693,7 +758,8 @@ This is the declaration of the `main()` function
 
 --
 
-The `main()` function is the *entry point* for any program
+The `main()` function is the [*entry
+point*](https://en.wikipedia.org/wiki/Entry_point) for any program
 
 --
 
@@ -717,8 +783,10 @@ int main ()
 }
 ```
 
-Next, we feed the *string* "Hello World" to the *standard output*
+Next, we feed the
+[*string*](https://en.wikipedia.org/wiki/String_(computer_science%29) "Hello World" to the *standard output*
 stream, `std::cout`
+- we enclose the string within inverted commas (`"`)
 
 --
 
@@ -731,7 +799,8 @@ Note the use of the *insertion operator*, `<<`
 Note also the trailing `\n` *escape sequence* at the end of the string
 - The backslash `\` character can be used to *escape* the normal interpretation
   of the next character
-- Here, the sequence `\n` translates into the *newline* character
+- Here, the sequence `\n` translates into the [*newline*
+  character](https://en.wikipedia.org/wiki/Newline)
 - See [here for a full list of escape
   sequences](https://www.geeksforgeeks.org/escape-sequence-in-c/)
 
@@ -823,6 +892,7 @@ this later
   What effect does this have?
 
 ---
+name: cmdline_args
 
 class: section
 
@@ -1029,6 +1099,7 @@ Now modify your own code as shown above, compile it, and run it.
 
 
 ---
+name: iteration
 
 class: section
 
@@ -1418,6 +1489,7 @@ while (condition);
 This will also run `statement` as long as `condition` is true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
 
 ---
+name: fundamentals
 
 class: section
 
@@ -1435,8 +1507,9 @@ for (int n = 0; n < `args.size()`; n++)
 
 --
 
-We are using the *dot operator*, which provides direct access to members of an
-objct. It takes this general form:
+We are using the [*dot
+operator*](https://www.geeksforgeeks.org/dot-operator-in-cpp/), which provides
+direct access to members of an object. It takes this general form:
 ```
 variable.member
 ```
@@ -1491,7 +1564,7 @@ This is why you should use a range-based for loop if you can: it automatically u
 # Data types
 
 
-C++ is a *statically-typed* language
+C++ is a [*statically-typed* language](https://www.geeksforgeeks.org/type-systemsdynamic-typing-static-typing-duck-typing/)
 - every variable needs to have its type defined before use
 - once defined, a variable cannot change its type
 
@@ -1552,7 +1625,7 @@ Increment/decrement: `++x`, `x++`, `--x`, `x--`
 - for example, always use `x++;` rather than `x += 1;` or `x = x + 1;`
 --
 - the difference between `++x` and `x++` is the *return value*
-  - `x++` returns the original value of `x`, while `++x` returns the new value of `x`
+  - `x++` returns the original value of `x`, while `++x` returns the updated value of `x`
 --
   - this only matters when the return value is used, for example:<br>
     ```
@@ -1628,6 +1701,7 @@ For now, we will simply look at how to use them.
 
 
 ---
+name: string
 
 # Using `std::string`
 
@@ -1692,7 +1766,7 @@ This is important: single characters are of type `char`, while full strings are
 
 Append text to a string:
 ```
-mesg += " World!"    # mesg now contain "Hello World!"
+mesg += " World!"    // mesg now contain "Hello World!"
 ```
 
 --
@@ -1754,6 +1828,7 @@ For full details, have a look online:
 
 
 ---
+name: vector
 
 # Using `std::vector`
 
@@ -2020,7 +2095,7 @@ to `to`
   both `from` & `to` themselves
 
 We use the [push_back()](https://cplusplus.com/reference/vector/vector/push_back/) 
-method to add each value to the end of the vector
+method to append each value to the end of the vector
 - the vector increases in size dynamically to accommodate each new value
 
 ]
@@ -2118,6 +2193,7 @@ What happens if one or both of the arguments isn't a number?
 ]
 
 ---
+name: error_handling
 
 # Error handling
 
@@ -2197,7 +2273,7 @@ int main (int argc, char* argv[])
 First, we check whether enough command-line arguments have been provided. 
 <br>
 <br>
-If we have fewer than 3 arguments, the command can't run
+If we have fewer than 3 arguments, the command cannot run
 - remember that the first argument (`args[0]`) corresponds to the command itself
 
 We use an `if` statement to do the checking
@@ -2205,6 +2281,7 @@ We use an `if` statement to do the checking
 ]
 
 ---
+name: if
 
 class: section
 
@@ -2507,6 +2584,7 @@ Modify your own code to add these checks, then compile and test it
 ]
 
 ---
+name: switch
 
 # Other forms of conditional execution
 
