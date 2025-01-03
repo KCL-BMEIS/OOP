@@ -54,12 +54,12 @@ end
 
 % flip sequences at random:
 flip=zeros(numel(split),1);
-for n = 1:numel(split)
-  if randi(2,1,1) == 1
-    split{n} = fliplr (split{n});
-    flip(n) = 1;
-  end
-end
+%for n = 1:numel(split)
+%  if randi(2,1,1) == 1
+%    split{n} = fliplr (split{n});
+%    flip(n) = 1;
+%  end
+%end
 
 k = randperm(numel(split));
 

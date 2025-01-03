@@ -12,7 +12,7 @@ There has been a huge increase in the use of genetic information for both resear
 
 ---
 
-The task in this project is to implement a simple 'shotgun sequencing' algorithm capable of reconstructing a complete DNA sequence based on the measured fragments. For simplicity, we assume there were **no errors** in the sequencing of the fragments (in a real-world situations, some form of error detection and correction would be necessary). You will also need to take into account the possibility that **fragments may be reversed** &ndash; in other words, their sequence may have been measured in the reverse order relative to the complete sequence.
+The task in this project is to implement a simple 'shotgun sequencing' algorithm capable of reconstructing a complete DNA sequence based on the measured fragments. For simplicity, we assume there were **no errors** in the sequencing of the fragments (in a real-world situations, some form of error detection and correction would be necessary). 
 
 Your algorithm will need to perform the following steps:
 
@@ -30,7 +30,7 @@ Further details for each step are provided below.
 
 Your task in this coursework is to write a C++ program which meets the requirements described above. Three example datasets are provided, each comprising of an input file with all the measured fragments (`fragments-N.txt`), along with the expected solution for each case (`solution-N.txt`). Your program should be written to handle any data file provided in the expected format (see description below). 
 
-To help with your initial implementation, you are also provided with three equivalent datasets where none of the fragments have been reversed (`fragments-no-reverse-N.txt` along with the corresponding solutions `solution-no-reverse-N.txt`). These data are provided only to allow you to test your program at an earlier stage in development than otherwise. A complete implementation should be able to process *all* datasets provided.
+To help with your initial implementation, you are also provided with three equivalent datasets (`fragments-N.txt` along with the corresponding solutions `solution-N.txt`). These data are provided only to allow you to test your program at an earlier stage in development than otherwise. A complete implementation should be able to process *all* datasets provided, and any other unseen datasets provided in the same format.
 
 
 ### Fragment data
@@ -39,7 +39,7 @@ The fragment data come in the form a simple text file, which each fragment as a 
 
 ### Detecting overlap
 
-The overlap between two fragments is computed by shifting one fragment relative to the other, and finding the offset that provides the longest run of identical bases between the two fragments without mismatch.  Briefly, the process consists of (also illustrated in the figure below): 
+The overlap between two fragments is computed by shifting one fragment relative to the other, and finding the offset that provides the longest run of identical bases between the two fragments without mismatch. The process can be conceptualised as outlined below, and illustrated in the figure below: 
 
 1. set the longer fragment as the reference, and set the offset of the shorter fragment to its lowest possible value (single character overlap on the left of the reference).
 2. check whether all bases in the overlap match between fragments; if they do, then if this is largest overlap observed so far, record the size of the overlap and its corresponding offset.
