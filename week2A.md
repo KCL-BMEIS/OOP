@@ -43,6 +43,7 @@ Make sure your code is up to date now!
 ]
 
 ---
+name: type_alias
 
 # Type Aliasing
 
@@ -60,7 +61,8 @@ wherever this is needed
 
 --
 
-This is an example where defining a *type alias* might be a good idea:
+This is an example where defining a [*type
+alias*](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/) might be a good idea:
 ```
 using Fragments = std::vector<std::string>;
 ```
@@ -102,6 +104,7 @@ Have a go at modifying your code as shown here
 
 
 ---
+name: multifile
 
 class: section
 
@@ -180,6 +183,12 @@ time using *inverted commas*, and with the `.h` extension:
 ```
 #include "fragments.h"
 ```
+
+--
+
+Make sure to always use angled brackets (`<>`) for system headers, and inverted commas (`""`) for
+your own project headers ([as recommended
+here](https://gcc.gnu.org/onlinedocs/cpp/Include-Syntax.html), for example)
 
 ---
 
@@ -518,6 +527,7 @@ How do we compile this project?
 
 
 ---
+name: multifile_build
 
 class: info
 
@@ -703,6 +713,7 @@ linking the different files using the commands above
 ]
 
 ---
+name: build_system
 
 class: info
 
@@ -774,6 +785,7 @@ This needs to be done *recursively*:
 - this can become quite messy in large projects...
 
 ---
+name: oop_build
 
 # What C++ build system is used in this course?
 
@@ -932,6 +944,7 @@ If you find anything isn't working as it should, please get in touch with
 
 
 ---
+name: compile_link
 
 class: section
 
@@ -1009,8 +1022,8 @@ You'll see that the output of this stage is very long (~42,000 lines on my
 system) &ndash; which is why the command above
 [*pipes*](https://www.geeksforgeeks.org/piping-in-unix-or-linux/) its output
 through to the `less` interactive text viewer.
-- you'll find the code we wrote at the very end: all the rest is code that has imported
-  through our `#include` directives
+- you'll find the code we wrote at the very end: all the rest is code that has
+  been imported through our `#include` directives
 
 
 ---
@@ -1019,7 +1032,8 @@ through to the `less` interactive text viewer.
 
 ## `#pragma once` 
 
-The `#pragma once` directive is actually *not* part of the C++ standard
+The [`#pragma once` directive](https://en.wikipedia.org/wiki/Pragma_once) is
+actually *not* part of the C++ standard
 - but it is very widely supported
 
 --
@@ -1045,7 +1059,7 @@ class: info
 
 ## Header guards
 
-The standard way of dealing with the multiple header inclusion problem is via *header guards*:
+The standard way of dealing with the multiple header inclusion problem is via [*header guards*](https://www.geeksforgeeks.org/header-guard-in-c/):
 ```
 #ifndef __my_header_h__
 #define __my_header_h__
@@ -1101,9 +1115,11 @@ of object files.
 --
 
 For our executable, the linker needs to locate:
-- the `main()` function: this is the entry point for any program
+- the `main()` function: this is the [entry
+  point](https://en.wikipedia.org/wiki/Entry_point) for any program
 - any functions used in `main()`, and any functions they use, etc.
-- any libraries that our program will need
+- any
+  [libraries](https://www.geeksforgeeks.org/static-and-dynamic-linking-in-operating-systems/) that our program will need
 - any functions within these libraries that are in use in any part of our code
 
 Errors will occur is the linker can't find any function that our code refers
@@ -1122,6 +1138,7 @@ linker* is a different process relevant when *running* our program
 ]
 
 ---
+name: exceptions
 
 class: section
 
@@ -1146,7 +1163,8 @@ with it:
 
 --
 
-C++ does however provide a framework for error handling using *exceptions*
+C++ does however provide a framework for error handling using
+[*exceptions*](https://www.geeksforgeeks.org/exception-handling-c/)
 
 ---
 
@@ -1402,8 +1420,9 @@ If the parent function catches the exception, it will handle it there
 
 If the parent function *doesn't* catch the expection, control returns to *its*
 parent function, and so on
-- this is called *stack unwinding* &ndash; we will see why later in the course
-  when we cover the *call stack*
+- this is called [*stack
+  unwinding*](https://www.geeksforgeeks.org/stack-unwinding-in-c/) &ndash; we will see why later in the course
+  when we cover the [*call stack*](https://en.wikipedia.org/wiki/Call_stack)
 
 --
 
@@ -1686,7 +1705,7 @@ We can further separate function from error handling:
 ```
 void run (std::vector<std::string>& args)
 {
-*  // core function goes here
+* // core function goes here
 }
 
 
@@ -1825,6 +1844,7 @@ iterator erase (iterator position);
 But what is an *iterator*???
 
 ---
+name: iterators
 
 # Understanding STL iterators
 

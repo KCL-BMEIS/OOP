@@ -11,6 +11,7 @@ class: title
 ## Starting our first project
 
 ---
+name: shotgun
 
 # Project: DNA shotgun sequencing
 
@@ -97,6 +98,7 @@ and progress reporting.
   output as such.
 
 ---
+name: file_io
 
 class: section
 
@@ -115,7 +117,8 @@ The next logical thing to do is add code to load some data.
 
 --
 
-In C++, files are typically handled using the **streams input/output library**
+In C++, files are typically handled using the [*streams input/output
+library*](https://www.geeksforgeeks.org/basic-input-output-c/)
 
 --
 
@@ -309,10 +312,12 @@ If an error is detected, it is good practice to:
 
 
 ---
+name: exit_code
 
 # Exit code
 
-In computing, programs will always provide an _exit code_ when they terminate.
+In computing, programs will always provide an [*exit
+code*](https://en.wikipedia.org/wiki/Exit_status) when they terminate.
 
 --
 
@@ -364,6 +369,7 @@ If needed, we can also use the `||` operator, with the opposite meaning:
 - only run the second command if the first reports failure (non-zero exit code)
 
 ---
+name: filesystem
 
 class: section
 
@@ -378,8 +384,8 @@ class: section
 When we invoke our command, how do we tell it where the file is _exactly_?
 
 ```
-$ ./shotgun fragments-no-reverse-1.txt
-ERROR: failed to open file "fragments-no-reverse-1.txt" - aborting
+$ ./shotgun fragments-1.txt
+ERROR: failed to open file "fragments-1.txt" - aborting
 ```
 
 --
@@ -390,16 +396,15 @@ location?
 --
 
 To get this right, we need to understand these concepts:
-- the current working directory
-- absolute and relative paths
+- the [current working
+  directory](https://en.wikipedia.org/wiki/Working_directory)
+- [absolute and relative
+  paths](https://www.geeksforgeeks.org/absolute-relative-pathnames-unix/)
 
 --
 
 Every program that runs has an associated **current working directory**
-- it can be thought of as the folder within which the program is currently
-  running
-
-
+- it can be thought of as the folder within which the program is curren
 --
 
 It can be queried using the `pwd` (print working directory) command
@@ -483,9 +488,7 @@ parent folder!
 We can still access the file using the *relative path* `../data/`
 ```
 $ ls ../data/
-fragments-1.txt              fragments-2.txt 
-fragments-3.txt              fragments-no-reverse-1.txt 
-fragments-no-reverse-2.txt   fragments-no-reverse-3.txt 
+fragments-1.txt          fragments-2.txt         fragments-3.txt
 ```
 
 ---
@@ -495,7 +498,7 @@ fragments-no-reverse-2.txt   fragments-no-reverse-3.txt
 Therefore, we can run our command using a *relative path* to the neighbouring
 folder as follows:
 ```
-$ ./shotgun ../data/fragments-no-reverse-1.txt
+$ ./shotgun ../data/fragments-1.txt
 ```
 --
 
@@ -509,7 +512,7 @@ command-line](https://command-line-tutorial.readthedocs.io/paths.html)]
 
 Putting it all together, we can write the full compile and run command as:
 ```
-$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
+$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-1.txt
 ```
 
 --
@@ -519,6 +522,7 @@ history with the Up arrow, and hit Enter to run it again!
 
 
 ---
+name: file_io_2
 
 class: section
 
@@ -615,7 +619,7 @@ file into our variable `frag`
 # Next step: load data from file
 
 But we need to read more than one string from the file. To do this, we are
-going to read the data into a vector of strings
+going to read the data into a *vector* of strings
 
 --
 
@@ -662,7 +666,7 @@ going to read the data into a vector of strings
 }
 ```
 
-.explain-middle[
+.explain-bottom[
 We start by defining a new variable of type `std::vector<std::string>`, called
 `fragments`
 ]
@@ -752,6 +756,7 @@ will not cover in this course. However, the methods below are commonly used:
 
 
 ---
+name: reporting
 
 class: section
 
@@ -805,8 +810,8 @@ Possible solution:
 Now that we have code to load the data, we can run it and check that it works:
 
 ```
-$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-no-reverse-1.txt
-reading fragments from file "../data/fragments-no-reverse-1.txt"...
+$ g++ -std=c++20 shotgun.cpp -o shotgun && ./shotgun ../data/fragments-1.txt
+reading fragments from file "../data/fragments-1.txt"...
 read 190 fragments
 ```
 
@@ -923,6 +928,7 @@ deduced by the compiler from the context).
 
 
 ---
+name: reference
 
 # References in C++
 
@@ -943,7 +949,7 @@ A reference must be initialised at the same time as it is declared
 
 This is useful in situations where:
 - making a copy of the variable is potentially (computationally) expensive
-- we want to pass a version of a variable that can be modified in other parts
+- we want to pass a reference to a variable so that it can be modified in other parts
   of the code (more on that later)
 
 --
@@ -982,6 +988,7 @@ In this case, the compiler deduces the type of `f` as `const std::string&` &ndas
 
 
 ---
+name: project_repo
 
 class: section
 
@@ -1073,7 +1080,8 @@ will need the ability to write out the results while we are working on the code
 
 We can simply print out the result to the terminal via *standard output*
 (`std::cout`)
-- if necessary, we can *redirect* the output to a file of our choice:
+- if necessary, we can
+  [*redirect*](https://www.gnu.org/software/bash/manual/html_node/Redirections.html) the output to a file of our choice:
   ```
   $ ./shotgun ../data/fragments-no-reserve-1.txt > out.txt
   ```
@@ -1209,6 +1217,7 @@ it better!
 ]
 
 ---
+name: functions
 
 class: section
 
@@ -1348,8 +1357,6 @@ definition
 Let's set up our first function to load the data from the file, given its
 filename
 
---
-
 - We'll call it `load_fragments ()`
 --
 - It will only require a single argument: the name of the file
@@ -1359,7 +1366,7 @@ filename
 
 --
 
-The function declaration could therefore be:
+The function *declaration* could therefore be:
 ```
 std::vector<std::string> load_fragments (std::string filename);
 ```
@@ -1382,7 +1389,7 @@ This is because in C++, function arguments are passed *by copy*
 
 # Our first function: loading the data
 
-Let's get started on the function definition:
+Let's get started on the function *definition*:
 ```
 std::vector<std::string> load_fragments (const std::string& filename)
 {

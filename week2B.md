@@ -199,7 +199,6 @@ layout: false
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - make sure it works for both ends of the string
-  - ignore the possibility that fragments might be reversed for now
 
 - Use this function to identify the candidate fragment with the largest overlap
 with current sequence
@@ -484,7 +483,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
 - always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
-- when in development mode, don't hesitate to display lots of information, it
+- during the development phase, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
 
 
@@ -509,7 +508,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
 - always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
-- when in development mode, don't hesitate to display lots of information, it
+- during the development phase, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
 - we need to return an integer, so let's return a value of zero (no overlap) by
   default
@@ -535,7 +534,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 ```
 - always check any assumptions and expectations upfront &ndash;
   this can save you a lot of frustration later...
-- when in development mode, don't hesitate to display lots of information, it
+- during the development phase, don't hesitate to display lots of information, it
   will often alert you to where things might be going wrong.
 - we need to return an integer, so let's return a value of zero (no overlap) by
   default
@@ -722,7 +721,6 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - **make sure it works for both ends of the string**
-  - ignore the possibility that fragments might be reversed for now
 
 - Use this function to identify the candidate fragment with the largest overlap
 with current sequence
@@ -947,7 +945,7 @@ sequence and the candidate fragment
 .explain-top[
 There is no point iterating all the way to zero, since we already know the size
 of the largest overlap from the previous loop
-- there is no point checking smaller overlaps!
+- there is no point checking smaller overlaps than that!
 ]
 
 ---
@@ -979,8 +977,9 @@ of the largest overlap from the previous loop
 ... and we record the overlap as a *negative* value.
 - this will be our way of representing an overlap at the tail end of the
   sequence
-- this is already guaranteed to be the largest overlap, since we are only
-  considering overlaps larger than the previous check in this `for` loop
+- this is guaranteed to be the largest overlap so far, since in this `for`
+  loop, we are only
+  considering overlaps larger than encountered at the other end of the sequence
 ]
 
 ---
@@ -1019,7 +1018,6 @@ Finally, we end by returning the largest overlap recorded in both loops
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - make sure it works for both ends of the string
-  - ignore the possibility that fragments might be reversed for now
 
 - **Use this function to identify the candidate fragment with the largest overlap
 with current sequence**
@@ -1227,7 +1225,6 @@ corresponding fragment
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - make sure it works for both ends of the string
-  - ignore the possibility that fragments might be reversed for now
 
 - Use this function to identify the candidate fragment with the largest overlap
 with current sequence
@@ -1300,7 +1297,6 @@ Use `merge()` function in `main()`:
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - make sure it works for both ends of the string
-  - ignore the possibility that fragments might be reversed for now
 
 - Use this function to identify the candidate fragment with the largest overlap
 with current sequence
@@ -1326,7 +1322,6 @@ overlapping fragments remain**
 - Add a function to compute the overlap between the current sequence and a
   candidate fragment
   - make sure it works for both ends of the string
-  - ignore the possibility that fragments might be reversed for now
 
 - Use this function to identify the candidate fragment with the largest overlap
 with current sequence
@@ -1395,7 +1390,7 @@ There are many ways to handle command-line options
 Have a go at implementing this simple approach to detect the `-v` option:
 - start by checking whether the option has been provided in the arguments list
 - if it has, then:
-  - take whatever action is appropriate (e.g. set a `verbose` variable `true`)
+  - take whatever action is appropriate (e.g. set a `verbose` variable to `true`)
   - remove that option from the argument list
 - process your arguments as previously
 
@@ -1771,7 +1766,7 @@ We have already been using a namespace from the start: the `std` namespace
 ```
 std::vector
 ```
-- the vector class (a *type*) declared within the `std` namespace
+- the `vector` class (a *type*) declared within the `std` namespace
 ]
 .col[
 ```
@@ -1853,7 +1848,7 @@ The main purpose of C++ namespace is:
 --
 
 For example, we may very well want to declare a variable or function called
-`count()` 
+`count` 
 - but there is already a [C++ STL `count()`
   algorithm](https://www.geeksforgeeks.org/std-count-cpp-stl/)!
 
@@ -1916,7 +1911,7 @@ if (verbose)
 
 # Working with namespaces
 
-We can also bring *all* identifiers declared in a namespace into the current scope with the `using namespace` declaration:
+We can also bring *all* identifiers declared in a namespace into the current scope with the `using namespace` directive:
 ```
 using namespace debug;
 
@@ -1928,7 +1923,7 @@ if (verbose)
 
 --
 
-The `using namespace` declaration can be problematic
+The `using namespace` directive can be problematic
 - the general recommendation is to avoid its use
 - especially at *global scope*
 
@@ -1945,8 +1940,8 @@ readability, use the selective `using` declaration for the specific identifiers 
 # The problem with `using namespace std;`
 
 In spite of the general recommendation to avoid blanket `using namespace`
-declarations, you will find that many (if not most) C++ tutorials make use of
-this declaration from the very beginning, starting at 'hello world':
+directives, you will find that many (if not most) C++ tutorials make use of
+this directive from the very beginning, starting at 'hello world':
 ```
 #include <iostream>
 
@@ -1973,12 +1968,12 @@ This brings *everything* declared within the `std` namespace into the *global* s
 So why do we not follow this convention on this course?
 - because [its use is considered bad practice](https://www.geeksforgeeks.org/using-namespace-std-considered-bad-practice/)
 --
-- on this course, we try to teach best practice from the outset so you pick up
-  the right habits
+- on this course, we try to teach best practice from the outset to avoid
+  picking up bad habits
 
 --
 
-In general, the `using namespace` declaration is not recommended
+In practice, the `using namespace` directive is strongly discouraged
 - it bring *everything* from that namespace into the current scope
 - *including* variables or functions you might not have known about!
 - it negates the name collision benefits that C++ namespaces were meant to
@@ -1986,8 +1981,8 @@ In general, the `using namespace` declaration is not recommended
 
 --
 
-It is particularly bad practice to make use of `using namespace` declarations
-at global scope within header files
+It is particularly bad practice to make use of `using namespace` directives
+at *global scope* within *header files*
 - it's acceptable to use `using namespace` within your own `cpp` files
   - it would still not be considered good practice!
   - but you can manage name collisions within your own project
@@ -2180,7 +2175,7 @@ Have a go at implementing these changes to your own code
 
 We can now run our code as normal:
 ```
-$ ./shotgun ../data/fragments-no-reverse-1.txt out
+$ ./shotgun ../data/fragments-1.txt out
 initial sequence has size 1000
 final sequence has length 20108
 ```
@@ -2193,8 +2188,8 @@ expect when everything works correctly
 
 ... or we can run it with the verbose option to see exactly what is going on:
 ```
-$ ./shotgun ../data/fragments-no-reverse-1.txt out `-v`
-reading fragments from file "../data/fragments-no-reverse-1.txt"...
+$ ./shotgun ../data/fragments-1.txt out `-v`
+reading fragments from file "../data/fragments-1.txt"...
 read 190 fragments
 190 fragments, mean fragment length: 529.158, range [ 51 1000 ]
 initial sequence has size 1000
@@ -2250,7 +2245,8 @@ functionality more cleanly to avoid having lots of `if (debug::verbose)`
 statements throughout our code
 
 Let's implement a `debug::log()` function, which will take a `std::string` as
-its argument, and print it to the standard error stream if in debug mode
+its argument, and print it to the standard error stream if verbose mode is
+enabled
 - it can additionally format its output to more clearly label it as debugging
   information (for example, by prefixing each line with `[DEBUG]`)
 
@@ -2308,6 +2304,7 @@ namespace debug {
 Note the use of the `inline` keyword here, this time to allow multiple definitions of the same *function*
 
 ---
+name: inline_keyword
 
 # A word about `inline`
 
@@ -2358,4 +2355,7 @@ Fragments load_fragments (const std::string& filename)
 * debug::log ("reading fragments from file \"" + filename + "\"...");
   ...
 ```
-
+--
+.explain-bottom[
+Have a go at implementing these changes in your own code
+]
