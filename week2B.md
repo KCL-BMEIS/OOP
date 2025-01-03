@@ -2323,6 +2323,9 @@ optimisation feature
   performance
 - declaring such functions as `inline` can help avoid the overhead of dedicated
   function calls, and so improve performance
+  - this is only possible if the function *definition* is available, which is
+    why the `inline` mechanism was introduced to allow definitions to be
+    included in header files without causing the *multiple definition* problem
 - For further details, refer to other online sources (e.g.
   [GeeksForGeeks](https://www.geeksforgeeks.org/inline-functions-cpp/))
 

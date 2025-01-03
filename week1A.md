@@ -41,9 +41,19 @@ class: title
 
 ---
 
-# Teaching team
+# Teaching assistants
 
-## Teaching assistants
+
+.center[.teamcols[
+.col[
+[Abhijit Adhikary](mailto:abhijit.adhikary@kcl.ac.uk) ]
+.col[ 
+![:scale 100%](images/abhijit.jpg) ] 
+.col[ 
+![:scale 100%](images/hasara.jpg) ]
+.col[ 
+[Dewmini Hasara Wickremasinghe](mailto:dewmini.wickremasinghe@kcl.ac.uk) ]
+] ]
 
 .center[.teamcols[
 .col[ 
