@@ -243,8 +243,9 @@ class: section
 
 ![:right 50%](images/MSYS.png)
 
-In this course, we will be using a Unix-like terminal environment 
-and running all of our code within the terminal. 
+In this course, we will be using a
+[Unix](https://en.wikipedia.org/wiki/Unix)-like terminal environment and
+running all of our code within the terminal. 
 
 - This means we need to understand the Unix command-line.
 
@@ -1487,6 +1488,20 @@ do
 while (condition);
 ```
 This will also run `statement` as long as `condition` is true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
+
+---
+
+# Early termination: `break`
+
+**TODO**
+
+
+---
+
+# Skipping to the next iteration: `continue`
+
+**TODO**
+
 
 ---
 name: fundamentals

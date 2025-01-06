@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 3, session 1: advanced string formatting, grouping data"
+title: "Week 3, session 1: advanced string formatting, structs & classes"
 ---
 
 class: title
@@ -8,7 +8,7 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 3, session 1
-## advanced string formatting<br>grouping data
+## advanced string formatting<br>structs & classes
 
 ---
 
@@ -397,6 +397,67 @@ member of the `Overlap` structure returned:
 auto [ overlap, index ] = find_biggest_overlap (sequence, fragments);
 std::cerr << std::format ("overlap of size {} at index {}\n", `overlap`, `index`);
 ```
+--
+
+.explain-bottom[
+Have a go at modifying your own code to use structured binding as shown here
+]
+
+---
+class: info
+
+# Structured binding using `std::tuple`
+
+The C++ STL provides a convenience template class that can be used as a
+lightweight replacement for a dedicated `struct` in a variety
+of contexts: [`std::tuple`](https://www.geeksforgeeks.org/tuples-in-c/)
+
+One use for `std::tuple` is for structured binding:
+```
+#include <tuple>
+
+std::tuple<int,int> find_biggest_overlap (const std::string& sequence, 
+                                          Fragments& fragments)
+{
+  ...
+  return { biggest_overlap, fragment_with_biggest_overlap };
+}
+
+...
+
+auto [ overlap, index ] = find_biggest_overlap (sequence, fragments);
+```
+
+---
+class: info
+
+# Why don't we use `std::tuple`?
+
+While appealing in its simplicity, `std::tuple` does not provide any indication
+about the *interpretation* or *meaning* of each member
+- in our case, all we know is that we get 2 `int`s 
+- which one represents the overlap size, and which the index?
+- We have to rely on additional documentation to work this out 
+  - this could be described in a comment, or some other external document
+
+--
+
+On the other hand, using a `struct` provides *named* members, whose interpretation is
+immediately much clearer. 
+
+&rArr; Better to use a `struct` with named members rather than a `std::tuple`
+where possible
+
+--
+
+The `std::tuple` class is very useful in other contexts, especially when
+working with generic functions and containers 
+- a generic function or container will not know ahead of time what it
+  is to contain
+- `std::tuple` provides a simple container for an arbitrary number of variables
+  of arbitrary types
+- `std::tuple` is therefore used in many places throughout the C++ STL
+
 ---
 
 # Structured binding
@@ -407,6 +468,100 @@ Structured binding offers another way to return multiple values from a function
 --
 
 There are many other uses for structured binding
-- many of these are too advanced for this course
+- many of these are too advanced for this course 
+  - indeed, arguably some of the most useful were [only introduced in
+    C++23](https://www.cppstories.com/2023/view-zip/)!
 - if interested, [have a look online for examples](https://www.cppstories.com/2022/structured-bindings/)
+
+
+---
+name: string_view
+
+class: section
+
+# `std::string_view`
+
+## avoiding needless copies
+
+---
+
+# Performance issues
+
+
+---
+
+# The `std::string_view` class
+
+---
+
+# Ownership and lifetime
+
+
+
+
+---
+name: classes
+
+class: section
+
+# Classes
+
+## A cornerstone of Object-Oriented Programming
+
+---
+
+# Extending structures with methods
+
+
+---
+
+# Access specifiers
+
+
+---
+
+# OOP design principles
+
+- encapsulation
+
+- abstraction
+
+
+---
+
+# Using classes in our project
+
+We already use plenty of classes in our project:
+- `std::string`
+- `std::vector`
+- `std::vector<std:string>` (aliased to `Fragments`)
+
+These already provide all the functionality we need for our program to function
+
+--
+
+But what if we need to use our DNA shotgun sequencing algorithm as part of a
+broader project?
+- it would be better to *encapsulate* the algorithm into a distinct, discrete
+  module of some form
+
+&rArr; use a class to represent our algorithm!
+
+---
+
+# Representing our shotgun sequencing algorithm as a class
+
+Let's set up a class called `ShotgunSequencer` to encapsulate our algorithm
+
+
+
+---
+
+# Solutions
+
+
+
+---
+
+# Exercises
 

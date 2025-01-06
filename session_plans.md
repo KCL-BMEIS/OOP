@@ -17,8 +17,10 @@
 - [regular `for` loop](https://www.geeksforgeeks.org/cpp-for-loop/)
 - [the `while` loop](https://www.geeksforgeeks.org/cpp-while-loop/)
 - [`do`-`while` loop](https://www.geeksforgeeks.org/cpp-do-while-loop/)
+- jump statements: [`break` and `continue`](https://www.w3schools.com/cpp/cpp_break.asp)
 - [type inference](https://www.geeksforgeeks.org/type-inference-in-c-auto-and-decltype/): the `auto` keyword
 - conditional execution: [the `if` statement](https://www.w3schools.com/cpp/cpp_conditions.asp)
+- the [`switch` statement](https://www.geeksforgeeks.org/switch-statement-in-cpp/)
 - [statements and compound statements](https://cplusplus.com/doc/tutorial/control/)
 - basic error handling
 
@@ -70,7 +72,7 @@
 
 # Week 3
 
-## Advanced string formatting, grouping data
+## Advanced string formatting, structs & classes
 
 - advanced string formatting using [`std::format()`](https://www.accu.org/journals/overload/29/166/collyer/)
 - [grouping data into a `struct`](https://www.geeksforgeeks.org/structures-in-cpp/)
@@ -91,16 +93,17 @@
 - [Default function arguments](https://www.geeksforgeeks.org/default-arguments-c/)
 - [Constructor delegation](https://www.geeksforgeeks.org/constructor-delegation-c/) (aka constructor chaining)
 - [the `const` keyword](https://www.geeksforgeeks.org/const-keyword-in-cpp/):
- - for variables
- - for function arguments
- - [for methods](https://www.geeksforgeeks.org/const-member-functions-c/)
- - [why pass by `const` reference](https://www.geeksforgeeks.org/const-reference-vs-normal-parameter-passing-in-cpp/)
+  - for variables
+  - for function arguments
+  - [for methods](https://www.geeksforgeeks.org/const-member-functions-c/)
+  - [why pass by `const` reference](https://www.geeksforgeeks.org/const-reference-vs-normal-parameter-passing-in-cpp/)
+- [function overloading](https://www.geeksforgeeks.org/function-overloading-c/)
 
 ---
 
 # Week 4
 
-## fMRI project
+## Next project: funcional MRI
 
 - more practice with:
   - basic program structure and command-line argument handling
@@ -211,9 +214,9 @@
 
 # Week 9
 
-## TBC
+## OOP design and principles
 
-## TBC
+## Templates and the Standard Template Library
 
 
 ---
@@ -221,7 +224,7 @@
 
 # Week 10
 
-## pointers and manual memory management
+## Pointers and manual memory management
 
 - pointers
 - C-style arrays
@@ -232,7 +235,7 @@
 - array `new[]` & `delete[]`
 
 
-## Pointers and manual memory management
+## Handling memory in C++ classes
 
 - using constructor / destructor / copy constructor / assignment operator to manage memory
 - smart pointers? 
@@ -242,8 +245,6 @@
 
 # Topics not yet covered:
 
-- [`switch` statement](https://www.geeksforgeeks.org/switch-statement-in-cpp/)
-- jump statements: [`break` and `continue`](https://www.w3schools.com/cpp/cpp_break.asp)
 - [conditional (ternary) operator (`?:`)](https://www.geeksforgeeks.org/cpp-ternary-or-conditional-operator/)
 - [Resource Acquisition Is Initialization (RAII)](https://www.geeksforgeeks.org/resource-acquisition-is-initialization/)
 - [the function stack](https://www.geeksforgeeks.org/function-call-stack-in-c/)
