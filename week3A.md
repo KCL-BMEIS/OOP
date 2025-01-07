@@ -912,7 +912,7 @@ std::cout << get_substr() << "\n";
 ```
 --
 
-Returning a non-owning view or reference to a local variable is a common mistake!
+Returning a non-owning view or reference to a function scope, local variable is a common mistake!
 - this applies to any non-owning reference or similar construct
 
 ---
@@ -975,14 +975,14 @@ For these reasons, use non-owning constructs with caution!
 # Back to our own code...
 
 ```
-#include <string_view>
+`#include <string_view>`
 ...
 int compute_overlap (const std::string& sequence, const std::string& fragment)
 {
   ...
   for (int overlap = fragment.size(); overlap > 0; --overlap) {
-    const auto seq_start = std::string_view (sequence).substr(0, overlap);
-    const auto frag_end = std::string_view (fragment).substr(fragment.size()-overlap);
+    const auto seq_start = `std::string_view (sequence)`.substr(0, overlap);
+    const auto frag_end = `std::string_view (fragment)`.substr(fragment.size()-overlap);
     if (seq_start == frag_end) {
       largest_overlap = overlap;
       break;
@@ -990,6 +990,7 @@ int compute_overlap (const std::string& sequence, const std::string& fragment)
   }
   ...
 ```
+--
 
 In our case, we can see that:
 - the lifetime of both `std::string_view`s is shorter than the original
@@ -1038,7 +1039,6 @@ sys     0m0.004s
 
 This is almost 10× faster!
 
-
 ---
 name: classes
 
@@ -1050,23 +1050,83 @@ class: section
 
 ---
 
-# Extending structures with methods
+# C++ classes
+
+Classes can be thought of an extension of structures
+- indeed, in C++, `struct` are also classes!
+
+--
+
+Classes are user-defined data types that can be used to group data, but also:
+- allow the class to provide *member functions* to interact with the data
+- provide *access specifiers* to limit access to some or all member variables
+
+--
+
+Classes are central to Object-Oriented Programming
+- a class is essentially a *blueprint* for objects of that type
+- a class is used to represent a broadly independent aspect of our program 
+- an instance of a class is also referred to as an *object*
+
+--
+
+We have already used a number of standard classes:
+- `std::string`, `std::vector`, `std::string_view`, ...
 
 
+---
+
+# Class member functions or methods
+
+*Methods* or *member functions* are functions that are accessed via an existing
+*instance* using the [dot
+operator]((https://www.geeksforgeeks.org/dot-operator-in-cpp/)
+
+--
+
+You have already been using methods throughout the course so far:
+- `s.size();`
+- `v.size();`
+- `v.push_back();`
+- `v.insert();`
+- ...
+
+--
+
+These are a feature of C++ classes
+- you can define your own methods for your own classes
 
 ---
 
 # Access specifiers
 
+Member variables or functions can be declared as *public* or *private*
 
----
+--
 
-# OOP design principles
+When **public**, the corresponding variable or function can be used from outside
+the class
 
-- encapsulation
+When **private**, the variable or function can only be used within another member
+function of the same class
 
-- abstraction
+--
 
+The ability to protect members in this way supports
+[*encapsulation*](https://www.geeksforgeeks.org/encapsulation-in-cpp/) and
+[*abstraction*](https://www.geeksforgeeks.org/abstraction-in-cpp/)
+- *private* data can only be modified using *public* methods:
+  - the author of the class can then ensure the *consistency* of the
+    internal state of their class (encapsulation)
+  - users of the class only need to understand the *abstract*
+    interface provided via the *public* methods (abstraction) 
+
+--
+
+Encapsulation and abstraction are [fundamental features of Object-Oriented
+Programming](https://www.geeksforgeeks.org/object-oriented-programming-in-cpp/)
+- we will cover them in more detail later in the course, when they will make
+  more sense
 
 ---
 
@@ -1086,14 +1146,194 @@ broader project?
 - it would be better to *encapsulate* the algorithm into a distinct, discrete
   module of some form
 
-&rArr; use a class to represent our algorithm!
+--
+
+&rArr; let's use a class to represent our algorithm!
+
+---
+layout: true
+
+# The shotgun sequencing algorithm as a class
+
+Let's set up a class called `ShotgunSequencer` to encapsulate our algorithm:
 
 ---
 
-# Representing our shotgun sequencing algorithm as a class
+```
+class ShotgunSequencer {
 
-Let's set up a class called `ShotgunSequencer` to encapsulate our algorithm
+};
+```
 
+---
+
+```
+`class` ShotgunSequencer {
+
+};
+```
+- a class is declared using the keyword `class` 
+  - this is similar to declaring a `struct`
+
+---
+
+```
+class `ShotgunSequencer` {
+
+};
+```
+- a class is declared using the keyword `class` 
+  - this is similar to declaring a `struct`
+- we provide a suitable name for the class
+  - this is the name of the *type* &ndash; not an instance
+  - there are many conventions for naming &ndash; on this course, we recommend
+    using
+[PascalCase](https://www.freecodecamp.org/news/snake-case-vs-camel-case-vs-pascal-case-vs-kebab-case-whats-the-difference/)
+  - it is important to chose a name that clearly expresses what kind of object
+    this class represents
+
+
+---
+
+```
+class ShotgunSequencer `{`
+
+`};`
+```
+- a class is declared using the keyword `class` 
+  - this is similar to declaring a `struct`
+- we provide a suitable name for the class
+  - this is the name of the *type* &ndash; not an instance
+  - there are many conventions for naming &ndash; on this course, we recommend
+    using
+[PascalCase](https://www.freecodecamp.org/news/snake-case-vs-camel-case-vs-pascal-case-vs-kebab-case-whats-the-difference/)
+  - it is important to chose a name that clearly expresses what kind of object
+    this class represents
+- the contents of the class are then declared between braces
+  - don't forget the final semicolon!
+
+---
+layout: true
+
+# The shotgun sequencing algorithm as a class
+
+Now let's add some data members to our class:
+
+---
+
+```
+class ShotgunSequencer {
+
+  private:
+    int m_minimum_overlap;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+
+---
+
+```
+class ShotgunSequencer {
+
+  `private:`
+    int m_minimum_overlap;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- we are going to declare our member variables as **private**
+  - this is done using the `private` keyword, followed by a colon (`:`)
+  - all subsequent declarations will be private
+
+
+---
+
+```
+class ShotgunSequencer {
+
+  private:
+*   int m_minimum_overlap;
+*   std::string m_sequence;
+*   Fragments m_fragments;
+};
+```
+- we are going to declare our member variables as **private**
+  - this is done using the `private` keyword, followed by a colon (`:`)
+  - all subsequent declarations will be private
+- we can now declare our member variables, in exactly the same way as we did
+  with `struct`
+
+---
+layout: true
+
+# The shotgun sequencing algorithm as a class
+
+We now need to add *methods* to allow users of our class to interact with it:
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    void init (const Fragments& fragments);
+    bool iterate ();
+    void check_remaining_fragments ();
+
+  private:
+    int m_minimum_overlap;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+
+---
+
+```
+class ShotgunSequencer {
+  `public`:
+    void init (const Fragments& fragments);
+    bool iterate ();
+    void check_remaining_fragments ();
+
+  private:
+    int m_minimum_overlap;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- this time, our methods will need to be **public**
+  - this is done using the `public` keyword, in much the same way as with
+    `private`
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+*   void init (const Fragments& fragments);
+*   bool iterate ();
+*   void check_remaining_fragments ();
+
+  private:
+    int m_minimum_overlap;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- this time, our methods will need to be **public**
+  - this is done using the `public` keyword, in much the same way as with
+    `private`
+- we can now add our *method declarations*
+  - these look very similar to regular function declarations
+  - ... but they are declared within the scope of our `ShotgunSequencer` class
+
+---
+layout: false
+
+# Difference between `struct` and `class`
+
+In C++, there is very little difference between `struct` and `class`
 
 
 ---
