@@ -1225,7 +1225,7 @@ Now let's add some data members to our class:
 class ShotgunSequencer {
 
   private:
-    int m_minimum_overlap;
+    const int m_minimum_overlap = 10;
     std::string m_sequence;
     Fragments m_fragments;
 };
@@ -1237,7 +1237,7 @@ class ShotgunSequencer {
 class ShotgunSequencer {
 
   `private:`
-    int m_minimum_overlap;
+    const int m_minimum_overlap = 10;
     std::string m_sequence;
     Fragments m_fragments;
 };
@@ -1253,7 +1253,7 @@ class ShotgunSequencer {
 class ShotgunSequencer {
 
   private:
-*   int m_minimum_overlap;
+*   const int m_minimum_overlap = 10;
 *   std::string m_sequence;
 *   Fragments m_fragments;
 };
@@ -1263,6 +1263,31 @@ class ShotgunSequencer {
   - all subsequent declarations will be private
 - we can now declare our member variables, in exactly the same way as we did
   with `struct`
+  - there are many naming conventions &ndash; for member variables, we
+    recommend `snake_case` with the `m_` prefix 
+
+---
+
+```
+class ShotgunSequencer {
+
+  private:
+*   const int m_minimum_overlap = 10;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- we are going to declare our member variables as **private**
+  - this is done using the `private` keyword, followed by a colon (`:`)
+  - all subsequent declarations will be private
+- we can now declare our member variables, in exactly the same way as we did
+  with `struct`
+  - there are many naming conventions &ndash; for member variables, we
+    recommend `snake_case` with the `m_` prefix 
+- note that member variables can be *default-initialised* as shown
+  - this type of initialisation was introduced in C++11 
+  - we need to initialise `m_minimum_overlap` since we have declared it
+    `const` &ndash; we won't be able to modify it later!
 
 ---
 layout: true
@@ -1281,7 +1306,7 @@ class ShotgunSequencer {
     void check_remaining_fragments ();
 
   private:
-    int m_minimum_overlap;
+    const int m_minimum_overlap = 10;
     std::string m_sequence;
     Fragments m_fragments;
 };
@@ -1297,7 +1322,7 @@ class ShotgunSequencer {
     void check_remaining_fragments ();
 
   private:
-    int m_minimum_overlap;
+    const int m_minimum_overlap = 10;
     std::string m_sequence;
     Fragments m_fragments;
 };
@@ -1316,7 +1341,7 @@ class ShotgunSequencer {
 *   void check_remaining_fragments ();
 
   private:
-    int m_minimum_overlap;
+    const int m_minimum_overlap = 10;
     std::string m_sequence;
     Fragments m_fragments;
 };
@@ -1327,6 +1352,10 @@ class ShotgunSequencer {
 - we can now add our *method declarations*
   - these look very similar to regular function declarations
   - ... but they are declared within the scope of our `ShotgunSequencer` class
+
+
+
+
 
 ---
 layout: false
