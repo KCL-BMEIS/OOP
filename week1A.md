@@ -75,7 +75,7 @@ name: team
 .col[ 
 ![:scale 100%](images/nashira.jpg) ]
 .col[ 
-[Paloma Nashira Rodriguez Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk) ]
+[Nashira Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk) ]
 ] ]
 
 ---

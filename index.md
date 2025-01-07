@@ -23,7 +23,7 @@ title: Object-Oriented Programming (5CCYB041)
 - [Charel Junior Mangama Sindzi](mailto:charel.mangama_sindzi@kcl.ac.uk)
 - [Yovin Yahathugoda](mailto:yovin.yahathugoda@kcl.ac.uk)
 - [Jakub Grzelak](mailto:jakub.grzelak@kcl.ac.uk)
-- [Paloma Nashira Rodriguez Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk)
+- [Nashira Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk)
 - [Dewmini Hasara Wickremasinghe](mailto:dewmini.wickremasinghe@kcl.ac.uk)
 
 ---
