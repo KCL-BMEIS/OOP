@@ -1313,7 +1313,28 @@ overlapping fragments remain**
 
 # Iteratively merge fragments into sequence
 
-**TODO**
+```
+* while (fragments.size()) {
+*   std::cerr << "---------------------------------------------------\n";
+*   std::cerr << fragments.size() << " fragments left\n";
+    int biggest_overlap = 0;
+    int fragment_with_biggest_overlap = -1;
+    for (int n = 0; n < static_cast<int> (fragments.size()); ++n) {
+      ...
+    }
+*    if (fragment_with_biggest_overlap < 0)
+*      break;
+*    if (std::abs (biggest_overlap) < 10)
+*      break;
+
+    std::cerr << "fragment with biggest overlap is at index " 
+              << fragment_with_biggest_overlap
+              << ", overlap = " << biggest_overlap << "\n";
+
+    merge (sequence, fragments[fragment_with_biggest_overlap], biggest_overlap);
+*   fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
+* }
+```
 
 ---
 
@@ -1338,7 +1359,24 @@ overlapping fragments remain
 
 # Check all unmerged fragments are already in sequence
 
-**TODO**
+```
+    ...
+    fragments.erase (fragments.begin() + fragment_with_biggest_overlap);
+  }
+
+* int num_unmatched = 0;
+* for (const auto& frag : fragments) {
+*   if (sequence.find (frag) == std::string::npos)
+*     ++num_unmatched;
+* }
+
+* if (num_unmatched)
+*   std::cerr << "WARNING: " << num_unmatched << " fragments remain unmatched!\n";
+
+  std::cerr << "final sequence has length " << sequence.size() << "\n";
+  write_sequence (args[2], sequence);
+}
+```
 
 ---
 name: cmdline_options

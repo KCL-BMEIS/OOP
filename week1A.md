@@ -1494,19 +1494,6 @@ while (condition);
 ```
 This will also run `statement` as long as `condition` is true. The difference with the regular `while` loop is that `condition` is tested *after* running `statement`
 
----
-
-# Early termination: `break`
-
-**TODO**
-
-
----
-
-# Skipping to the next iteration: `continue`
-
-**TODO**
-
 
 ---
 name: fundamentals
@@ -2789,6 +2776,50 @@ switch (variable) {
 .explain-middle[
 We can also have a catch-all `default` label at the end, which will be executed in case none of the other labels matched
 ]
+
+---
+
+# Early termination: `break`
+
+The `break` statement can also be used with loops
+
+In this case, it is used to terminate the current iteration and immediately
+return control to the code after the corresponding loop. 
+
+--
+
+For example:
+```
+bool match_found = false;
+for (int n = 0; n < 100; ++n) {
+  if (matches_criterion (n)) {
+    match_found = true;
+    break;
+  }
+}
+```
+
+---
+
+# Skipping to the next iteration: `continue`
+
+The `continue` statement can also be used with loops
+
+It also stops the current iteration, but in this case it immediately moves onto
+the next one
+
+--
+
+For example:
+```
+for (int n = 0; n < data.size(); ++n) {
+  if (!need_to_process (n))
+    continue;
+  perform_intense_processing (data[n]);
+}
+
+```
+
 
 ---
 
