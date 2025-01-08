@@ -18,7 +18,7 @@ void run (std::vector<std::string>& args)
 
   auto fragments = load_fragments (args[1]);
 
-  ShotgunSequencer solver;
+  ShotgunSequencer solver (10);
   solver.init (fragments);
 
   std::cerr << "initial sequence has size " << solver.sequence().size() << "\n";
