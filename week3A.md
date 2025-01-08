@@ -1013,7 +1013,7 @@ $ time ./shotgun ../data/fragments-1.txt out
 initial sequence has size 1000
 final sequence has length 20108
 
-real    0m0.359s
+`real    0m0.359s`
 user    0m0.359s
 sys     0m0.000s
 ```
@@ -1031,7 +1031,7 @@ $ time ./shotgun ../data/fragments-1.txt out
 initial sequence has size 1000
 final sequence has length 20108
 
-real    0m0.041s
+`real    0m0.041s`
 user    0m0.037s
 sys     0m0.004s
 ```
@@ -1127,6 +1127,36 @@ Encapsulation and abstraction are [fundamental features of Object-Oriented
 Programming](https://www.geeksforgeeks.org/object-oriented-programming-in-cpp/)
 - we will cover them in more detail later in the course, when they will make
   more sense
+
+---
+
+# Difference between `struct` and `class`
+
+In C++, there is actually very little *practical* difference between `struct` and `class`
+- there is however a big *conceptual* difference!
+
+--
+
+As far as the compiler is concerned, `struct` & `class` are essentially the
+same thing
+- the only *actual* difference between the two is that *unless otherwise
+  specified*:
+  - members of a `struct` are *public* by default
+  - members of a `class` are *private* by default
+
+--
+
+Nonetheless, you are encouraged to reserve the use of `struct` for small, lightweight containers with public data members only
+- for example, as a way of grouping variables into a single entity that can be
+  returned from a function
+- by using a `struct`, you are expressing the notion that the `struct` itself
+  is unimportant: it's the data members that matters
+- do not use a `struct` for anything that should provide an abstract interface, and/or
+  where maintaining consistency between member variables is important
+
+--
+
+&rArr; In general, prefer to define a `class`
 
 ---
 
@@ -1285,9 +1315,11 @@ class ShotgunSequencer {
   - there are many naming conventions &ndash; for member variables, we
     recommend `snake_case` with the `m_` prefix 
 - note that member variables can be *default-initialised* as shown
-  - this type of initialisation was introduced in C++11 
   - we need to initialise `m_minimum_overlap` since we have declared it
     `const` &ndash; we won't be able to modify it later!
+  - note: this type of [in-class member
+    initialisation](https://isocpp.org/wiki/faq/cpp11-language-classes#member-init)
+    was introduced in C++11 
 
 ---
 layout: true
@@ -1350,24 +1382,845 @@ class ShotgunSequencer {
   - this is done using the `public` keyword, in much the same way as with
     `private`
 - we can now add our *method declarations*
-  - these look very similar to regular function declarations
-  - ... but they are declared within the scope of our `ShotgunSequencer` class
+  - the names of these methods should mirror the actions performed in the algorithm
+  - these look like regular function declarations &ndash;
+    but are declared *within the scope* of our `ShotgunSequencer` class
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+*   void init (const Fragments& fragments);
+    bool iterate ();
+    void check_remaining_fragments ();
+
+  private:
+    const int m_minimum_overlap = 10;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- `.init()` is used to provide the list of fragments to initialise the
+    algorithm
+  - it does not need to return anything (return type is therefore `void`)
 
 
+---
+
+```
+class ShotgunSequencer {
+  public:
+    void init (const Fragments& fragments);
+*   bool iterate ();
+    void check_remaining_fragments ();
+
+  private:
+    const int m_minimum_overlap = 10;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- `.iterate()` performs a single iteration of the algorithm 
+  - it will identify the fragment with the largest overlap, and if found, merge
+    it
+  - we return a `bool` to indicate the status of the iteration:
+    <br>&rArr; if `false`, no fragment was found, and the algorithm should stop
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    void init (const Fragments& fragments);
+    bool iterate ();
+*   void check_remaining_fragments ();
+
+  private:
+    const int m_minimum_overlap = 10;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- `.check_remaining_fragments()` performs the final check
+  - the remaining fragments should all already be contained within the estimated sequence
+  - we *could* have decided to return `bool` to indicate the status of the check &ndash; this is a design decision!
+  - ... but if any fragments remain, we consider this to be unexpected, but not fatal &rArr; we issue a warning
+  - there is therefore to need for a return value &ndash; the return type is
+    also `void`
+ 
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    void init (const Fragments& fragments);
+*   bool iterate ();
+*   void check_remaining_fragments ();
+
+  private:
+    const int m_minimum_overlap = 10;
+    std::string m_sequence;
+    Fragments m_fragments;
+};
+```
+- note that we don't need to provide any arguments to these methods
+  - this is because the class members will all be available within the scope of
+    these methods
+  - they will already have full access to the private `m_minimum_overlap`, `m_sequence` and `m_fragments`
+    variables!
+ 
+
+
+---
+layout: true
+
+# The shotgun sequencing algorithm as a class
+
+How do we use our class elsewhere in our code? In `shotgun.cpp`:
+
+---
+
+---
+
+```
+*#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+* ShotgunSequencer solver;
+* solver.init (fragments);
+* while (solver.iterate());
+* solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+
+---
+
+```
+*#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+  ShotgunSequencer solver;
+  solver.init (fragments);
+  while (solver.iterate());
+  solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+- we need to `#include` our new header to ensure the declarations are
+  accessible in this file
+
+
+---
+
+```
+#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+* ShotgunSequencer solver;
+  solver.init (fragments);
+  while (solver.iterate());
+  solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+- we need to `#include` our new header to ensure the declarations are
+  accessible in this file
+- at the apppropriate point, we can create an *instance* of our new
+  `ShotgunSequencer` class
+
+
+
+---
+
+```
+#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+  ShotgunSequencer solver;
+* solver.init (fragments);
+  while (solver.iterate());
+  solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+- we need to `#include` our new header to ensure the declarations are
+  accessible in this file
+- at the apppropriate point, we can create an *instance* of our new
+  `ShotgunSequencer` class
+- we use the `.init()` method to supply the list of fragments and initialise
+  the algorithm
+
+
+---
+
+```
+#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+  ShotgunSequencer solver;
+  solver.init (fragments);
+* while (solver.iterate());
+  solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+- we can now iterate through the algorithm
+  - the simplest approach is to use a `while` loop here: we keep going while `iterate()` returns `true`
+  - as everything is done within the `.iterate()` method, there is no need
+    for any further actions in the loop itself
+
+---
+
+```
+#include "shotgun_sequencer.h"
+
+  ...
+  auto fragments = load_fragments (args[1]);
+
+  ShotgunSequencer solver;
+  solver.init (fragments);
+  while (solver.iterate());
+* solver.check_remaining_fragments();
+
+  std::cerr << "final sequence has length " << solver.sequence().size() << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+Finally, we can perform the final check to ensure all the remaining fragments
+are indeed already contained in the final sequence
+
+
+---
+layout: true
+
+# The shotgun sequencing algorithm as a class
+
+We have *declared* our methods, but we have not *defined* them! 
+<br>Let's create a `shotgun_sequencer.cpp` file to match the corresponding
+header:
+
+---
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+#include "shotgun_sequencer.h"
+#include "debug.h"
+
+void ShotgunSequencer::init (const Fragments& fragments)
+{ ... }
+
+bool ShotgunSequencer::iterate ()
+{ ... }
+
+void ShotgunSequencer::check_remaining_fragments ()
+{ ... }
+```
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+*#include "shotgun_sequencer.h"
+#include "debug.h"
+
+void ShotgunSequencer::init (const Fragments& fragments)
+{ ... }
+
+bool ShotgunSequencer::iterate ()
+{ ... }
+
+void ShotgunSequencer::check_remaining_fragments ()
+{ ... }
+```
+
+.explain-bottom[
+As before, we need to `#include` all the necessary headers that declare the
+functionality we are going to use &ndash; including our new header!
+]
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+#include "shotgun_sequencer.h"
+#include "debug.h"
+
+*void ShotgunSequencer::init (const Fragments& fragments)
+{ ... }
+
+*bool ShotgunSequencer::iterate ()
+{ ... }
+
+*void ShotgunSequencer::check_remaining_fragments ()
+{ ... }
+```
+
+.explain-top[
+We can now provide the definitions for our methods. As before, we need to
+start each *definition* by replicating the *declaration*, so that the compiler
+can match it with the original declaration in the header
+
+<br>
+But there are some clear differences!
+]
+
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+#include "shotgun_sequencer.h"
+#include "debug.h"
+
+void `ShotgunSequencer::`init (const Fragments& fragments)
+{ ... }
+
+bool `ShotgunSequencer::`iterate ()
+{ ... }
+
+void `ShotgunSequencer::`check_remaining_fragments ()
+{ ... }
+```
+
+.explain-top[
+The name of each method is now prefixed with the *class name* and the [scope
+resolution
+operator](https://www.geeksforgeeks.org/scope-resolution-operator-in-c/)
+
+<br>
+This is because these definitions are now *outside* the scope of the class
+declaration (outside the braces within which we declared our member variables
+and functions).
+
+<br>
+This is how we can refer to member functions of a class. This essentially
+means: the `init()` method that was declared within the scope of the
+`ShotgunSequencer` class ]
+
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+#include "shotgun_sequencer.h"
+#include "debug.h"
+
+*void init (const Fragments& fragments)
+{ ... }
+
+*bool iterate ()
+{ ... }
+
+*void check_remaining_fragments ()
+{ ... }
+```
+
+.explain-top[
+If we tried to define our methods *without* this scope resolution, the compiler
+would (rightly) assume that we are defining completely different, *global* functions,
+that are entirely independent of our `ShotgunSequencer` class!
+
+<br>For example, we would end up with:
+- an unexpected `iterate()` function
+  - potentially with *compiler* errors as we try to access member variables
+- no *definition* for our `ShotgunSequencer::iterate()` method 
+  - leading to *linker* errors at a later stage in the build process (unresolved symbol)
+]
+
+---
+
+```c++
+#include <iostream>
+#include <algorithm>
+#include <format>
+
+#include "fragments.h"
+#include "overlap.h"
+#include "shotgun_sequencer.h"
+#include "debug.h"
+
+void ShotgunSequencer::init (const Fragments& fragments)
+{ `...` }
+
+bool ShotgunSequencer::iterate ()
+{ `...` }
+
+void ShotgunSequencer::check_remaining_fragments ()
+{ `...` }
+```
+
+.explain-top[
+Let's now focus on what will go in the *body* of our functions
+]
+
+---
+layout: true
+
+# Function definitions
+
+---
+
+```
+void ShotgunSequencer::init (const Fragments& fragments)
+{
+  m_fragments = fragments;
+  if (debug::verbose)
+    fragment_statistics (m_fragments);
+  m_sequence = extract_longest_fragment (m_fragments);
+}
+```
+
+---
+
+```
+void ShotgunSequencer::init (const Fragments& fragments)
+{
+  `m_fragments` = fragments;
+  if (debug::verbose)
+    fragment_statistics (`m_fragments`);
+  `m_sequence` = extract_longest_fragment (`m_fragments`);
+}
+```
+
+Note that we can access the *members* of our class directly within the body of
+our method
+- technically, these are the members of the *current instance* of our class
+- each instance will have its own independent version of these variables
+
+
+---
+
+```
+void ShotgunSequencer::init (const Fragments& fragments)
+{
+* m_fragments = fragments;
+  if (debug::verbose)
+    fragment_statistics (m_fragments);
+  m_sequence = extract_longest_fragment (m_fragments);
+}
+```
+
+Note that we can access the *members* of our class directly within the body of
+our method
+- technically, these are the members of the *current instance* of our class
+- each instance will have its own independent version of these variables
+
+
+We start by copying the list of fragments over from the argument provided
+  (`fragments`) into the corresponding member variable (`m_fragments`)
+- note how using a clear naming strategy for class members helps to avoid
+    confusion!
+
+---
+
+```
+void ShotgunSequencer::init (const Fragments& fragments)
+{
+  m_fragments = fragments;
+* if (debug::verbose)
+*   fragment_statistics (m_fragments);
+* m_sequence = extract_longest_fragment (m_fragments);
+}
+```
+
+Note that we can access the *members* of our class directly within the body of
+our method
+- technically, these are the members of the *current instance* of our class
+- each instance will have its own independent version of these variables
+
+
+We start by copying the list of fragments over from the argument provided
+  (`fragments`) into the corresponding member variable (`m_fragments`)
+- note how using a clear naming strategy for class members helps to avoid
+    confusion!
+
+The rest of the function mirrors what was done in `shotgun.cpp` previously
+
+---
+
+```
+bool ShotgunSequencer::iterate ()
+{
+  debug::log ("---------------------------------------------------");
+  debug::log (std::format ("{} fragments left", m_fragments.size()));
+
+  auto [ overlap, index ] = find_biggest_overlap (m_sequence, m_fragments);
+
+  if (index < 0)
+    return false;
+  if (std::abs (overlap) < m_minimum_overlap)
+    return false;
+
+  debug::log (
+      std::format ("fragment with biggest overlap is at index {}, overlap = {}",
+      index, overlap));
+
+  merge (m_sequence, m_fragments[index], overlap);
+  m_fragments.erase (m_fragments.begin() + index);
+  return true;
+}
+```
+
+---
+
+```
+bool ShotgunSequencer::iterate ()
+{
+  debug::log ("---------------------------------------------------");
+  debug::log (std::format ("{} fragments left", m_fragments.size()));
+
+  auto [ overlap, index ] = find_biggest_overlap (m_sequence, m_fragments);
+
+  if (index < 0)
+    return false;
+  if (std::abs (overlap) < m_minimum_overlap)
+    return false;
+
+  debug::log (
+      std::format ("fragment with biggest overlap is at index {}, overlap = {}",
+      index, overlap));
+
+  merge (m_sequence, m_fragments[index], overlap);
+  m_fragments.erase (m_fragments.begin() + index);
+  return true;
+}
+```
+.explain-bottom[
+This mirrors almost exactly what was previously performed in `shotgun.cpp`
+&ndash; this time using the member variables (`m_minimum_overlap`,
+`m_fragments`, `m_sequence`)
+]
+
+---
+
+```
+bool ShotgunSequencer::iterate ()
+{
+  debug::log ("---------------------------------------------------");
+  debug::log (std::format ("{} fragments left", m_fragments.size()));
+
+  auto [ overlap, index ] = find_biggest_overlap (m_sequence, m_fragments);
+
+  if (index < 0)
+    `return false`;
+  if (std::abs (overlap) < m_minimum_overlap)
+    `return false`;
+
+  debug::log (
+      std::format ("fragment with biggest overlap is at index {}, overlap = {}",
+      index, overlap));
+
+  merge (m_sequence, m_fragments[index], overlap);
+  m_fragments.erase (m_fragments.begin() + index);
+  `return true`;
+}
+```
+.explain-top[
+The main difference is that we now `return` to indicate success or failure. 
+]
+
+---
+
+```
+void ShotgunSequencer::check_remaining_fragments ()
+{
+  debug::log (std::format (
+        "{} fragments remaining unmatched"
+        m_fragments.size()));
+  int num_unmatched = 0;
+  for (auto& frag : m_fragments) {
+    if (m_sequence.find (frag) == std::string::npos)
+      ++num_unmatched;
+  }
+
+  if (num_unmatched)
+    std::cerr << "WARNING: " << num_unmatched << " fragments remain unmatched!\n";
+  else
+    debug::log ("all remaining fragments matched OK");
+}
+```
+Likewise, the code in `ShotgunSequencer::check_remaining_fragments()` works exactly as it
+did previously in `shotgun.cpp`
 
 
 
 ---
 layout: false
+name: getset
 
-# Difference between `struct` and `class`
+# Getters & setters
 
-In C++, there is very little difference between `struct` and `class`
+There is one final piece required for us to be able to use our
+`ShotgunSequencer` class:
+- a way to retrieve the resulting sequence
+
+--
+
+For this, we can use a [*getter*
+method](https://www.geeksforgeeks.org/cpp-getters-and-setters/)
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+*   const std::string& sequence () const { return m_sequence; }
+  private:
+    ...
+};
+```
+
+--
+
+Let's unpack what is going on here...
+
+---
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    `const std::string& sequence () const` { return m_sequence; }
+  private:
+    ...
+};
+```
+This is the *declaration* of our method
+
+---
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    const std::string& `sequence` () const { return m_sequence; }
+  private:
+    ...
+};
+```
+We have given our getter method a simple name: `sequence()` 
+- note that many style guides would recommend a name such as `get_sequence()`
+  or `getSequence()`
+- use whichever [coding
+  standards](https://isocpp.org/wiki/faq/coding-standards) are in use on
+  whichever project you may be contributing to!
 
 
 ---
 
-# Solutions
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    `const std::string&` sequence () const { return m_sequence; }
+  private:
+    ...
+};
+```
+
+Our getter returns a *const reference* to our member variable
+- this is a common construct: returning a full-blown copy could rapidly become
+  prohibitive
+- returning a `const` reference guarantees our *private* variable remains
+  read-only
+  - it cannot be modified from outside the code
+
+
+---
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    const std::string& sequence `()` const { return m_sequence; }
+  private:
+    ...
+};
+```
+
+Note that our getter method does not take any arguments
+- we can simply invoke it as `solver.sequence()`
+- this is often the case with getters: they only need to return the
+  corresonding value
+
+---
+name: const_method
+
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    const std::string& sequence () `const` { return m_sequence; }
+  private:
+    ...
+};
+```
+The `const` keyword has a special meaning when placed at the end of our method
+declaration, after the argument list:
+- it states that this method cannot modify any of the class members
+- calling this method is therefore guaranteed to leave the class itself
+  completely unmodified
+- the compiler is responsible for enforcing this
+
+---
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    const std::string& sequence () const { `return m_sequence;` }
+  private:
+    ...
+};
+```
+
+Note that in case, we have decided to insert the method *definition* right in
+the class declaration
+- this differs from our previous methods, which were defined separately in the
+  corresponding `.cpp` file
+
+--
+
+This declares the member function implicitly as `inline`
+- remember: `inline` means the definition is allowed to appear
+  across multiple *translation units*
+- this makes sense for small functions such as getters & setters
+- it provides opportunities for the compiler to optimise away the function call 
+  - it can simply substitute the *body* of the function where it might
+    otherwise have called the function
+- there is now no need to supply the corresponding function definition in a
+  separate `.cpp` file
+
+---
+
+# Getters & setters
+
+```
+class ShotgunSequencer {
+  public:
+*   void init (const Fragments& fragments);
+    ...
+    const std::string& sequence () const { return m_sequence; }
+  private:
+    ...
+};
+```
+
+*Setters* perform the opposite action from getters
+- they allow users to *set* cless parameters
+- they typically do not need to return anything, so usually have a `void` return type
+- since they modify class members, they cannot be declared `const`
+
+--
+
+Our `init()` method is in many ways a setter method:
+- it sets the (initial) list of fragments
+- we could have called this method `set_fragments()` or similar
+  - here, we have chosen to call it `init()` since setting the fragment list
+    implicitly (re-)initialises the algorithm
+
+
+
+
+
+
+---
+
+---
+
+# Getters & setters
+
+Getters and setters are an important tool to implement *encapsulation*
+
+- the getter can ensure the member variable cannot be modified directly from
+  outside the class
+
+- the setter can perform any additional actions that may be required when
+  modifying member variables
+  - for example, our `init()` method (if viewed as a setter method) needs to
+    re-initialise the whole algorithm, including resetting the current estimate
+    of the sequence to the longest fragment in the list
+  - simply setting the list of fragments without reinitialising the algorithm
+    would leave the class in an inconsistent state &ndash; breaking
+    encapsulation
+
+
+--
+
+
+.explain-bottom[
+Have a go at implementing the changes necessary to create the
+`ShotgunSequencer` class and move the functionality previously in `shotgun.cpp`
+(within the `run()` function) into dedicated methods.
+]
 
 
 
