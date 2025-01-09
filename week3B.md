@@ -461,29 +461,334 @@ Have a go at adding a constructor to your own code
 ]
 
 ---
-
+name: destructor
 
 # The class destructor
 
-Mention only, will cover later (with inheritance)
+C++ classes also have a destructor
+- this defines any actions that need to be performed when destroying an
+  instance of our class
+- in contrast to the constructor, we can only have a *single* destructor
 
+--
+
+If we do not declare an explicit destructor, the compiler will automatically
+generate it
+- this will invoke the destructor for each of our member variables
+- ... in the *reverse* order from their order in the class
+
+--
+
+If our class contains only standard data types, this will typically be exactly
+what we need
+- no need to declare a destructor if you don't need to do something unexpected!
+
+---
+
+# The class destructor
+
+if you need to declare a destructor, this is done in the same way as the default constructor, but with a leading tilde (`~`):
+```
+class ShotgunSequencer {
+  public:
+    ShotgunSequencer ();     // ⇐ default constructor
+    `~ShotgunSequencer ();`    // ⇐ destructor
+    ...
+};
+```
+- there can only be a single destructor for each class
+- it takes no arguments, and has no return type
+- a destructor should not throw any exceptions
+
+--
+
+We will come back to destructors later in the course, when covering
+[*inheritance*](https://www.geeksforgeeks.org/inheritance-in-c/)
 
 ---
 
 # Constructor chaining
 
+C++11 introduced the ability to use [*constructor
+chaining*](https://www.geeksforgeeks.org/constructor-delegation-c/) (or
+*constructor delegation*)
+- this means one constructor can invoke another as part of its operation
+- this is useful to provide additional convenience constructors easily
+
+--
+
+Let's illustrate with an example:
+
+We want to add two additional constructors
+- one will take an existing list of fragments to initialise the algorithm
+- the other will load the list of fragments from file, and use that to
+  initialise the algorithm
+
+--
+
+The constructor declarations should therefore look like this:
+```
+class ShotgunSequencer {
+  public:
+    ...
+*   ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10)
+*   ShotgunSequencer (const std::string& fragments_filename, int minimum_overlap = 10)
+    ...
+```
+
+---
+layout: true
+
+# Constructing from list of fragments
+
+The first constructor can be defined as:
+
 ---
 
-# Access specifiers for class methods
-
+```
+class ShotgunSequencer {
+  public:
+    ...
+*   ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+*     ShotgunSequencer (minimum_overlap) {
+*       init (fragments);
+*     }
+    ...
+```
+  
 
 ---
 
-# Solutions
+```
+class ShotgunSequencer {
+  public:
+    ...
+    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) `:`
+      `ShotgunSequencer (minimum_overlap)` {
+        init (fragments);
+      }
+    ...
+```
 
+- We can use *constructor delegation* (chaining) here to perform ensure the minimum
+  overlap is properly initialised
+  - this must be done within the *initialiser list*
+  - ... as the first item in the list
 
 ---
 
-# Exercises
+```
+class ShotgunSequencer {
+  public:
+    ...
+    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+      ShotgunSequencer (minimum_overlap) {
+*       init (fragments);
+      }
+    ...
+```
 
+- We can use *constructor delegation* (chaining) here to perform ensure the minimum
+  overlap is properly initialised
+  - this must be done within the *initialiser list*
+  - ... as the first item in the list
+- The body of the constructor can then invoke our existing `.init()` method 
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+      `m_minimum_overlap` (minimum_overlap) {
+        init (fragments);
+      }
+    ...
+```
+
+Note that technically, we could have just as easily done this without
+constructor chaining...
+
+
+---
+layout: true
+
+# Constructing from name of data file
+
+The second constructor can be defined as:
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+      m_minimum_overlap (minimum_overlap) {
+        init (fragments);
+      }
+*   ShotgunSequencer (const std::string& filename, int minimum_overlap = 10) :
+*     ShotgunSequencer (load_fragments (filename), minimum_overlap) { }
+    ...
+```
+
+---
+
+```
+class ShotgunSequencer {
+  public:
+    ...
+    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+      m_minimum_overlap (minimum_overlap) {
+        init (fragments);
+      }
+    ShotgunSequencer (const std::string& filename, int minimum_overlap = 10) :
+      ShotgunSequencer (`load_fragments (filename)`, minimum_overlap) { }
+    ...
+```
+
+We already have a `load_fragments()` function that returns a variable of
+type `Fragments`
+
+&rArr; we can trivially *delegate* to the first constructor!
+
+---
+layout: false
+
+# Using our new convenience constructors
+
+We can now simplify our invoking code in the `run()` function
+```
+  ...
+  if (args.size() < 3)
+    throw std::runtime_error ("expected 2 arguments: input_fragments output_sequence");
+
+* ShotgunSequencer solver (args[1]);
+  std::cerr << "initial sequence has size " << solver.sequence().size() << "\n";
+
+  while (solver.iterate());
+  solver.check_remaining_fragments();
+  ...
+```
+
+--
+
+.explain-bottom[
+Have a go at implementing and using these new constructors in your own code
+]
+
+---
+
+# Function overloading
+
+We mentioned earlier than constructors rely on function overloading
+
+[Function overloading](https://www.geeksforgeeks.org/function-overloading-c/)
+can be done with regular functions, and other class member functions
+
+--
+
+To illustrate:
+
+We want our class to have two versions of the `init()` method:
+- one that takes no arguments
+  - it (re-)initialises the algorithm using the data already present in the
+    `m_fragments` member variable
+- one that takes a `Fragment` argument, as is currently done
+
+--
+
+.explain-bottom[
+Have a go at implementing these changes
+]
+
+---
+
+## Possible solution
+
+In **`shotgun_sequencer.h`:**
+```
+class ShotgunSequencer {
+  public:
+    ...
+    void init ();
+    void init (const Fragments& fragments) {
+      m_fragments = fragments;
+      init();
+    }
+    ...
+```
+In **`shotgun_sequencer.cpp`:**
+```
+void ShotgunSequencer::init ()
+{
+  if (debug::verbose)
+    fragment_statistics (m_fragments);
+  m_sequence = extract_longest_fragment (m_fragments);
+}
+```
+
+---
+
+# Exercise
+
+Add `.load()` and `.save()` methods to the `ShotgunSequencer` class
+
+For the `.load()` method:
+- this should read the input fragments from file, and use them to initialise the algorithm
+- this should take the filename of the input file as an argument
+- it does not need to return anything
+
+For the `.save()` method:
+- this should write the final estimated sequence to file
+- this should take the filename of the output file as an argument
+- it does not need to return anything
+
+---
+
+# Possible solution
+
+In **`shotgun_sequencer.h`:**
+```
+class ShotgunSequencer {
+  public:
+    ...
+    void load (const std::string& fragments_filename) {
+      init (load_fragments (fragments_filename));
+    }
+    void save (const std::string& output_filename) const {
+      write_sequence (output_filename, m_sequence);
+    }
+    ...
+```
+Use in **`shotgun.cpp`:**
+```
+  ...
+  solver.check_remaining_fragments();
+* solver.save (args[2]);
+}
+```
+
+---
+
+# Final touches to DNA shotgun sequencing project
+
+Our project is more or less complete! There is one final polishing touch to add: 
+
+The functionality in `overlap.h` & `overlap.cpp` is not needed anywhere else.
+We have taken the design decision to *encapsulate* this functionality within
+our `ShotgunSequencer` class.
+
+To do this, we are going to shift the functionality in the functions currently
+declared in `overlap.h` to *private methods* of our `ShotgunSequencer` class
+- they will be available for use for our algorithm, but only from within our
+  class methods
+- we can then remove the `overlap.h` & `overlap.cpp` files from the project
+
+--
+
+.explain-bottom[
+Have a go at implementing these changes on your own code
+]
 

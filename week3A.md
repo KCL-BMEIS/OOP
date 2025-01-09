@@ -339,6 +339,7 @@ This can then be used as a regular data type in our function declaration:
 ```
 --
 
+
 We can use our function as follows, and access the member variables using 
 [dot-notation](https://www.geeksforgeeks.org/dot-operator-in-cpp/):
 ```
@@ -347,6 +348,36 @@ std::cerr << std::format ("overlap of size {} at index {}\n",
                           `overlap.size`, `overlap.fragment`);
 ```
 
+---
+
+# Aggregate initialisation
+
+In the implementation of our function (the function definition), we need to
+return a variable of type `Overlap`. We can do that like this:
+```
+   ...
+   Overlap retval;
+   retval.size = biggest_overlap;
+   retval.fragment = fragment_with_biggest_overlap;
+   return retval;
+}
+```
+
+--
+
+... but a much cleaner solution is to use [aggregate initialisation](https://www.geeksforgeeks.org/aggregate-initialization-in-cpp-20/) in the `return` statement: 
+```
+    ...
+    return { biggest_overlap, fragment_with_biggest_overlap };
+}
+```
+
+--
+
+Since the return type is known, the compiler knows that this needs to
+initialise an `Overlap` struct.
+- each member of the struct is then initialised with the matching variable in
+  the brace-delimited list 
 
 ---
 
@@ -355,6 +386,8 @@ std::cerr << std::format ("overlap of size {} at index {}\n",
 Declaring our own custom `struct` allows us to return multiple pieces of
 information as a single variable
 - this is a cleaner way to solve our problem
+
+--
 
 .explain-bottom[
 Have a go at adding the `find_biggest_overlap()` function to your own code
@@ -2187,12 +2220,6 @@ Our `init()` method is in many ways a setter method:
   - here, we have chosen to call it `init()` since setting the fragment list
     implicitly (re-)initialises the algorithm
 
-
-
-
-
-
----
 
 ---
 
