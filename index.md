@@ -25,7 +25,7 @@ title: Object-Oriented Programming (5CCYB041)
 - [Jakub Grzelak](mailto:jakub.grzelak@kcl.ac.uk)
 - [Nashira Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk)
 - [Dewmini Hasara Wickremasinghe](mailto:dewmini.wickremasinghe@kcl.ac.uk)
-- [Adriana Namour](mailto:adriana.m.namour@kcl.ac.uk)
+- [Adriana Namour](mailto:adriana.namour@kcl.ac.uk)
 
 ---
 

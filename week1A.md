@@ -78,7 +78,7 @@ name: team
 
 .center[.teamcols[
 .col[
-[Adriana Namour](mailto:adriana.m.namour@kcl.ac.uk) ]
+[Adriana Namour](mailto:adriana.namour@kcl.ac.uk) ]
 .col[ 
 ![:scale 100%](images/adriana.jpg) ]
 .col[ 
