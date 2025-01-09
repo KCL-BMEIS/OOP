@@ -42,18 +42,16 @@ name: team
 
 ---
 
-# Teaching assistants
-
-
 .center[.teamcols[
 .col[
-[Abhijit Adhikary](mailto:abhijit.adhikary@kcl.ac.uk) ]
+## Teaching assistants
+]
+.col[
+&nbsp; ]
 .col[ 
 ![:scale 100%](images/abhijit.jpg) ] 
-.col[ 
-![:scale 100%](images/hasara.jpg) ]
-.col[ 
-[Dewmini Hasara Wickremasinghe](mailto:dewmini.wickremasinghe@kcl.ac.uk) ]
+.col[
+[Abhijit Adhikary](mailto:abhijit.adhikary@kcl.ac.uk) ]
 ] ]
 
 .center[.teamcols[
@@ -77,6 +75,20 @@ name: team
 .col[ 
 [Nashira Baena](mailto:paloma.rodriguez_baena@kcl.ac.uk) ]
 ] ]
+
+.center[.teamcols[
+.col[
+[Adriana Namour](mailto:adriana.m.namour@kcl.ac.uk) ]
+.col[ 
+![:scale 100%](images/adriana.jpg) ]
+.col[ 
+![:scale 100%](images/hasara.jpg) ]
+.col[ 
+[Dewmini Hasara Wickremasinghe](mailto:dewmini.wickremasinghe@kcl.ac.uk) ]
+] ]
+
+
+
 
 ---
 name: course
@@ -158,7 +170,7 @@ C++ was first released in 1985 by Bjarne Stroustrup as an extension to the [C la
 
 --
 
-Secific features of C++:
+Specific features of C++:
 - it supports [Object-Oriented Programming (OOP)](https://www.geeksforgeeks.org/introduction-of-object-oriented-programming/), as well as [generic](https://www.geeksforgeeks.org/generics-in-c/) and [functional programming](https://www.geeksforgeeks.org/functional-programming-paradigm/)
 - it is a [compiled
   language](https://www.geeksforgeeks.org/difference-between-compiled-and-interpreted-language/)
@@ -180,7 +192,7 @@ On this course, we will be using the **C++20 version of the standard**
 
 --
 
-We will _not_ cover concepts that many other C++ courses would consider
+We will *avoid* concepts that many other C++ courses would consider
 fundamental, including:
 
 --
@@ -606,37 +618,6 @@ a.exe  main.cpp
 
 ---
 
-# Difference between compiled and interpreted languages
-
-[*Interpreted* programming languages](https://www.geeksforgeeks.org/difference-between-compiled-and-interpreted-language/) do not need to be compiled prior to execution
-- examples include [Python](https://www.python.org/), [Java](https://www.java.com/), [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), [Perl](https://www.perl.org/), [Ruby](https://www.ruby-lang.org/), and even our [`bash` shell](https://www.geeksforgeeks.org/bash-scripting-introduction-to-bash-and-bash-scripting/)
-
---
-
-Programs written using interpreted languages cannot executed by themselves &ndash;
-they need to be run via another program called the *interpreter*
-- the source code needs to be [parsed](https://en.wikipedia.org/wiki/Parsing) by the interpreted at run-time
-- if the code is deemed valid, the interpreter will perform the actions
-  specified
-- the interpreter must be installed and available on all target systems
-
---
-
-In contrast, *compiled* languages are first translated into native machine
-instructions
-- examples include [C](https://en.wikipedia.org/wiki/C_(programming_language%29), C++, [Fortran](https://en.wikipedia.org/wiki/Fortran), [Pascal](https://en.wikipedia.org/wiki/Pascal_(programming_language%29), [Rust](https://www.rust-lang.org/), [Go](https://go.dev/), ...
-- this (in theory) provides the highest performance, avoiding the overhead of
-  interpreting the instructions at runtime
-- it also provides an opportunity to detect certain classes of errors at an earlier stage
-- it can also produce more efficient code through various optimisation
-  techniques that would be too time-consuming to perform at runtime
---
-- ... but the compile cycle can be lengthy, slowing down the development process
-
-
-
----
-
 # Running our program
 
 Now that we have an executable, we can run it.
@@ -666,6 +647,37 @@ Hello, world!
 ```
 
 --
+
+
+---
+
+# Difference between compiled and interpreted languages
+
+[*Interpreted* programming languages](https://www.geeksforgeeks.org/difference-between-compiled-and-interpreted-language/) do not need to be compiled prior to execution
+- examples include [Python](https://www.python.org/), [Java](https://www.java.com/), [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), [Perl](https://www.perl.org/), [Ruby](https://www.ruby-lang.org/), and even our [`bash` shell](https://www.geeksforgeeks.org/bash-scripting-introduction-to-bash-and-bash-scripting/)
+
+--
+
+Programs written using interpreted languages cannot be executed by themselves &ndash;
+they need to be run via another program called the *interpreter*
+- the source code needs to be [parsed](https://en.wikipedia.org/wiki/Parsing) by the interpreted at run-time
+- if the code is deemed valid, the interpreter will perform the actions
+  specified
+- the interpreter must be installed and available on all target systems
+
+--
+
+In contrast, *compiled* languages are first translated into native machine
+instructions
+- examples include [C](https://en.wikipedia.org/wiki/C_(programming_language%29), C++, [Fortran](https://en.wikipedia.org/wiki/Fortran), [Pascal](https://en.wikipedia.org/wiki/Pascal_(programming_language%29), [Rust](https://www.rust-lang.org/), [Go](https://go.dev/), ...
+- this (in theory) provides the highest performance, avoiding the overhead of
+  interpreting the instructions at runtime
+- it also provides an opportunity to detect certain classes of errors at an earlier stage
+- it can also produce more efficient code through various optimisation
+  techniques that would be too time-consuming to perform at runtime
+--
+- ... but the compile cycle can be lengthy, slowing down the development process
+
 
 
 ---
@@ -1674,7 +1686,7 @@ Be mindful of [implicit type conversions](https://www.geeksforgeeks.org/type-con
 - you can add a `bool` and a `char` &ndash; but they will first be converted to integer values <br>
 (`true`=1, `false`=0 for `bool`, [ASCII](https://en.wikipedia.org/wiki/ASCII) values for `char`)
 --
-- you can add an `int` and a `float`, but the `int` be first be converted to a `float`
+- you can add an `int` and a `float`, but the `int` will first be converted to a `float`
 --
 - the exact [rules for type conversion](https://en.cppreference.com/w/c/language/conversion) are fairly complex &ndash;
    but the general principle is simply to use the type with greatest range and/or precision
