@@ -14,7 +14,7 @@ class: title
 
 # What we have learned so far
 
-### By now, you should be able to:
+**By now, you should be able to:**
 .columns[
 .col[
 - use the terminal and navigate around the filesystem
@@ -30,7 +30,7 @@ class: title
 ]
 ]
 
-### Ideally, you should also have a basic understanding of:
+**Ideally, you should also have a basic understanding of:**
 .columns[
 .col[
 - error handling using C++ exceptions

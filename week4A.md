@@ -37,6 +37,7 @@ class: title
 - (const) references
 - variable scope
 - **the `const` keyword in various contexts**
+- **ownership & lifetime**
 ]
 .col[
 - the `inline` keyword
