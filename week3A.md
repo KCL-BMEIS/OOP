@@ -2137,7 +2137,7 @@ class ShotgunSequencer {
 Note that our getter method does not take any arguments
 - we can simply invoke it as `solver.sequence()`
 - this is often the case with getters: they only need to return the
-  corresonding value
+  corresponding value
 
 ---
 name: const_method
@@ -2208,7 +2208,7 @@ class ShotgunSequencer {
 ```
 
 *Setters* perform the opposite action from getters
-- they allow users to *set* cless parameters
+- they allow users to *set* class parameters
 - they typically do not need to return anything, so usually have a `void` return type
 - since they modify class members, they cannot be declared `const`
 
