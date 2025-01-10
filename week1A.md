@@ -2837,5 +2837,28 @@ for (int n = 0; n < data.size(); ++n) {
 
 # Exercises
 
-To be added...
+1. Write a C++ program that calculates the following expressions and outputs the results. Why do you get each answer?
+```
+(7 * 3) / 5
+(7.0 * 3) / 5
+(7 * 3.0) / 5
+(7 * 3) / 5.0
+(7.0 * 3.0) / (5.0)
+(7 * 3) % 5
+(7 * 3.0) % 5
+```
+
+2. Write a program that takes three numbers $a, b, c$ as input, calculates the quadratic formula and displays the output. Add a check to your program that the roots will be real-valued, i.e. that $b^2 >= 4ac$. A reminder that the quadratic formula is:
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+3. Write a program that takes three numbers $a, b, c$ as input which represent the lengths of the sides of a triangle. Use the formula below to calculate the area of the triangle and display it. Your program should check that the side lengths are valid. To be valid, the length of each side must be less than the sum of the other two sides.
+$$
+s = (a + b + c)/2 \\
+A = s(s - a)(s - b)(s - c)
+$$
+
+
 
