@@ -902,7 +902,7 @@ If you try this, you may find that the code works just fine
 
 --
 
-This is why the result of the last line of code is *undefined behaviour*
+This is why the result of the last line of code is [undefined behaviour](https://en.wikipedia.org/wiki/Undefined_behavior)
 - it may work as expected sometimes, or it may crash other times
 - it may depend on what compiler is used, or what settings were used for the
   compiler, etc.
@@ -2240,18 +2240,22 @@ Getters and setters are an important tool to implement *encapsulation*
     encapsulation
 
 
---
+---
+class: section
+name: exercises
 
-
-.explain-bottom[
-Have a go at implementing the changes necessary to create the
-`ShotgunSequencer` class and move the functionality previously in `shotgun.cpp`
-(within the `run()` function) into dedicated methods.
-]
-
-
+# Exercises
 
 ---
 
 # Exercises
+
+Have a go at implementing the changes necessary to create the
+`ShotgunSequencer` class.
+
+Move the functionality previously in `shotgun.cpp`
+(currently within the `run()` function) into dedicated methods.
+
+
+
 

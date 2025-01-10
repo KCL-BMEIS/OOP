@@ -70,7 +70,7 @@ $ g++ -std=c++20 shotgun.cpp -o shotgun
 
 ---
 
-# `std::cout` or `std::cerr`?
+# Standard output or standard error?
 
 When printing to the terminal, should be we print to `std::cout` or
 `std::cerr`? 
@@ -96,6 +96,53 @@ and progress reporting.
 - In our skeleton code, we therefore use `std::cerr` for now, since all of the
   output we've produced so far are simple progress updates, rather than usable
   output as such.
+
+---
+name: stdin
+
+# Standard input
+
+All programs also have a *standard input* stream: `std::cin`.<br>
+This can be used to received input from the terminal, for example:
+```
+  double value;
+  std::cout << "Please enter a value: ";
+  std::cin >> value;
+```
+---
+name: stdin
+
+# Standard input
+
+All programs also have a *standard input* stream: `std::cin`.<br>
+This can be used to received input from the terminal, for example:
+```
+  double value;
+  std::cout << "Please enter a value: ";
+* std::cin >> value;
+```
+
+This time, we use the extraction operator, `>>`
+
+--
+
+Standard input can be used to receive input from the user (via the terminal)
+--
+... but also from other files or programs (via
+[redirection](https://tldp.org/LDP/intro-linux/html/sect_05_01.html))
+
+
+--
+
+In general, the best way to provide user input to a program is via the command-line 
+- we do not recommend using `std::cin` to provide information such as
+  filenames, etc.
+
+--
+You can use `std::cin` when:
+- your program *needs* to interact with the user
+- your program is designed to process data provided via `std::cin` (e.g. for use in [Unix pipes](https://www.geeksforgeeks.org/piping-in-unix-or-linux/))
+
 
 ---
 name: file_io
@@ -536,7 +583,6 @@ class: section
 
 Now we have a `std::ifstream` open and ready to read from, we can use the same
 interface as we have already used with `std::cout` and `std::cerr`:
-- this time, we use the _extraction operator_, `>>`
 
 --
 
@@ -562,7 +608,6 @@ interface as we have already used with `std::cout` and `std::cerr`:
 
 Now we have a `std::ifstream` open and ready to read from, we can use the same
 interface as we have already used with `std::cout` and `std::cerr`:
-- this time, we use the _extraction operator_, `>>`
 
 ```
   ...
@@ -591,7 +636,6 @@ Here, we create an _instance_ of `std::string`, and call this variable `frag`
 
 Now we have a `std::ifstream` open and ready to read from, we can use the same
 interface as we have already used with `std::cout` and `std::cerr`:
-- this time, we use the _extraction operator_, `>>`
 
 ```
   ...
@@ -612,6 +656,7 @@ interface as we have already used with `std::cout` and `std::cerr`:
 .explain-top[
 Next, we use the extraction operator (`>>`) to read the first string from the
 file into our variable `frag`
+- like we did with `std::cin`
 ]
 
 ---
@@ -1723,13 +1768,43 @@ int main (int argc, char* argv[])
 ```
 
 ---
+class: section
+name: exercises
 
 # Exercises
 
- 1. Write a program to display all the prime numbers up to a user-provided maximum. Use any prime-finding algorithm you wish.  
- 1.1 Add an option to your program that when the user specifies a filename as the second argument, the list of of primes is written to the file instead of to the terminal.
- 2. Run-Length Encoding (RLE) is a basic compression technique where _runs_ of the same value occuring consecutively are replaced by the value and the _run-length_. For example, the string "abbcccabdddd" would be represented as "a 1 b 2 c 3 a 1 b 1 c 4".  
-  2.1 Write a program that takes two filenames as input, reads the contents of the first filename, applies run-length encoding, and writes the result to the second filename.  
-  2.2 Modify the program to instead decode the input file, i.e. apply run-length decoding.  
-  2.3 Modify the program to have a third argument that specifies whether it should encode or decode. Check that encoding then decoding a file produces the original input.  
-Hint: It will be useful to structure your code into functions as you go, to keep the encode function available for part 3.
+
+---
+
+# Exercise 1
+
+Write a program to display all the prime numbers up to a user-provided maximum.
+Use any prime-finding algorithm you wish.  
+
+Add an option to your program so that when the user specifies a filename as the
+second argument, the list of primes is written to the file instead of to the
+terminal.
+
+---
+
+# Exercise 2
+
+Run-Length Encoding (RLE) is a basic compression technique where _runs_ of the
+same value occuring consecutively are replaced by the value and the
+_run-length_. For example, the string `abbcccabdddd` would be represented as `a
+1 b 2 c 3 a 1 b 1 c 4`. 
+
+1. Write a program that takes two filenames as input, reads the contents of the
+  first filename, applies run-length encoding, and writes the result to the
+second filename.  
+
+2. Modify the program to instead decode the input file, i.e. apply run-length decoding.  
+
+3. Modify the program to have a third argument that specifies whether it should
+   encode or decode. Check that encoding then decoding a file produces the
+   original input.  
+
+<br>
+.note[
+Hint: it will be useful to structure your code into functions as you go, to
+keep the encode function available for part 3.]

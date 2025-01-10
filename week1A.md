@@ -1622,6 +1622,11 @@ Let's go over the basic types available in C++
 | `float` | floating-point | 32 |  &pm;3.4<sup>-38</sup> to &pm;3.4<sup>38</sup> |
 | `double` | floating-point | 64 |  &pm;1.7<sup>-308</sup> to &pm;1.7<sup>308</sup> |
 
+--
+Note that the C/C++ standard does not mandate how many bits each type should be!
+- an `int` may actually be 16 bits on a small embedded system
+- a `long int` may not be 64 bits on all platforms
+
 
 ---
 
@@ -2834,10 +2839,17 @@ for (int n = 0; n < data.size(); ++n) {
 
 
 ---
+class: section
+name: exercises
 
 # Exercises
 
-1. Write a C++ program that calculates the following expressions and outputs the results. Why do you get each answer?
+
+---
+
+# Exercise 1
+
+Write a C++ program that calculates the following expressions and outputs the results. Why do you get each answer?
 ```
 (7 * 3) / 5
 (7.0 * 3) / 5
@@ -2848,15 +2860,32 @@ for (int n = 0; n < data.size(); ++n) {
 (7 * 3.0) % 5
 ```
 
-2. Write a program that takes three numbers $a, b, c$ as input, calculates the quadratic formula and displays the output. Add a check to your program that the roots will be real-valued, i.e. that $b^2 >= 4ac$. A reminder that the quadratic formula is:
+---
 
+# Exercise 2
+
+Write a program that takes three numbers *a*, *b*, *c* as input, calculates the
+quadratic formula and displays the output. Add a check to your program that the
+roots will be real-valued, i.e. that *b²* ≥ 4*ac*. A reminder that the
+quadratic formula is: 
 $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-3. Write a program that takes three numbers $a, b, c$ as input which represent the lengths of the sides of a triangle. Use the formula below to calculate the area of the triangle and display it. Your program should check that the side lengths are valid. To be valid, the length of each side must be less than the sum of the other two sides.
+
+---
+
+# Exercise 3
+
+Write a program that takes three numbers *a*, *b*, *c* as input which represent
+the lengths of the sides of a triangle. Use the formula below to calculate the
+area of the triangle and display it. Your program should check that the side
+lengths are valid. To be valid, the length of each side must be less than the
+sum of the other two sides.  
 $$
-s = (a + b + c)/2 \\
+s = (a + b + c)/2
+$$
+$$
 A = s(s - a)(s - b)(s - c)
 $$
 

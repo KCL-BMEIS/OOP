@@ -780,15 +780,29 @@ The functionality in `overlap.h` & `overlap.cpp` is not needed anywhere else.
 We have taken the design decision to *encapsulate* this functionality within
 our `ShotgunSequencer` class.
 
+--
+
 To do this, we are going to shift the functionality in the functions currently
 declared in `overlap.h` to *private methods* of our `ShotgunSequencer` class
 - they will be available for use for our algorithm, but only from within our
   class methods
 - we can then remove the `overlap.h` & `overlap.cpp` files from the project
 
---
+&rArr; this type of modification is called [code
+refactoring](https://en.wikipedia.org/wiki/Code_refactoring)
 
-.explain-bottom[
-Have a go at implementing these changes on your own code
-]
+
+---
+class: section
+name: exercises
+
+# Exercises
+
+---
+
+# Exercises
+
+Move the functionality in `overlap.h` & `overlap.cpp` into private methods of
+the `ShotgunSequencer` class
+
 

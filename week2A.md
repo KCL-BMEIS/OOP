@@ -1929,6 +1929,12 @@ std::string extract_longest_fragment (Fragments& fragments)
 ```
 
 ---
+class: section
+name: exercises
+
+# Exercises
+
+---
 
 # Exercises
 

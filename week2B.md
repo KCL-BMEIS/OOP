@@ -2435,3 +2435,13 @@ variable:
 .explain-bottom[
 Have a go at implementing these changes in your own code
 ]
+
+---
+class: section
+name: exercises
+
+# Exercises
+
+---
+
+# Exercise 1 
