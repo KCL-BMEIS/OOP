@@ -1302,4 +1302,22 @@ class: section
 
 # Exercises
 
+---
 
+# Exercise
+
+Implement a class called `Dataset` to represent a *time series* of image slices
+
+This class should:
+- store a vector of `Image`s
+- provide methods to:
+  - load the images
+  - query the size of the data set (the number of time points / slices)
+  - get one of the image slices given its index
+  - get the full timecourse for a pixel of interest, given its *x* & *y*
+    coordinates
+- have a default constructor
+- have a non-default constructor that will also load the data from the
+  relevant file(s)
+  
+Modify your own code to use this new class
