@@ -820,7 +820,7 @@ entry, and report the number of fragments loaded
 --
 
 .explain-bottom[
-Have a go at modifying the code to do this. 
+Exercise: modify your code to do this. 
 ]
 
 ---
@@ -877,7 +877,7 @@ maximum fragment size
 --
 
 .explain-bottom[
-Have a go at implementing the changes required to do this
+Exercise: implementing the changes required to do this
 ]
 
 ---
@@ -1086,7 +1086,7 @@ is the longest.
 --
 
 .explain-bottom[
-Have a go at modifying the code to do this
+Exercise: modify your code to do this
 ]
 
 ---
@@ -1145,7 +1145,7 @@ The best thing to do is to write the output sequence to file, using the
 --
 
 .explain-bottom[
-Have a go at modifying the code to do this
+Exercise: modify your code to do this
 ]
 
 ---
@@ -1663,7 +1663,7 @@ int main (int argc, char* argv[])
 --
 
 .explain-bottom[
-Have a go at modifying the code to do this
+Exercise: modify your code to do this
 ]
 
 ---
@@ -1682,7 +1682,7 @@ In this case, we don't need to explicitly `return` from our function
 --
 
 .explain-bottom[
-Have a go at writing functions to:
+Exercise: add functions to your code to:
 - report basic statistics about the fragments
 - write out the final sequence
 ]

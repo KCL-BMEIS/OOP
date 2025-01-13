@@ -457,7 +457,7 @@ We will see more examples of default arguments later in the course
 --
 
 .explain-bottom[
-Have a go at adding a constructor to your own code
+Exercise: add such a constructor to your own code
 ]
 
 ---
@@ -675,7 +675,7 @@ We can now simplify our invoking code in the `run()` function
 --
 
 .explain-bottom[
-Have a go at implementing and using these new constructors in your own code
+Exercise: implement and use these new constructors in your own code
 ]
 
 ---
@@ -700,7 +700,7 @@ We want our class to have two versions of the `init()` method:
 --
 
 .explain-bottom[
-Have a go at implementing these changes
+Exercise: implement these changes in your own code
 ]
 
 ---

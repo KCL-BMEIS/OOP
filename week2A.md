@@ -99,7 +99,7 @@ void fragment_statistics (const `Fragments`& fragments)
 --
 
 .explain-bottom[
-Have a go at modifying your code as shown here
+Exercise: modify your code as shown here
 ]
 
 
@@ -708,8 +708,8 @@ $ g++ shotgun.o fragments.o -o shotgun
 ```
 
 .explain-bottom[
-Have a go at splitting up the code as shown previously, and compiling and
-linking the different files using the commands above
+Exercise: split up your code as shown previously, then compile and
+link the different files using the commands above
 ]
 
 ---
@@ -1491,7 +1491,7 @@ Let's use exceptions in our `load_fragments()` function (in `fragments.cpp`):
 --
 
 .explain-bottom[
-Have a go at modifying the `fragments.cpp` file to throw appropriate exceptions
+Exercise: modify the `fragments.cpp` file to throw appropriate exceptions
 at each point where relevant
 ]
 
@@ -1642,7 +1642,7 @@ We then need to handle these exceptions (in `shotgun.cpp`):
 ```
 
 .explain-bottom[
-Have a go at modifying your code as shown
+Exercise: modify your code as shown
 ]
 
 ---
@@ -1809,7 +1809,7 @@ int main (int argc, char* argv[])
 }
 ```
 .explain-bottom[
-Have a go at making these modifications on your own version of the code
+Exercise: make these modifications on your own version of the code
 ]
 
 ---
@@ -1898,7 +1898,7 @@ fragments.erase (fragments.begin() + index);
 --
 
 .explain-bottom[
-Have a go at writing a function to:
+Exercise: add a function to your code to:
 - identify the longest fragment from the list
 - remove it from the list
 - return the fragment as a string

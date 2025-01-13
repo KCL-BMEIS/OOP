@@ -214,7 +214,7 @@ overlapping fragments remain
 --
 
 .explain-bottom[
-Have a go at implementing code to do this
+Exercise: implement code to do this
 ]
 
 
@@ -2079,7 +2079,7 @@ We can now `#include` it in `shotgun.cpp`, `fragments.h` and `overlap.cpp`
 --
 
 .explain-bottom[
-Have a go at implementing these changes in your code
+Exercise: implement these changes in your code
 ]
 
 ---
@@ -2204,7 +2204,7 @@ Fragments load_fragments (const std::string& filename)
 --
 
 .explain-bottom[
-Have a go at implementing these changes to your own code
+Exercise: implement these changes in your own code
 ]
 
 ---
@@ -2292,7 +2292,7 @@ enabled
 --
 
 .explain-bottom[
-Have a go at implementing and using such a function in your own code
+Exercise: implement this function and make use of it in your own code
 ]
 
 ---
@@ -2433,7 +2433,7 @@ variable:
 
 --
 .explain-bottom[
-Have a go at implementing these changes in your own code
+Exercise: implement these changes in your own code
 ]
 
 ---

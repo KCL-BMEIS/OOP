@@ -229,7 +229,7 @@ course!
 For details, please refer to the [relevant documentation](https://en.cppreference.com/w/cpp/utility/format/spec)
 
 .explain-bottom[
-Have a go at using the `std::format()` function where relevant in your own code
+Exercise: use the `std::format()` function where relevant in your own code
 ]
 
 
@@ -390,7 +390,7 @@ information as a single variable
 --
 
 .explain-bottom[
-Have a go at adding the `find_biggest_overlap()` function to your own code
+Exercise: add the `find_biggest_overlap()` function to your own code
 ]
 
 
@@ -433,7 +433,7 @@ std::cerr << std::format ("overlap of size {} at index {}\n", `overlap`, `index`
 --
 
 .explain-bottom[
-Have a go at modifying your own code to use structured binding as shown here
+Exercise: modify your own code to use structured binding as shown here
 ]
 
 ---

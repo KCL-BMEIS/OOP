@@ -76,7 +76,7 @@ Let's start from the structure we set up in the last project:
 --
 
 .explain-bottom[
-Have a go at setting up a new project and setting it up as described above
+Exercise: set up a new project as described above
 ]
 
 ---
@@ -176,7 +176,7 @@ This time however, data loading is more complicated
 Let's start by loading just one file for now
 
 .explain-bottom[
-Add a function called `load_pgm()` that will open the input file given its
+Exercise: add a function called `load_pgm()` that will open the input file given its
 filename, then get our `run()` method to invoke it on the input file.
 - we won't worry about the return type for now, so just get it to return an
   `int`
@@ -273,7 +273,7 @@ To keep things simple, we are going to assume these files contain no comments
 --
 
 .explain-bottom[
-Have a go at implementing steps 1-3
+Exercise: implement steps 1-3 in your own code
 - if running in verbose mode, report the size and maximum intensity
 ]
 
@@ -312,14 +312,14 @@ We are now ready to read the image data
 
 --
 
-The simplest approach is to load the data into a vector.
+The simplest approach is to load the data into a vector
 - we can then verify that the number of pixel values matches the number we
   expected based on the dimensions
 
 --
 
 .explain-bottom[
-Implement step 4 (reading the pixel intensities) as described above. 
+Exercise: implement step 4 (reading the pixel intensities) as described above. 
 - if the number of pixel values does not match the expected number, this is an
   error
 ]
@@ -367,8 +367,9 @@ pgm.cpp: In function ‘int load_pgm(const std::string&)’:
 
 --
 
-This warning only occurs when compiling with `-Wall`
-- this compiler option instructs the compiler to issue all (common) warnings
+This warning only occurs when compiling with the `-Wall` [command-line
+option](https://command-line-tutorial.readthedocs.io/introduction.html#command-line-options)
+- this option instructs the compiler to issue all (common) warnings
 - it is good practice to heed these warnings, and ensure your code compiles
   without any such warnings
 
@@ -610,7 +611,12 @@ compiler will use it with each argument substituted in the corresponding place
 ]
 
 ---
+class: section
 name: array_indexing
+
+# Representing<br>multi-dimensional data
+
+---
 
 # Representing image data
 
@@ -640,6 +646,7 @@ We could hold this data in memory one row at a time:
 0123456789abcdef
 ```
 ]
+
 
 
 ---
@@ -1177,7 +1184,7 @@ build from there:
 --
 
 .explain-top[
-Exercise: add public getter & setter methods to get & set the pixel intensity at coordinate (*x*,
+Exercise: add public getter & setter methods to get & set the intensity for the pixel at coordinate (*x*,
 *y*)
 ]
 

@@ -2604,7 +2604,7 @@ int main (int argc, char* argv[])
 ...
 ```
 .explain-bottom[
-Modify your own code to add these checks, then compile and test it
+Exercise: modify your own code to add these checks, then compile and test it
 ]
 
 ---
