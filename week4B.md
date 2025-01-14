@@ -193,12 +193,13 @@ class: section
 # Why use external libraries?
 
 We could write code to do everything ourselves
-- but that is often not possible, or at best not a good use of our time
+- but that is rarely a good use of our time
+- often, it is simply not possible, or at best highly impractical
 
 --
 
 For example, we may wish to perform matrix multiplications
-- but it is [incredibly difficult to write efficient
+- but it is [remarkably difficult to write efficient
   code](https://gist.github.com/nadavrot/5b35d44e8ba3dd718e595e40184d03f0) to do this!
 - what if we need to solve more complex matrix problems, involving matrix
   inversions, etc?
@@ -218,3 +219,50 @@ As another example, we may wish to perform Fourier transforms
 --
 - ... and it often means we can do something that we simply wouldn't be able to
   do otherwise!
+
+---
+class: info 
+
+# Using external libraries
+
+Libraries come in many formats:
+
+## Header-only libraries
+
+- this is the simplest form
+- the library consists only of a set of header files
+- we only need to `#include` the appropriate header in our own code and
+  compile and link as before
+
+--
+
+## Static libraries
+
+- the library consists of a set of header files, and a static archive file
+  - this is essentially a collection of multiple object files
+  - typically with the suffix `.a` 
+- we only need to:
+  - `#include` the appropriate header in our own code and compile 
+  - inform the linker to include the archive file when linking
+
+---
+class: info 
+
+# Using external libraries
+
+## Dynamic libraries
+
+- the library consists of a set of header files, and a dynamic library file
+  - this is also a collection of multiple object files, but produced using
+    different compiler options
+  - typically with the suffix `.dll` (Windows), `.dylib` (macOS), or `.so`
+    (Unix/Linux)
+- we now need to:
+  - `#include` the appropriate header in our own code and compile
+  - inform the linker to include the dynamic library file when linking
+  - ensure the dynamic library is available in some expected location at
+    run-time on the target system
+
+--
+When using dynamic libraries, the final executable does *not* contain the functionality in the library
+- this differs from header-only and static libraries, 

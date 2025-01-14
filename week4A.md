@@ -1036,8 +1036,7 @@ Looking through our code, we can see we've loaded the data in row-major order
 
 --
 
-To locate the pixel intensity at index (*x*, *y*), let's start simple and
-build from there:
+To locate the pixel intensity at index (*x*, *y*):
 
 ---
 
@@ -1068,8 +1067,7 @@ Looking through our code, we can see we've loaded the data in row-major order
 ```
 ]
 
-To locate the pixel intensity at index (*x*, *y*), let's start simple and
-build from there:
+To locate the pixel intensity at index (*x*, *y*):
 - when *x*=*y*=0, the pixel intensity is at offset: 0
 
 ---
@@ -1101,8 +1099,7 @@ Looking through our code, we can see we've loaded the data in row-major order
 ```
 ]
 
-To locate the pixel intensity at index (*x*, *y*), let's start simple and
-build from there:
+To locate the pixel intensity at index (*x*, *y*):
 - when *x*=*y*=0, the pixel intensity is at offset: 0
 - when *y*=0, the pixel intensity is at offset: *x*
 
@@ -1135,8 +1132,7 @@ Looking through our code, we can see we've loaded the data in row-major order
 ```
 ]
 
-To locate the pixel intensity at index (*x*, *y*), let's start simple and
-build from there:
+To locate the pixel intensity at index (*x*, *y*):
 - when *x*=*y*=0, the pixel intensity is at offset: 0
 - when *y*=0, the pixel intensity is at offset: *x*
 - when *x*=0, the pixel intensity is at offset: *y* &times; *N<sub>x</sub>*
@@ -1171,8 +1167,7 @@ Looking through our code, we can see we've loaded the data in row-major order
 ```
 ]
 
-To locate the pixel intensity at index (*x*, *y*), let's start simple and
-build from there:
+To locate the pixel intensity at index (*x*, *y*):
 - when *x*=*y*=0, the pixel intensity is at offset: 0
 - when *y*=0, the pixel intensity is at offset: *x*
 - when *x*=0, the pixel intensity is at offset: *y* &times; *N<sub>x</sub>*
@@ -1262,7 +1257,7 @@ We can now load the full image series, storing the data as a vector of `Image`s
   what order
 
 - to verify that your code works as expected, print out the pixel intensities
-  for all time-points at a specific position, for example at index (30, 48)
+  for all time points at a specific position, for example at index (30, 48)
 
 .explain-bottom[
 Exercise: implement code to load the full data set using file globbing as described above
