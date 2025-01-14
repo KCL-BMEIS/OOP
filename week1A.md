@@ -703,6 +703,16 @@ $ ./main
 Hello, world!
 ```
 
+--
+.note[
+On Windows, executables must have the `.exe` file extension &ndash; there is no such requirement on
+other operating systems. You will find that the executable produced is actually called
+`main.exe`. 
+
+<br>Nevertheless, using the MSYS2 shell, you can type either `./main` or
+`./main.exe`: both will work equally well
+]
+
 ---
 name: hello_world
 
