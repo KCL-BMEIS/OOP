@@ -408,7 +408,7 @@ class: section
 # Structured binding
 
 The C++17 standard introduced the ability to use [*structured binding*](https://www.geeksforgeeks.org/structured-binding-c/)
-- this allows up to declare and initialise multiple variables from the
+- this allows us to declare and initialise multiple variables from the
   individual members of a larger composite variable
 
 --

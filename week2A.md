@@ -814,7 +814,7 @@ The project must however follow some simple rules:
 - any `cpp` file that contains a `main()` function will produce a matching
   executable of the same name (minus the `.cpp` extension)
 - any `cpp` file that needs to be compiled and linked into other executables
-  needs to have matching header of the same name, and this header needs to be
+  needs to have a matching header of the same name, and this header needs to be
   `#include`d in at least one other `cpp` file 
 
 
@@ -958,7 +958,8 @@ class: info
 
 # What is the compiler really doing?
 
-When everything works, programming in C++ is great
+When everything works, programming in C++ is great (though opinions may
+vary...)
 - but things rarely work first time...
 
 For you to understand what has gone wrong and how to fix it, we need to explain
@@ -1122,7 +1123,7 @@ For our executable, the linker needs to locate:
   [libraries](https://www.geeksforgeeks.org/static-and-dynamic-linking-in-operating-systems/) that our program will need
 - any functions within these libraries that are in use in any part of our code
 
-Errors will occur is the linker can't find any function that our code refers
+Errors will occur if the linker can't find any function that our code refers
 to, or if it finds duplicate versions of the same function
 
 --

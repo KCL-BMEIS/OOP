@@ -451,7 +451,7 @@ To get this right, we need to understand these concepts:
 --
 
 Every program that runs has an associated **current working directory**
-- it can be thought of as the folder within which the program is curren
+- it can be thought of as the folder within which the program is currently running
 --
 
 It can be queried using the `pwd` (print working directory) command
@@ -680,7 +680,7 @@ going to read the data into a *vector* of strings
   std::string frag;
 * std::vector<std::string> fragments;
 * while (infile >> frag)
-*  fragments.push_back (frag);
+*   fragments.push_back (frag);
 
   return 0;
 }
@@ -705,7 +705,7 @@ going to read the data into a vector of strings
   std::string frag;
 * std::vector<std::string> fragments;
   while (infile >> frag)
-   fragments.push_back (frag);
+    fragments.push_back (frag);
 
   return 0;
 }
@@ -735,7 +735,7 @@ going to read the data into a vector of strings
   std::string frag;
   std::vector<std::string> fragments;
 * while (infile >> frag)
-   fragments.push_back (frag);
+    fragments.push_back (frag);
 
   return 0;
 }
@@ -766,7 +766,7 @@ going to read the data into a vector of strings
   std::string frag;
   std::vector<std::string> fragments;
   while (infile >> frag)
-*  fragments.push_back (frag);
+*   fragments.push_back (frag);
 
   return 0;
 }
@@ -793,7 +793,7 @@ will not cover in this course. However, the methods below are commonly used:
   infile.open (filename);
   ```
 
-- `.is_open()`: check whether file is open and ready for reading
+- `.is_open()`: check whether the file is open and ready for reading
 
 - `.close()`: close the file once we are done reading. Note that we rarely need
   to invoke this method explicitly since it will be invoked automatically when
@@ -833,7 +833,7 @@ Possible solution:
   std::string frag;
   std::vector<std::string> fragments;
   while (infile >> frag)
-   fragments.push_back (frag);
+    fragments.push_back (frag);
 
 * if (fragments.empty()) {
 *   std::cerr << "ERROR: file \"" << args[1] 
@@ -1310,9 +1310,9 @@ In C++, functions are *declared* using this type of syntax:
 `return_type` function_name (arg_type1 arg1, arg_type2 arg2, ...);
 ```
 
-- `return_type`: the type of the variable returned by the function. In C & C++,
-  functions can return one variable of a type of our chosing. This could be an
- `int`, or a large `std::vector<std::string>`
+- `return_type`: the type of the variable returned by the function. 
+  - In C & C++, functions can return one variable of a type of our choosing. 
+  - This could be a simple `int`, or a more complex `std::vector<std::string>`
 
 ---
 
@@ -1323,19 +1323,20 @@ In C++, functions are *declared* using this type of syntax:
 return_type `function_name` (arg_type1 arg1, arg_type2 arg2, ...);
 ```
 
-- `return_type`: the type of the variable returned by the function. In C & C++,
-  functions can return one variable of a type of our chosing. This could be an
- `int`, or a large `std::vector<std::string>`
+- `return_type`: the type of the variable returned by the function. 
+  - In C & C++, functions can return one variable of a type of our choosing. 
+  - This could be a simple `int`, or a more complex `std::vector<std::string>`
 - `function_name`: the name that we wish to give to our function. Valid
   characters include all letters (lowercase or uppercase), numbers, and the
   underscore (`_`). 
   - function names cannot start with a number
   - function names should not start with an underscore, as this is reserved for
-    internal use by the C++ standard.
+    internal use by the C++ standard
   - different naming conventions are in use for different projects. In this
-    course, we will tend to use so-called `snake_case` (lowercase, with words
-    separated by underscores). In general, use whichever convention is used
-    by the project you are working on.
+    course, we will tend to use so-called 
+    [`snake_case`](https://www.freecodecamp.org/news/snake-case-vs-camel-case-vs-pascal-case-vs-kebab-case-whats-the-difference/)
+    (lowercase, with words separated by underscores). In general, use whichever
+    convention is used by the project you are working on.
   - make sure to use a *descriptive* name! The name should always reflect what
     the function does 
 
@@ -1348,24 +1349,26 @@ In C++, functions are *declared* using this type of syntax:
 return_type function_name (`arg_type1 arg1`, arg_type2 arg2, ...);
 ```
 
-- `return_type`: the type of the variable returned by the function. In C & C++,
-  functions can return one variable of a type of our chosing. This could be an
- `int`, or a large `std::vector<std::string>`
+- `return_type`: the type of the variable returned by the function. 
+  - In C & C++, functions can return one variable of a type of our choosing. 
+  - This could be a simple `int`, or a more complex `std::vector<std::string>`
 - `function_name`: the name that we wish to give to our function. Valid
   characters include all letters (lowercase or uppercase), numbers, and the
   underscore (`_`). 
   - function names cannot start with a number
   - function names should not start with an underscore, as this is reserved for
-    internal use by the C++ standard.
+    internal use by the C++ standard
   - different naming conventions are in use for different projects. In this
-    course, we will tend to use so-called `snake_case` (lowercase, with words
-    separated by underscores). In general, use whichever convention is used
-    by the project you are working on.
+    course, we will tend to use so-called
+    [`snake_case`](https://www.freecodecamp.org/news/snake-case-vs-camel-case-vs-pascal-case-vs-kebab-case-whats-the-difference/)
+    (lowercase, with words separated by underscores). In general, use whichever
+    convention is used by the project you are working on.
   - make sure to use a *descriptive* name! The name should always reflect what
     the function does 
 - `arg_typeN argN`: any arguments that should be passed to the function, including
   their type, and what the corresponding variable will be called within your
-  function. Note that functions can (and often do) have no arguments.
+  function. 
+  - Note that functions can (and often do) have no arguments.
 
 ---
 
@@ -1381,15 +1384,16 @@ function:
 
 --
 
-The function *definition* contains the body of the function
-- It consists of the statements to be executed when the function is invoked
-- These statements are enclosed within a *block*, delimited with *braces*
+The function *definition* is also often called the *function implementation* or
+*function body*
+- it consists of the statements to be executed when the function is invoked
+- these statements are enclosed within a *block*, delimited with *braces*
   (`{}`)
 
 --
 
-The definition can be provided at the point of declaration, but that is often
-not the case
+The definition can be provided at the point of declaration, but is often
+provided elsewhere
 - in this case, the definition needs to provide the matching declaration to
   ensure the compiler can unequivocally match the declaration with its matching
 definition

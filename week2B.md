@@ -2114,6 +2114,7 @@ There are 2 ways to get around this:
 - tell the compiler to allow multiple definitions of this variable
 
 ---
+class: info
 
 # Working with global variables
 
