@@ -296,6 +296,8 @@ But we could also use a library that provides that functionality
 - there are *many* libraries available for graphical output
 --
 - unfortunately, most of them are much more complex than we can cover on this course
+- many of them are also platform-specific, and will only work on a specific
+  operating system
 
 --
 
@@ -533,7 +535,7 @@ method with a simpler and more intuitive syntax
 --
 
 The bracket operator is allowed to take any number of arguments
-- you can even multiple overloads with different numbers of arguments in
+- you can even have multiple overloads, each with different numbers of arguments in
   the same class!
 - in our case, we just need it to take 2 arguments: the coordinates of the
   desired pixel 
@@ -568,6 +570,19 @@ class Image {
 class Image {
   public:
     ...
+    int&       `operator()` (int x, int y)       { return m_data[x + m_xdim*y]; }
+    const int& `operator()` (int x, int y) const { return m_data[x + m_xdim*y]; }
+};
+```
+
+The method name is specified as `operator()`
+
+---
+
+```
+class Image {
+  public:
+    ...
     `int&`       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
     `const int&` operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
 };
@@ -576,6 +591,25 @@ class Image {
 Both methods return a *reference* to the pixel intensity
 - technically, the `const` version could just return the value itself, since
   an `int` is a small object
+
+---
+
+```
+class Image {
+  public:
+    ...
+    `int&`       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
+    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+};
+```
+
+Returning a *reference* to the pixel intensity allows the invoking code to
+modify that value:
+```
+  Image image;
+  ...
+  image(12,21) = 1021;
+```
 
 ---
 
@@ -597,19 +631,6 @@ The `const` version returns a `const` reference
 class Image {
   public:
     ...
-    int&       `operator()` (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& `operator()` (int x, int y) const { return m_data[x + m_xdim*y]; }
-};
-```
-
-The method name is specified as `operator()`
-
----
-
-```
-class Image {
-  public:
-    ...
     int&       operator() (int x, int y)       { `return m_data[x + m_xdim*y];` }
     const int& operator() (int x, int y) const { `return m_data[x + m_xdim*y];` }
 };
@@ -617,6 +638,8 @@ class Image {
 
 Both methods otherwise do exactly the same thing!
 - the only difference is whether the reference returned is `const`
+
+However, there will be cases where the two versions work slightly differently
 
 ---
 
@@ -833,17 +856,16 @@ operator
 
 --
 
-This operator (and many other binary operators) are therefore best written as
-*independent functions*
+This operator is therefore best written as an *independent function*
+- this is also true for many of the other binary operators
 
 ---
 layout: true
 
 # Overloading the insertion operator
 
-We need to declare a function outside of either class that overloads the stream
-insertion operator.
-<br> This is what it looks like:
+We need to declare a function outside the scope of either class, which overloads the stream
+insertion operator. This is what it typically looks like:
 
 ---
 
@@ -873,7 +895,6 @@ It takes two arguments:
 - we take a non-`const` reference since pushing data into the stream is
   clearly a modifying operation
 
---
 &bull; the object to the inserted (typically as a `const` reference)
 - here, we use our `Image` class to illustrate
 
@@ -883,46 +904,150 @@ It takes two arguments:
 `std::ostream&` operator<< (std::ostream& stream, const Image& image);
 ```
 
-It returns a reference to the stream that was originally provided as the
+It returns a *reference* to the stream that was originally provided as the
 first argument
+
+This allows insertion statements to be daisy-chained, by evaluating
+left-to-right:
+```
+ stream << "Image is "  << image  << "\n";
+```
+
+---
+
+```
+`std::ostream&` operator<< (std::ostream& stream, const Image& image);
+```
+
+It returns a *reference* to the stream that was originally provided as the
+first argument
+
+This allows insertion statements to be daisy-chained, by evaluating
+left-to-right:
+```
+`(stream << "Image is ")` << image  << "\n";
+         ⇓
+       stream           << image  << "\n";
+```
+
+---
+
+```
+`std::ostream&` operator<< (std::ostream& stream, const Image& image);
+```
+
+It returns a *reference* to the stream that was originally provided as the
+first argument
+
+This allows insertion statements to be daisy-chained, by evaluating
+left-to-right:
+```
+(stream << "Image is ") << image  << "\n";
+         ⇓
+      `(stream           << image)` << "\n";
+                   ⇓
+                 stream        << "\n";
+```
+
+---
+layout: false
+
+# Overloading the insertion operator
+
+What about the implementation of our insertion operator?
 
 --
-This allows insertion statements to be daisy-chained:
+
+Here is what we might do for the `Image` class:
 ```
-stream << "Image is " << image << "\n";
+std::ostream& operator<< (std::ostream& stream, const Image& image)
+{
+  stream << "Image of size " << im.width() << "x" << im.height();
+  return stream;
+}
+```
+
+--
+
+Which we can then use in our own code:
+```
+  ...
+  std::cout << image << "\n";
+  ...
 ```
 
 ---
+class: section
+name: friend
 
-```
-`std::ostream&` operator<< (std::ostream& stream, const Image& image);
-```
-
-It returns a reference to the stream that was originally provided as the
-first argument
-
-This allows insertion statements to be daisy-chained:
-```
-`stream << "Image is "` << image << "\n";
-```
-
-If you think about it:
-- this returns the original `stream`
+# Friend functions
 
 ---
 
-```
-`std::ostream&` operator<< (std::ostream& stream, const Image& image);
-```
+# Friend functions
 
-It returns a reference to the stream that was originally provided as the
-first argument
+In the previous example, it was possible to define an independent function for the
+insertion operator because we only needed to access public `const` methods of
+the class
 
-This allows insertion statements to be daisy-chained:
-```
-`stream << "Image is " << image` << "\n";
-```
+... but what if we needed access to *private* members?
 
-If you think about it:
-- this returns the original `stream`
-- ... and so does this!
+--
+
+If necessary, a function (or class) can be declared as a `friend`:
+```
+class Image {
+  public:
+    ...
+*   friend std::ostream& operator<< (std::ostream& stream, const Image& image);
+};
+```
+This is done by:
+- placing the declaration within the scope of the class
+- using the `friend` keyword at the front of the declaration
+- the full definition still remains outside of the class
+
+--
+&rArr; This function will now be able to access private members of our `Image` class
+
+---
+
+# Friend functions
+
+It is fairly common to declare the insertion and extraction operators as
+`friend` because:
+- they cannot be explicit members of the class
+- they often need access to private members
+
+--
+
+In our case, there is no need to declare the insertion operator as `friend`
+- we can do everything we need using public methods
+- ... but if we needed to, this is the recommended way to do it
+
+--
+
+When should you declare a function or class as a `friend`?
+- there is no simple rule...
+- the [C++ FAQ
+  states](https://isocpp.org/wiki/faq/friends#member-vs-friend-fns): *"Use a
+member when you can, and a `friend` when you have to"*
+
+---
+class: section
+
+# Exercises
+
+---
+
+# Exercise
+
+- add an insertion operator for the `Image` class
+
+- add an insertion operator for the `Dataset` class
+  - this should provide information about each image in the dataset
+  - ... using the `Image` class insertion operator!
+
+- use your `Dataset` insertion operator in the `run()` function 
+  - only use it when in verbose mode &ndash; this might be useful for debugging!
+
