@@ -126,6 +126,7 @@ void Dataset::load (const std::vector<std::string>& filenames)
 
 ---
 class: section
+name: cmdline_option_with_args
 
 # Command-line handling
 
@@ -185,6 +186,7 @@ void run (std::vector<std::string>& args)
 
 ---
 class: section
+name: external_library
 
 # Using external libraries
 
@@ -227,7 +229,7 @@ class: info
 
 Libraries come in many formats:
 
-## Header-only libraries
+## [Header-only libraries](https://en.wikipedia.org/wiki/Header-only)
 
 - this is the simplest form
 - the library consists only of a set of header files
@@ -236,7 +238,7 @@ Libraries come in many formats:
 
 --
 
-## Static libraries
+## [Static libraries](https://en.wikipedia.org/wiki/Static_library)
 
 - the library consists of a set of header files, and a static archive file
   - this is essentially a collection of multiple object files
@@ -250,9 +252,9 @@ class: info
 
 # Using external libraries
 
-## Dynamic libraries
+## [Shared (dynamic) libraries](https://en.wikipedia.org/wiki/Shared_library)
 
-- the library consists of a set of header files, and a dynamic library file
+- the library consists of a set of header files, and a shared library file
   - this is also a collection of multiple object files, but produced using
     different compiler options
   - typically with the suffix `.dll` (Windows), `.dylib` (macOS), or `.so`
@@ -265,13 +267,15 @@ class: info
 
 --
 
-When using dynamic libraries, the final executable does *not* contain the functionality in the library
+When using dynamic libraries, the final executable *does not contain the functionality* in the library
 - this differs from header-only and static libraries
+- at run-time, the system will need to locate the shared library file and load it into our 
+  program
 
 --
 
 When deploying your program on other systems, you need to take steps to ensure
-the required dynamic libraries are also installed and available
+the required shared libraries are also installed and available
 - otherwise the program will fail to run on those systems!
 
 
@@ -291,7 +295,7 @@ intensity across time points for selected pixels
 But we could also use a library that provides that functionality
 - there are *many* libraries available for graphical output
 --
-- but many of them are much more complex than we can cover on this course!
+- unfortunately, most of them are much more complex than we can cover on this course
 
 --
 
@@ -474,6 +478,12 @@ To understand this, we need to learn about [operator
 overloading](https://www.geeksforgeeks.org/operator-overloading-cpp/)
 
 ---
+class: section
+name: operator_overloading
+
+# Operator overloading
+
+---
 
 # Operator overloading
 
@@ -501,10 +511,13 @@ operators](https://www.geeksforgeeks.org/difference-between-unary-and-binary-ope
 Let's look at how to overload the `()` operator
 
 ---
+name: overload_bracket
 
 # Overloading the bracket operator
 
-Overloading this operator allows us to use our class almost like a function:
+[Overloading the bracket
+operator](https://www.learncpp.com/cpp-tutorial/overloading-the-parenthesis-operator/)
+allows us to use our class almost like a function:
 ```
 Image image;
 
@@ -520,8 +533,8 @@ method with a simpler and more intuitive syntax
 --
 
 The bracket operator is allowed to take any number of arguments
-- in fact, you can even overload it to accept different number of arguments in
-  your own class!
+- you can even multiple overloads with different numbers of arguments in
+  the same class!
 - in our case, we just need it to take 2 arguments: the coordinates of the
   desired pixel 
 
@@ -611,6 +624,25 @@ Both methods otherwise do exactly the same thing!
 class Image {
   public:
     ...
+    `int&       operator() (int x, int y)      ` { return m_data[x + m_xdim*y]; }
+    `const int& operator() (int x, int y) const` { return m_data[x + m_xdim*y]; }
+};
+```
+
+Why do we need two almost identical `const` and non-`const` versions?
+- When we pass our class to a function as a `const` value or reference, that
+  function can *only* use `const` methods of our class
+  - otherwise the compiler can't guarantee that the class won't be modified!
+- In a context where our class is not `const`, the compiler will use
+  the non-`const` version
+
+
+---
+
+```
+class Image {
+  public:
+    ...
     int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
     const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
 };
@@ -631,8 +663,8 @@ layout: false
 class Image {
   public:
     ...
-    int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+*   int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
+*   const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
     ...
 };
 ```
@@ -644,7 +676,253 @@ void run (std::vector<std::string>& args)
   ...
   Dataset data ({ args.begin()+2, args.end() });
   ...
-  TG::imshow (data.get(0), 0, 4000);
+* TG::imshow (data.get(0), 0, 4000);
   ...
 }
 ```
+
+---
+
+**In `dataset.cpp`:**
+```
+std::vector<int> Dataset::get_timecourse (int x, int y) const
+{
+  std::vector<int> vals (size());
+  for (unsigned int n = 0; n < size(); ++n)
+*   vals[n] = m_slices[n](x,y);
+  return vals;
+}
+```
+
+---
+
+# Expected output
+
+![:scale 100%](images/fmri2.png)
+
+--
+
+That image is a bit too small...
+- thankfully, the `terminal_graphics` library provides a convenience function
+  to upscale an image: 
+  `TG::magnify (image, scale_factor)`
+
+---
+
+**In `fmri.cpp`:**
+```
+void run (std::vector<std::string>& args)
+{
+  ...
+  Dataset data ({ args.begin()+2, args.end() });
+  ...
+  TG::imshow (`TG::magnify (data[0], 4)`, 0, 4000);
+
+  ...
+}
+```
+
+---
+
+# Expected output
+
+.center[
+![:scale 90%](images/fmri3.png)
+]
+
+
+
+---
+name: overload_subscript
+
+# Overloading the subscript operator
+
+Another commonly-overloaded operator is the [subscript (square brackets)
+operator
+(`[]`)](https://www.learncpp.com/cpp-tutorial/overloading-the-subscript-operator/)
+
+This time however, the operator can only take a single argument
+- Note: [C++23 relaxes this restriction to allow multidimensional
+  subscripting](https://www.sandordargo.com/blog/2023/08/09/cpp23-multidimensional-subscription-operator)
+
+The syntax is otherwise identical to the bracket operator
+- Let's illustrate by overloading the subscript operator for our `Dataset`
+  class
+
+---
+
+# Overloading the subscript operator
+
+We declare it in the same way as the bracket operator
+- but with the special name `operator[]` and a single argument
+
+```
+class Dataset {
+  public:
+    ...
+    Image&       operator[] (int n)       { return m_slices[n]; }
+    const Image& operator[] (int n) const { return m_slices[n]; }
+    ...
+};
+```
+
+--
+
+Note that in our solution (online), we only provide the `const` version
+- this is because our `Dataset` class only had a `.get()` method previously
+- you are free to make different design decisions!
+
+--
+
+.explain-bottom[
+Exercise: add a subscript operator to the `Dataset` class, and use it in your
+own code. Remove the now-redundant `.get()` method
+]
+
+
+---
+
+**In `dataset.h`:**
+```
+class Dataset {
+  public:
+    ...
+*   Image&       operator[] (int n)       { return m_slices[n]; }
+*   const Image& operator[] (int n) const { return m_slices[n]; }
+    ...
+};
+```
+
+**In `fmri.cpp`:**
+```
+  // default values if x & y not set (<0):
+  if (x < 0 || y < 0) {
+*   x = data[0].width()/2;
+*   y = data[0].height()/2;
+  }
+  else {
+*   if (x >= data[0].width() || y >= data[0].height())
+      throw std::runtime_error ("pixel position is out of bounds");
+  }
+```
+
+
+---
+name: overload_insertion
+
+# Overloading the insertion operator
+
+Another operator that is often overloaded in C++ is the stream insertion
+operator (`<<`)
+- this can be useful for debugging and other purposes
+
+--
+
+This differs from the bracket and subscript operators because it is a *binary
+operator*
+- there are two operands: the stream and the object being
+  inserted
+- the operator sits *between* the operands
+
+--
+
+The object to be fed into the stream is on the *right-hand side* of the
+operator
+- this means this operator cannot be a member function of our class
+- ... but we also can't simply add it as a member of the stream class!
+
+--
+
+This operator (and many other binary operators) are therefore best written as
+*independent functions*
+
+---
+layout: true
+
+# Overloading the insertion operator
+
+We need to declare a function outside of either class that overloads the stream
+insertion operator.
+<br> This is what it looks like:
+
+---
+
+```
+std::ostream& operator<< (std::ostream& stream, const Image& image);
+```
+
+---
+
+```
+std::ostream& `operator<<` (std::ostream& stream, const Image& image);
+```
+
+As before, this looks like a regular function, but with the special name `operator<<`
+
+---
+
+```
+std::ostream& operator<< (`std::ostream& stream`, `const Image& image`);
+```
+
+It takes two arguments:
+
+&bull; the stream object (as a non-`const` reference)
+- we use the `std::ostream` class, which is the *base class* for all output
+  streams (this will make more sense when we cover inheritance)
+- we take a non-`const` reference since pushing data into the stream is
+  clearly a modifying operation
+
+--
+&bull; the object to the inserted (typically as a `const` reference)
+- here, we use our `Image` class to illustrate
+
+---
+
+```
+`std::ostream&` operator<< (std::ostream& stream, const Image& image);
+```
+
+It returns a reference to the stream that was originally provided as the
+first argument
+
+--
+This allows insertion statements to be daisy-chained:
+```
+stream << "Image is " << image << "\n";
+```
+
+---
+
+```
+`std::ostream&` operator<< (std::ostream& stream, const Image& image);
+```
+
+It returns a reference to the stream that was originally provided as the
+first argument
+
+This allows insertion statements to be daisy-chained:
+```
+`stream << "Image is "` << image << "\n";
+```
+
+If you think about it:
+- this returns the original `stream`
+
+---
+
+```
+`std::ostream&` operator<< (std::ostream& stream, const Image& image);
+```
+
+It returns a reference to the stream that was originally provided as the
+first argument
+
+This allows insertion statements to be daisy-chained:
+```
+`stream << "Image is " << image` << "\n";
+```
+
+If you think about it:
+- this returns the original `stream`
+- ... and so does this!
