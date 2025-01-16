@@ -531,8 +531,8 @@ The bulk of our algorithm consists of a series of nested loops:
 <br>&ensp; &emsp; &bull; &ensp; loop over all candidate fragments
 <br>&ensp; &emsp; &emsp; &bull; &ensp; loop over all overlap sizes 
 <br>&ensp; &emsp; &emsp; &emsp; &bull; &ensp; extract the corresponding substrings and compare
-<br>&ensp; &bull; &ensp; merge the fragment with the largest overlap 
-<br>&ensp; &bull; &ensp; remove it from the list of candidate fragments
+<br>&ensp; &emsp; &bull; &ensp; merge the fragment with the largest overlap 
+<br>&ensp; &emsp; &bull; &ensp; remove it from the list of candidate fragments
 
 --
 
@@ -860,8 +860,8 @@ When extracting a substring using the original `std::string`, we got a new
 
 --
 
-In contrast, when we extract a substring using the new `std::string_view`, we
-got a non-owning *view*
+But when we extract a substring using the new `std::string_view`, we
+get a non-owning *view*
 - the text in that view is completely dependent on the original `std::string`
 - its *lifetime* is intrisincally tied to that of the original `std::string`
 
@@ -969,8 +969,7 @@ v.push_back (1);
 ```
 
 This issue is much broader than just `std::string_view`
-- it affects any constructs that provides a non-owning view of data held by
-  some other construct
+- it affects any constructs that refers to data owned or managed by some other construct
 - it can affect references and STL iterators too!
 
 
@@ -1112,7 +1111,7 @@ We have already used a number of standard classes:
 # Class member functions or methods
 
 *Methods* or *member functions* are functions that are accessed via an existing
-*instance* using the [dot
+*instance* of a class using the [dot
 operator]((https://www.geeksforgeeks.org/dot-operator-in-cpp/)
 
 --
@@ -1627,8 +1626,8 @@ How do we use our class elsewhere in our code? In `shotgun.cpp`:
 
 - we can now iterate through the algorithm
   - the simplest approach is to use a `while` loop here: we keep going while `iterate()` returns `true`
-  - as everything is done within the `.iterate()` method, there is no need
-    for any further actions in the loop itself
+  - as everything is done within the `.iterate()` method, we can leave the
+    loop empty
 
 ---
 
@@ -2175,7 +2174,7 @@ class ShotgunSequencer {
 };
 ```
 
-Note that in case, we have decided to insert the method *definition* right in
+In this case, we have decided to insert the method *definition* right in
 the class declaration
 - this differs from our previous methods, which were defined separately in the
   corresponding `.cpp` file

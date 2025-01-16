@@ -53,7 +53,7 @@ class: title
 
 # Our next project: fMRI analysis
 
-This week, we start off on a new project: a simple correlation analysis of function MRI data
+This week, we start off on a new project: a simple correlation analysis of functional MRI data
 - Have a look at the [assignment instructions](https://github.com/KCL-BMEIS/OOP/blob/main/projects/fMRI/assignment.md)
 
 You will find the most up to date version of the project in [the project's `solution/`

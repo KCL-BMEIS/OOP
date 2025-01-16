@@ -32,8 +32,8 @@ name: constructor
 
 With classes, we can define actions to take when creating an instance, and when
 destroying an instance
-- using [*constructor(s)*](https://www.geeksforgeeks.org/constructors-c/)
-  and a [*destructor*](https://www.geeksforgeeks.org/destructors-c/)
+- using the [*constructor(s)*](https://www.geeksforgeeks.org/constructors-c/)
+  and [*destructor*](https://www.geeksforgeeks.org/destructors-c/)
 
 --
 
@@ -417,9 +417,9 @@ We can now use one constructor when we want to stick with the default value:
 ```
   ShotgunSequencer solver;
 ```
-or we can use the other constructor when we want to specify this value:
+or we can use the other constructor when we want to specify a different value:
 ```
-  ShotgunSequencer solver (10);
+  ShotgunSequencer solver (5);
 ```
 
 
@@ -682,7 +682,7 @@ Exercise: implement and use these new constructors in your own code
 
 # Function overloading
 
-We mentioned earlier than constructors rely on function overloading
+We mentioned earlier that constructors rely on function overloading
 
 [Function overloading](https://www.geeksforgeeks.org/function-overloading-c/)
 can be done with regular functions, and other class member functions
