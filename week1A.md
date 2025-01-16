@@ -945,7 +945,14 @@ int main (int argc, char* argv[])
 
 --
 
-Unfortunately, the arguments are provided as an old-school C-style array of pointers &ndash; features that we are trying hard to avoid on this course!
+Unfortunately, the arguments are provided in a slightly obscure C-style format:
+- `argc` is the number of arguments (including the command name itself)
+- `argv` is a C-style *array* of *pointers* to `char` 
+
+--
+These are features that we are trying hard to avoid on this course!
+- if interested, please have a look at [other explanations
+  online](https://computer.howstuffworks.com/c38.htm)
 
 --
 
@@ -2878,13 +2885,20 @@ Write a program that takes three numbers *a*, *b*, *c* as input, calculates the 
 $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
-You will to include the maths header in order to access the square-root function, i.e. you will need the following lines of code in the right place:
+
+.note[
+You will to include the maths header in order to access the square-root
+function, [`std::sqrt()`](https://en.cppreference.com/w/cpp/numeric/math/sqrt). 
+In other words, you will need the following lines of code in the right place:
 ```
 #include <cmath>
-
-...
-
+```
+at which point you can compute the square root using e.g.:
+```
 float answer = std::sqrt(expression);
+```
+]
+
 ---
 
 # Exercise 3
