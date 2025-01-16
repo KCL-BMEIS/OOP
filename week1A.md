@@ -2874,15 +2874,17 @@ Write a C++ program that calculates the following expressions and outputs the re
 
 # Exercise 2
 
-Write a program that takes three numbers *a*, *b*, *c* as input, calculates the
-quadratic formula and displays the output. Add a check to your program that the
-roots will be real-valued, i.e. that *b²* ≥ 4*ac*. A reminder that the
-quadratic formula is: 
+Write a program that takes three numbers *a*, *b*, *c* as input, calculates the quadratic formula and displays the output. Add a check to your program that the roots will be real-valued, i.e. that *b²* ≥ 4*ac*. A reminder that the quadratic formula is: 
 $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
+You will to include the maths header in order to access the square-root function, i.e. you will need the following lines of code in the right place:
+```
+#include <cmath>
 
+...
 
+float answer = std::sqrt(expression);
 ---
 
 # Exercise 3
