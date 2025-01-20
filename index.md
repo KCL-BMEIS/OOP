@@ -37,7 +37,13 @@ See [here for the full list of topics covered on this course](https://kcl-bmeis.
 
 ## Illustrative projects used on the course
 
-These can be found on the [OOP course code repository](https://github.com/kcl-bmeis/oop/blob/main/projects)
+These can be found on the [OOP course code repository](https://github.com/kcl-bmeis/oop/tree/main/projects)
+
+---
+
+## Solutions to exercises
+
+These will be updated as needed, and can be found on the [OOP course code repository](https://github.com/KCL-BMEIS/OOP_teacher_version/tree/exercise_solutions/exercises)
 
 ---
 
