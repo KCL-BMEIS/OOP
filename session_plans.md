@@ -103,7 +103,7 @@
 
 # Week 4
 
-## Next project: funcional MRI
+## Next project: functional MRI
 
 - more practice with:
   - basic program structure and command-line argument handling
