@@ -64,64 +64,9 @@ Make sure your code is up to date now!
 
 ---
 
-# Limitations of our Image class
+# Limitations of utility functions
 
-Over the last few sessions, we have come up with a useful `Image` class
-- but it has its limitations
-
---
-
-As written, our `Image` class is hard-coded to use `int` to store the intensity
-of each pixel
-- what if we wanted to use a smaller type (e.g. a 16-bit `unsigned int`) to
-  limit memory usage?
-- what if we needed to store floating-point values?
-
---
-
-We could:
-- copy/paste our whole `Image` class
-- call it `ImageFloat` instead
-- change `int` to `float` where relevant
-
---
-
-... but we can do a lot better using a *generic programming* approach: 
-
-&rArr; C++ templates
-
----
-class: section
-
-# C++ templates
-
----
-
-# Template functions
-
-C++ provides a way to define a function for one or more generic types
-- this allows us to provide a *blueprint* for what the function should do
-- when we need to use the function, the compiler will work out what the type
-  is, substitute it into our code, and compile that
-- this allows us to write a generic function once and re-use it in different
-  contexts
-  - this is a great tool to maximise [code re-use](https://www.lambdatest.com/learning-hub/code-reusability)
-
---
-
-We have already been using template functions throughout this course:
-- `std::min()`, `std::max()`, `std::ranges::min()`, `std::ranges::max()`,
-  `std::distance()`, `std::format()`, ...
-
---
-
-Let's illustrate the concept by modifying our task `rescale()` function
-
----
-
-# Template functions
-
-This is how our rescale function is currently declared in `task.h`:
+Our rescale function is currently declared in `task.h` as:
 ```
 std::vector<float> rescale (const std::vector<int>& task, int min, int max);
 ```
@@ -170,6 +115,36 @@ Function overloading is useful, but may not be the best tool here
 - what if at some later stage, we need to do the same thing with a vector of `double`?
 - what if we find a subtle bug in the code? We would need to correct the error
   in all the different versions
+
+
+---
+class: section
+
+# C++ templates
+
+## Generic programming in C++
+
+---
+
+# Template functions
+
+C++ provides a way to define a function for one or more generic types
+- this allows us to provide a *blueprint* for what the function should do
+- when we need to use the function, the compiler will work out what the type
+  is, substitute it into our code, and compile that
+- this allows us to write a generic function once and re-use it in different
+  contexts
+  - this is a great tool to maximise [code re-use](https://www.lambdatest.com/learning-hub/code-reusability)
+
+--
+
+We have already been using template functions throughout this course:
+- `std::min()`, `std::max()`, `std::ranges::min()`, `std::ranges::max()`,
+  `std::distance()`, `std::format()`, ...
+
+--
+
+Let's illustrate the concept by modifying our task `rescale()` function
 
 ---
 
@@ -282,6 +257,8 @@ When linking `fmri.o`, `task.o`, etc:
 
 For this reason, **the definition of a template function must be included in the header file**!
 - *not* in the `.cpp` file
+- the function will implicitly be marked `inline` to prevent the multiple
+  symbol problem when linking 
 
 --
 
@@ -310,4 +287,308 @@ void add_in_place (std::vector<`A`>& vecA, const std::vector<`B`>&  vecB)
   for (unsigned int n = 0; n < vecA.size(); ++n)
     vecA[n] += vecB[n];
 }
+```
+
+---
+class: section
+
+# Class templates in C++
+
+---
+
+# Limitations of our Image class
+
+Over the last few sessions, we have come up with a useful `Image` class
+- but it has its limitations
+
+--
+
+As written, our `Image` class is hard-coded to use `int` to store the intensity
+of each pixel
+- what if we wanted to use a smaller type (e.g. a 16-bit `unsigned int`) to
+  limit memory usage?
+- what if we needed to store floating-point values?
+
+--
+
+We could:
+- copy/paste our whole `Image` class
+- call it `ImageFloat` instead
+- change `int` to `float` where relevant
+
+--
+
+... but that is a *lot* of code duplication!
+
+&rArr; let's use C++ templates instead
+
+
+---
+
+**In `image.h`:**
+```
+
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<int>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    int& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<int> m_data;
+};
+```
+---
+
+**In `image.h`:**
+```
+
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<`int`>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const `int`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `int`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<`int`> m_data;
+};
+```
+
+.explain-top[
+Currently, our `Image` class is hard-coded to store `int` values
+]
+
+---
+
+**In `image.h`:**
+```
+
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<`float`>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const `float`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `float`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<`float`> m_data;
+};
+```
+
+.explain-top[
+... but if we changed the *type* from `int` to `float` at the locations
+highlighted, this class would work just as well for `float`!
+]
+
+---
+
+**In `image.h`:**
+```
+`template <typename T>`
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<T>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const T& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    T& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<T> m_data;
+};
+```
+
+.explain-bottom[
+Our `Image` class can readily be converted into a `template` class
+
+<br>As with template functions, we need to use the `template` keyword to denote
+the class as a *template*, and list the *arguments* this template will take
+- our template accepts a single *type* argument, which will be referred to as
+  `T` in our definition
+]
+
+
+---
+
+**In `image.h`:**
+```
+template <typename T>
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<`T`>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const `T`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `T`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<`T`> m_data;
+};
+```
+
+.explain-top[
+We can now use the (as  yet unknown) type `T` where required instead of `int`
+]
+
+
+---
+
+# Using class templates
+
+We can now declare instances of our class template for any desired type like this:
+```
+  Image<int> image (256, 256);
+```
+or from an existing vector of data (of matching type):
+```
+  std::vector<float> data;
+  ...
+
+  Image<float> image (512, 512, data);
+```
+
+--
+
+The compiler will then substitute the desired type (`int` or `float`) instead
+of `T` in the class definition, and compile the result
+- as if we had manually substituted the type ourselves!
+
+---
+
+# Where to define class templates
+
+As with template functions, the compiler will not produce any code when
+encountering a template class definition 
+- it can only check the our definition for correctness
+
+--
+
+The compiler will only generate code when the data type is known: at the point of use
+
+--
+
+&rArr; the full class declaration and all method definitions must be available
+in the header! 
+- as before, all methods are implicitly marked `inline` to prevent the multiple
+  symbol problem when linking 
+
+
+--
+
+.explain-bottom[
+Exercise: convert the `Image` class to a template class, and modify the rest of
+the code to make use of it
+]
+
+---
+
+**In `image.h`:**
+```
+`template <typename T>`
+class Image {
+  public:
+    Image (int xdim, int ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (int xdim, int ydim, const std::vector<`T`>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    int width () const { return m_xdim; }
+    int height () const { return m_ydim; }
+
+    const `T`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `T`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    int m_xdim, m_ydim;
+    std::vector<`T`> m_data;
+};
+```
+
+---
+
+**Also in `image.h`:** 
+- note that the insertion operator must now also be a template
+
+```
+`template <class ValueType>`
+inline std::ostream& operator<< (std::ostream& out, const `Image<ValueType>`& im)
+```
+
+
+**In `load_pgm.h/cpp`:**
+
+```
+`Image<int>` load_pgm (const std::string& filename);
+```
+
+**In `dataset.h`:**
+```
+class Dataset
+{
+    ...
+    const `Image<int>`& operator[] (int n) const { return m_slices[n]; }
+    ...
+
+  private:
+    std::vector<`Image<int>`> m_slices;
+};
 ```
