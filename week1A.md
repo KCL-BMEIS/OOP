@@ -2910,7 +2910,7 @@ lengths are valid. To be valid, the length of each side must be less than the
 sum of the other two sides.  
 $$
 \begin{align}
-s &= (a + b + c)/2\\
+s &= (a + b + c)/2 \\\\
 A &= \sqrt{s(s - a)(s - b)(s - c)}
 \end{align}
 $$
