@@ -2909,10 +2909,10 @@ area of the triangle and display it. Your program should check that the side
 lengths are valid. To be valid, the length of each side must be less than the
 sum of the other two sides.  
 $$
-s = (a + b + c)/2
-$$
-$$
-A = s(s - a)(s - b)(s - c)
+\begin{align}
+s &= (a + b + c)/2\\
+A &= \sqrt{s(s - a)(s - b)(s - c)}
+\end{align}
 $$
 
 
