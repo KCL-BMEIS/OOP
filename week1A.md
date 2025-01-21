@@ -442,13 +442,15 @@ To do this, we need to use a **text editor**
 --
 
 - On KCL-managed systems, you can use a simple terminal-based editor called
-  [micro](https://micro-editor.github.io/)
+  [micro](https://micro-editor.github.io/), or [Notepad++](https://notepad-plus-plus.org/)
+  - on macOS, we recommend [CodeEdit](https://www.codeedit.app/) or [TextMate](https://macromates.com/)
 
 --
 
-- other options include [Notepad++](https://notepad-plus-plus.org/) (Windows
-  only), [Sublime Text](https://www.sublimetext.com/), 
-  [VS Code](https://code.visualstudio.com/), [BBEdit](https://www.barebones.com/products/bbedit/) 
+- there are many other text editors you could use: 
+  [Sublime Text](https://www.sublimetext.com/), 
+  [VS Code](https://code.visualstudio.com/), 
+[BBEdit](https://www.barebones.com/products/bbedit/) 
   (macOS only), ...
 
 --
@@ -515,7 +517,7 @@ We need to start by creating a folder to store our code
 
 # Our first C++ program: Hello World
 
-Once we are in the right folder, we need to create a new text file called
+Once in the right folder, we need to create a new text file called
 `main.cpp` with these contents:
 
 ```C++
@@ -536,6 +538,10 @@ have decided to use), type in the contents, and save the file.
 ```
 $ micro main.cpp
 ```
+
+- If using a different editor, you can just as easily launch the editor
+  application as you would any other app, type in the code, and save the file
+  in the folder you just created
 
 ---
 

@@ -212,6 +212,9 @@ To illustrate, if we were to declare our template function in `task.h`:
 template <typename T>
 std::vector<float> rescale (const std::vector<T>& task, T min, T max);
 ```
+
+--
+
 ... define it in `task.cpp`:
 ```
 template <typename T>
@@ -223,6 +226,8 @@ std::vector<float> rescale (const std::vector<`T`>& task, `T` min, `T` max)
   return out;
 }
 ```
+
+--
 
 ... and use it in `fmri.cpp`:
 ```
@@ -514,7 +519,7 @@ of `T` in the class definition, and compile the result
 
 As with template functions, the compiler will not produce any code when
 encountering a template class definition 
-- it can only check the our definition for correctness
+- it can only check our definition for correctness
 
 --
 
@@ -592,3 +597,31 @@ class Dataset
     std::vector<`Image<int>`> m_slices;
 };
 ```
+
+---
+
+# Polymorphism
+
+[Polymorphism]() is one of the key feature of Object-Oriented Programming
+
+It refers to ability to define a single *interface* with multiple
+implementations
+- For example, the `std::vector` class has a well-defined interface, but
+  different implementations for different types
+
+--
+
+C++ provides several mechanisms to implement *polymorphism*:
+
+- Compile-time polymorphim
+  - function overloading
+  - templates
+
+--
+
+- Run-time polymorphism
+  - inheritance (to be covered later)
+
+--
+
+Our template `Image` class is an example of compile-time polymorphism!
