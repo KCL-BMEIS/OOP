@@ -1047,7 +1047,7 @@ Throughout the course, we will be gradually merging the code for our solutions
 to the course repository. 
 
 You will find the most up to date version in the project's `solution/` folder. 
-- [click here](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
+- [click here](https://github.com/KCL-BMEIS/OOP/tree/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution)
   for the DNA shotgun sequencing project
 
 --
