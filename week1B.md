@@ -1053,7 +1053,7 @@ You will find the most up to date version in the project's `solution/` folder.
 --
 <br>
 
-You can also inspect [the *history* of the changes](https://github.com/KCL-BMEIS/OOP/commits/main/projects/DNA_shotgun_sequencing/solution) by clicking on the *History*
+You can also inspect [the *history* of the changes](https://github.com/KCL-BMEIS/OOP/commits/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution) by clicking on the *History*
 button 
 
 ![:right 30%](images/history_button.png)
