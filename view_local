@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from sys import argv
+from sys import argv, platform
 from os import path
 
 if '-no-incremental' in argv:
@@ -35,5 +35,9 @@ out = argv[1][:-3]+'.html'
 with open (out, 'w') as fd:
     fd.write (html.replace ('{{ page.title | strip_html }}', title).replace('{{ page.content }}', markdown))
 
-print ("ready to view at file:///" + path.abspath (out))
+filepath = path.abspath (out)
+if platform == "cygwin":
+  filepath = filepath[:2] + ':' + filepath[2:]
+
+print ("ready to view at file:///" + filepath)
 
