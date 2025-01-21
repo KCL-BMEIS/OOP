@@ -797,7 +797,8 @@ script of our own design (the
 On KCL systems, this script has already been made available as the command
 `oop_build`
 - if you need to install this on your own system, please [follow the
-  instructions here](https://kcl-bmeis.github.io/OOP/install_build_script)
+  instructions
+here](https://github.com/KCL-BMEIS/OOP/wiki/How-to-install-the-build-script-used-on-the-OOP-course)
 
 --
 
@@ -823,7 +824,7 @@ The project must however follow some simple rules:
 # Building our project using `oop_build`
 
 Make sure your code has been split up as shown in this session
-- or fetch the latest version [from the website](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
+- or fetch the latest version [from the website](https://github.com/KCL-BMEIS/OOP/tree/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution)
 
 The listing should show (at least) these files:
 ```
