@@ -43,7 +43,6 @@
 
 ## Multi-file project, error handling
 
-- [type aliasing](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/)
 - [defining separate header and cpp files](https://www.codeproject.com/Articles/5341253/C-Cplusplus-Headers-and-Source-Files-How-Do-They-W)
   - [compiling and linking](https://www.learncpp.com/cpp-tutorial/introduction-to-the-compiler-linker-and-libraries/)
   - what is a [translation (compilation) unit](https://en.wikipedia.org/wiki/Translation_unit_(programming))
@@ -76,8 +75,6 @@
 
 - advanced string formatting using [`std::format()`](https://www.accu.org/journals/overload/29/166/collyer/)
 - [grouping data into a `struct`](https://www.geeksforgeeks.org/structures-in-cpp/)
-- returning multiple values from functions using [C++17 structured binding](https://www.cppstories.com/2022/structured-bindings/)
-- [using `std::string_view` to avoid copies](https://www.geeksforgeeks.org/class-stdstring_view-in-cpp-17/)
 - Introducing classes
   - [methods](https://www.geeksforgeeks.org/cpp-class-methods/)
   - [access specifiers](https://www.geeksforgeeks.org/constructors-c/)
@@ -130,22 +127,12 @@
 - [overloading the subscript or array indexing operator](https://www.geeksforgeeks.org/overloading-subscript-or-array-index-operator-in-c/)
 - [overloading the function call operator](https://www.geeksforgeeks.org/overload-function-call-operator-in-cpp/)
 - [overloading the stream insertion operator](https://www.geeksforgeeks.org/overloading-stream-insertion-operators-c/)
+- finishing touches to fMRI project
 
 
 ---
 
 # Week 5
-
-## Lambda expressions & template programming
-
-- [class templates](https://www.geeksforgeeks.org/templates-cpp/)
-- [the `<cmath>` header](https://www.w3schools.com/cpp/cpp_ref_math.asp) and associated functions
-- [lambda expressions](https://www.geeksforgeeks.org/lambda-expression-in-c/)
-- [use of lambda expressions with the C++ Standard Template Library (STL)](https://medium.com/@m4xshen/the-beauty-of-c-stl-algorithm-and-lambda-205e6f0d8335)
-- [the C++20 `std::ranges` library](https://www.geeksforgeeks.org/cpp-20-ranges-library/)
-- [function templates](https://www.geeksforgeeks.org/templates-cpp/)
-- finishing touches to fMRI project
-
 
 ## Robot arm project & inheritance
 
@@ -158,12 +145,16 @@
   - abstract and concrete classes
 - [class vs. object vs. instance](https://www.codementor.io/@stevedonovan/class-vs-object-vs-instance-14i2s2lu6r)
 
+## Robot arm project & inheritance
 
+- work on project
+- practice class inheritance, etc
+  
 ---
 
 # Week 6
 
-## Object-oriented design
+## OOP design and principles
 
 - aggregation, composition, inheritance
 - object lifetime & ownership
@@ -214,7 +205,14 @@
 
 # Week 9
 
-## OOP design and principles
+## Lambda expressions & template programming
+
+- [class templates](https://www.geeksforgeeks.org/templates-cpp/)
+- [the `<cmath>` header](https://www.w3schools.com/cpp/cpp_ref_math.asp) and associated functions
+- [lambda expressions](https://www.geeksforgeeks.org/lambda-expression-in-c/)
+- [use of lambda expressions with the C++ Standard Template Library (STL)](https://medium.com/@m4xshen/the-beauty-of-c-stl-algorithm-and-lambda-205e6f0d8335)
+- [the C++20 `std::ranges` library](https://www.geeksforgeeks.org/cpp-20-ranges-library/)
+- [function templates](https://www.geeksforgeeks.org/templates-cpp/)
 
 ## Templates and the Standard Template Library
 
@@ -245,6 +243,9 @@
 
 # Topics not yet covered:
 
+- [type aliasing](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/)
+- returning multiple values from functions using [C++17 structured binding](https://www.cppstories.com/2022/structured-bindings/)
+- [using `std::string_view` to avoid copies](https://www.geeksforgeeks.org/class-stdstring_view-in-cpp-17/)
 - [conditional (ternary) operator (`?:`)](https://www.geeksforgeeks.org/cpp-ternary-or-conditional-operator/)
 - [Resource Acquisition Is Initialization (RAII)](https://www.geeksforgeeks.org/resource-acquisition-is-initialization/)
 - [the function stack](https://www.geeksforgeeks.org/function-call-stack-in-c/)
