@@ -12,24 +12,6 @@ class: title
 
 ---
 
-# What we covered last week
-
-- The Unix command-line
-- Writing C++ code using a simple text editor
-- Compiling our first C++ program
-- The `#include` preprocessor directive
-- Basic data type, `std::string` and `std::vector`
-- Iteration and conditional execution
-- Statements and compound statements
-- Type inference using the `auto` keyword
-- Basic error handling
-- Handling command-line arguments
-- File input/output
-- (const) references
-- Defining and using functions
-
----
-
 # Picking up where we left off
 
 Last week, we had started working on our [DNA shotgun sequencing

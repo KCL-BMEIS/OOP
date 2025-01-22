@@ -12,42 +12,6 @@ class: title
 
 ---
 
-# What we have learned so far
-
-**By now, you should be able to:**
-.columns[
-.col[
-- use the terminal and navigate around the filesystem
-- write, compile and run a small C++ program
-- use `for` loops and `if` statements
-- use standard data types, including `std::string` and `std::vector`
-]
-.col[
-- write and use your own functions
-- read and write basic information to & from file
-- handle command-line arguments and options
-- split your code across multiple `cpp` and header files
-]
-]
-
-**Ideally, you should also have a basic understanding of:**
-.columns[
-.col[
-- error handling using C++ exceptions
-- (const) references
-- variable scope
-]
-.col[
-- the `inline` keyword
-- namespaces
-- the compile & link process
-]
-]
-
-**If you struggle with any of these aspects, please ask for help!**
-
----
-
 # Picking up where we left off
 
 We continue working on our [DNA shotgun sequencing
