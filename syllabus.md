@@ -106,7 +106,6 @@ This is a list of topics to be covered on this module. Note that during the cour
 
 ## OOP design
 - OOP principles: encapsulation, abstraction, inheritance, polymorphism
-- UML, focussing on UML class diagrams
 - aggregation, composition, inheritance
 - SOLID principles and others
 - prefer composition over inheritance
