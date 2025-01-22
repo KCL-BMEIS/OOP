@@ -261,8 +261,8 @@ One approach to this problem relies on *references*:
   returning:
 
 ```
-int find_biggest_overlap (const std::string& sequence, Fragments& fragments, 
-                          `int& index`)
+int find_biggest_overlap (const std::string& sequence, 
+                          std::vector<std::string>& fragments, `int& index`)
 ```
 - The `index` variable is passed by non-const reference, allowing the function to
   assign a value to it that will also update the original variable.
@@ -335,7 +335,7 @@ struct Overlap {
 
 This can then be used as a regular data type in our function declaration:
 ```
-`Overlap` find_biggest_overlap (const std::string& sequence, Fragments& fragments);
+`Overlap` find_biggest_overlap (const std::string& sequence, std::vector<std::string>& fragments);
 ```
 --
 
@@ -533,8 +533,6 @@ same thing
 Nonetheless, you are encouraged to reserve the use of `struct` for small, lightweight containers with public data members only
 - for example, as a way of grouping variables into a single entity that can be
   returned from a function
-- by using a `struct`, you are expressing the notion that the `struct` itself
-  is unimportant: it's the data members that matters
 - do not use a `struct` for anything that should provide an abstract interface, and/or
   where maintaining consistency between member variables is important
 
@@ -549,7 +547,7 @@ Nonetheless, you are encouraged to reserve the use of `struct` for small, lightw
 We already use plenty of classes in our project:
 - `std::string`
 - `std::vector`
-- `std::vector<std:string>` (aliased to `Fragments`)
+- `std::vector<std:string>`
 
 These already provide all the functionality we need for our program to function
 
@@ -641,7 +639,7 @@ class ShotgunSequencer {
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 
@@ -653,7 +651,7 @@ class ShotgunSequencer {
   `private:`
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - we are going to declare our member variables as **private**
@@ -669,7 +667,7 @@ class ShotgunSequencer {
   private:
 *   const int m_minimum_overlap = 10;
 *   std::string m_sequence;
-*   Fragments m_fragments;
+*   std::vector<std::string> m_fragments;
 };
 ```
 - we are going to declare our member variables as **private**
@@ -688,7 +686,7 @@ class ShotgunSequencer {
   private:
 *   const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - we are going to declare our member variables as **private**
@@ -717,14 +715,14 @@ We now need to add *methods* to allow users of our class to interact with it:
 ```
 class ShotgunSequencer {
   public:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
     bool iterate ();
     void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 
@@ -733,14 +731,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   `public`:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
     bool iterate ();
     void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - this time, our methods will need to be **public**
@@ -752,14 +750,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   public:
-*   void init (const Fragments& fragments);
+*   void init (const std::vector<std::string>& fragments);
 *   bool iterate ();
 *   void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - this time, our methods will need to be **public**
@@ -775,14 +773,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   public:
-*   void init (const Fragments& fragments);
+*   void init (const std::vector<std::string>& fragments);
     bool iterate ();
     void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - `.init()` is used to provide the list of fragments to initialise the
@@ -795,14 +793,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   public:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
 *   bool iterate ();
     void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - `.iterate()` performs a single iteration of the algorithm 
@@ -816,14 +814,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   public:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
     bool iterate ();
 *   void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - `.check_remaining_fragments()` performs the final check
@@ -839,14 +837,14 @@ class ShotgunSequencer {
 ```
 class ShotgunSequencer {
   public:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
 *   bool iterate ();
 *   void check_remaining_fragments ();
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 - note that we don't need to provide any arguments to these methods
@@ -1004,6 +1002,36 @@ are indeed already contained in the final sequence
 
 
 ---
+layout: false
+
+# The shotgun sequencing algorithm as a class
+
+Note that *we cannot access private members* outside the class:
+
+```
+int run (std::vector<std::string>& args)
+{
+  ...
+* std::cout << "final sequence is: " << solver.m_sequence << "\n";
+  write_sequence (args[2], solver.sequence());
+}
+```
+
+- this line will result in a compiler error, similar to:
+  ```
+  shotgun.cpp: In function ‘void run(std::vector<std::__cxx11::basic_string<char> >&)’:
+  shotgun.cpp:35:48: error: ‘std::string ShotgunSequencer::m_sequence’ is private within this context
+     35 |   std::cout << "final sequence is: " << solver.m_sequence << "\n";
+        |                                                ^~~~~~~~~~
+  In file included from shotgun.cpp:8:
+  shotgun_sequencer.h:16:17: note: declared private here
+     16 |     std::string m_sequence;
+        |                 ^~~~~~~~~~
+  ```
+
+
+
+---
 layout: true
 
 # The shotgun sequencing algorithm as a class
@@ -1026,7 +1054,7 @@ header:
 #include "shotgun_sequencer.h"
 #include "debug.h"
 
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 { ... }
 
 bool ShotgunSequencer::iterate ()
@@ -1048,7 +1076,7 @@ void ShotgunSequencer::check_remaining_fragments ()
 *#include "shotgun_sequencer.h"
 #include "debug.h"
 
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 { ... }
 
 bool ShotgunSequencer::iterate ()
@@ -1075,7 +1103,7 @@ functionality we are going to use &ndash; including our new header!
 #include "shotgun_sequencer.h"
 #include "debug.h"
 
-*void ShotgunSequencer::init (const Fragments& fragments)
+*void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 { ... }
 
 *bool ShotgunSequencer::iterate ()
@@ -1107,7 +1135,7 @@ But there are some clear differences!
 #include "shotgun_sequencer.h"
 #include "debug.h"
 
-void `ShotgunSequencer::`init (const Fragments& fragments)
+void `ShotgunSequencer::`init (const std::vector<std::string>& fragments)
 { ... }
 
 bool `ShotgunSequencer::`iterate ()
@@ -1145,7 +1173,7 @@ means: the `init()` method that was declared within the scope of the
 #include "shotgun_sequencer.h"
 #include "debug.h"
 
-*void init (const Fragments& fragments)
+*void init (const std::vector<std::string>& fragments)
 { ... }
 
 *bool iterate ()
@@ -1179,7 +1207,7 @@ that are entirely independent of our `ShotgunSequencer` class!
 #include "shotgun_sequencer.h"
 #include "debug.h"
 
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 { `...` }
 
 bool ShotgunSequencer::iterate ()
@@ -1201,7 +1229,7 @@ layout: true
 ---
 
 ```
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 {
   m_fragments = fragments;
   if (debug::verbose)
@@ -1213,7 +1241,7 @@ void ShotgunSequencer::init (const Fragments& fragments)
 ---
 
 ```
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 {
   `m_fragments` = fragments;
   if (debug::verbose)
@@ -1231,7 +1259,7 @@ our method
 ---
 
 ```
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 {
 * m_fragments = fragments;
   if (debug::verbose)
@@ -1254,7 +1282,7 @@ We start by copying the list of fragments over from the argument provided
 ---
 
 ```
-void ShotgunSequencer::init (const Fragments& fragments)
+void ShotgunSequencer::init (const std::vector<std::string>& fragments)
 {
   m_fragments = fragments;
 * if (debug::verbose)
@@ -1525,7 +1553,7 @@ This declares the member function implicitly as `inline`
 ```
 class ShotgunSequencer {
   public:
-*   void init (const Fragments& fragments);
+*   void init (const std::vector<std::string>& fragments);
     ...
     const std::string& sequence () const { return m_sequence; }
   private:

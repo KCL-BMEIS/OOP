@@ -2195,7 +2195,7 @@ We now have all the pieces required to implement our verbose option
 For example, in `fragments.cpp`:
 ```
 ...
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 {
 * if (debug::verbose)
     std::cerr << "reading fragments from file \"" << filename << "\"...\n";
@@ -2204,7 +2204,7 @@ Fragments load_fragments (const std::string& filename)
 
 --
 
-.explain-bottom[
+.explain-bottomright[
 Exercise: implement these changes in your own code
 ]
 
@@ -2380,7 +2380,7 @@ mentioned above, the compiler is free to treat this merely as a *hint*
 We can now use our convenience function in our code, for example in `fragments.cpp`:
 ```
 ...
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 {
 * if (debug::verbose)
 *   std::cerr << "reading fragments from file \"" << filename << "\"...\n";
@@ -2389,7 +2389,7 @@ Fragments load_fragments (const std::string& filename)
 becomes simply:
 ```
 ...
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 {
 * debug::log ("reading fragments from file \"" + filename + "\"...");
   ...

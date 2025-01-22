@@ -142,11 +142,9 @@ This is what our `fragments.h` file should look like:
 #include <vector>
 #include <string>
 
-using Fragments = std::vector<std::string>;
+std::vector<std::string> load_fragments (const std::string& filename);
 
-Fragments load_fragments (const std::string& filename);
-
-void fragment_statistics (const Fragments& fragments);
+void fragment_statistics (const std::vector<std::string>& fragments);
 
 void write_sequence (const std::string& filename, const std::string& sequence);
 ```
@@ -164,11 +162,9 @@ This is what our `fragments.h` file should look like:
 #include <vector>
 #include <string>
 
-using Fragments = std::vector<std::string>;
+std::vector<std::string> load_fragments (const std::string& filename);
 
-Fragments load_fragments (const std::string& filename);
-
-void fragment_statistics (const Fragments& fragments);
+void fragment_statistics (const std::vector<std::string>& fragments);
 
 void write_sequence (const std::string& filename, const std::string& sequence);
 ```
@@ -192,11 +188,9 @@ This is what our `fragments.h` file should look like:
 *#include <vector>
 *#include <string>
 
-using Fragments = std::vector<std::string>;
+std::vector<std::string> load_fragments (const std::string& filename);
 
-Fragments load_fragments (const std::string& filename);
-
-void fragment_statistics (const Fragments& fragments);
+void fragment_statistics (const std::vector<std::string>& fragments);
 
 void write_sequence (const std::string& filename, const std::string& sequence);
 ```
@@ -223,38 +217,9 @@ This is what our `fragments.h` file should look like:
 #include <vector>
 #include <string>
 
-*using Fragments = std::vector<std::string>;
-
-Fragments load_fragments (const std::string& filename);
-
-void fragment_statistics (const Fragments& fragments);
-
-void write_sequence (const std::string& filename, const std::string& sequence);
-```
-
-
-.explain-bottom[
-We also include our type alias &ndash; otherwise the compiler won't know what
-we mean by `Fragments`
-]
-
----
-
-# Splitting projects over multiple files
-
-This is what our `fragments.h` file should look like:
-
-```
-#pragma once
-
-#include <vector>
-#include <string>
-
-using Fragments = std::vector<std::string>;
-
-*Fragments load_fragments (const std::string& filename);
+*std::vector<std::string> load_fragments (const std::string& filename);
 *
-*void fragment_statistics (const Fragments& fragments);
+*void fragment_statistics (const std::vector<std::string>& fragments);
 *
 *void write_sequence (const std::string& filename, const std::string& sequence);
 ```
@@ -280,11 +245,11 @@ This is what our `fragments.cpp` file should look like:
 
 #include "fragments.h"
 
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 { ...
 }
 
-void fragment_statistics (const Fragments& fragments)
+void fragment_statistics (const std::vector<std::string>& fragments)
 { ...
 }
 
@@ -306,11 +271,11 @@ This is what our `fragments.cpp` file should look like:
 
 #include "fragments.h"
 
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 { ...
 }
 
-void fragment_statistics (const Fragments& fragments)
+void fragment_statistics (const std::vector<std::string>& fragments)
 { ...
 }
 
@@ -337,11 +302,11 @@ This is what our `fragments.cpp` file should look like:
 
 *#include "fragments.h"
 
-Fragments load_fragments (const std::string& filename)
+std::vector<std::string> load_fragments (const std::string& filename)
 { ...
 }
 
-void fragment_statistics (const Fragments& fragments)
+void fragment_statistics (const std::vector<std::string>& fragments)
 { ...
 }
 
@@ -368,11 +333,11 @@ This is what our `fragments.cpp` file should look like:
 
 #include "fragments.h"
 
-*Fragments load_fragments (const std::string& filename)
+*std::vector<std::string> load_fragments (const std::string& filename)
 *{ ...
 *}
 *
-*void fragment_statistics (const Fragments& fragments)
+*void fragment_statistics (const std::vector<std::string>& fragments)
 *{ ...
 *}
 *
@@ -1851,7 +1816,7 @@ Exercise: add a function to your code to:
 # Possible solution
 
 ```
-std::string extract_longest_fragment (Fragments& fragments)
+std::string extract_longest_fragment (std::vector<std::string>& fragments)
 {
   unsigned int size_of_longest = 0;
   unsigned int index_of_longest = 0;

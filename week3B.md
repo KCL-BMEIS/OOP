@@ -96,17 +96,17 @@ Our `m_sequence` and `m_fragments` variables have well-defined constructors
 
 class ShotgunSequencer {
   public:
-    void init (const Fragments& fragments);
+    void init (const std::vector<std::string>& fragments);
     bool iterate ();
     void check_remaining_fragments ();
 
-    const Fragments& remaining_fragments () const { return m_fragments; }
+    const std::vector<std::string>& remaining_fragments() const { return m_fragments; }
     const std::string& sequence () const { return m_sequence; }
 
   private:
     const int m_minimum_overlap = 10;
     std::string m_sequence;
-    Fragments m_fragments;
+    std::vector<std::string> m_fragments;
 };
 ```
 
@@ -116,8 +116,8 @@ The implicit default constructor will:
 - set the value of `m_minimum_overlap` to 10
 - initialise `m_sequence` using the default constructor for `std::string` (zero
   length)
-- initialise `m_fragments` using the default constructor for `Fragments`, which
-  is an alias for `std::vector<std::string>` (also zero length)
+- initialise `m_fragments` using the default constructor for
+  `std::vector<std::string>` (also zero length)
 
 ]
 
@@ -517,9 +517,7 @@ chaining*](https://www.geeksforgeeks.org/constructor-delegation-c/) (or
 
 --
 
-Let's illustrate with an example:
-
-We want to add two additional constructors
+Let's illustrate with an example: we want to add two additional constructors
 - one will take an existing list of fragments to initialise the algorithm
 - the other will load the list of fragments from file, and use that to
   initialise the algorithm
@@ -531,8 +529,8 @@ The constructor declarations should therefore look like this:
 class ShotgunSequencer {
   public:
     ...
-*   ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10)
-*   ShotgunSequencer (const std::string& fragments_filename, int minimum_overlap = 10)
+*   ShotgunSequencer (const std::vector<std::string>& fragments, int min_overlap = 10)
+*   ShotgunSequencer (const std::string& fragments_filename, int min_overlap = 10)
     ...
 ```
 
@@ -549,7 +547,8 @@ The first constructor can be defined as:
 class ShotgunSequencer {
   public:
     ...
-*   ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+*   ShotgunSequencer (const std::vector<std::string>& fragments, 
+*                     int minimum_overlap = 10) :
 *     ShotgunSequencer (minimum_overlap) {
 *       init (fragments);
 *     }
@@ -563,7 +562,8 @@ class ShotgunSequencer {
 class ShotgunSequencer {
   public:
     ...
-    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) `:`
+    ShotgunSequencer (const std::vector<std::string>& fragments, 
+                      int minimum_overlap = 10) `:`
       `ShotgunSequencer (minimum_overlap)` {
         init (fragments);
       }
@@ -581,7 +581,8 @@ class ShotgunSequencer {
 class ShotgunSequencer {
   public:
     ...
-    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+    ShotgunSequencer (const std::vector<std::string>& fragments, 
+                      int minimum_overlap = 10) :
       ShotgunSequencer (minimum_overlap) {
 *       init (fragments);
       }
@@ -600,7 +601,8 @@ class ShotgunSequencer {
 class ShotgunSequencer {
   public:
     ...
-    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+    ShotgunSequencer (const std::vector<std::string>& fragments, 
+                      int minimum_overlap = 10) :
       `m_minimum_overlap` (minimum_overlap) {
         init (fragments);
       }
@@ -624,7 +626,8 @@ The second constructor can be defined as:
 class ShotgunSequencer {
   public:
     ...
-    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+    ShotgunSequencer (const std::vector<std::string>& fragments, 
+                      int minimum_overlap = 10) :
       m_minimum_overlap (minimum_overlap) {
         init (fragments);
       }
@@ -639,7 +642,8 @@ class ShotgunSequencer {
 class ShotgunSequencer {
   public:
     ...
-    ShotgunSequencer (const Fragments& fragments, int minimum_overlap = 10) :
+    ShotgunSequencer (const std::vector<std::string>& fragments, 
+                      int minimum_overlap = 10) :
       m_minimum_overlap (minimum_overlap) {
         init (fragments);
       }
@@ -649,7 +653,7 @@ class ShotgunSequencer {
 ```
 
 We already have a `load_fragments()` function that returns a variable of
-type `Fragments`
+type `std::vector<std::string>`
 
 &rArr; we can trivially *delegate* to the first constructor!
 
@@ -713,7 +717,7 @@ class ShotgunSequencer {
   public:
     ...
     void init ();
-    void init (const Fragments& fragments) {
+    void init (const std::vector<std::string>& fragments) {
       m_fragments = fragments;
       init();
     }
