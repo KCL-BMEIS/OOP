@@ -96,12 +96,11 @@
       }
       .col { }
       
-      .note, .explain-top, .explain-bottom, .explain-middle {
+      .note, .explain-top, .explain-bottom, .explain-middle, .explain-abstop, .explain-topright, .explain-bottomright {
         border-radius: 0.4em;
         filter: drop-shadow(0.3em 0.3em 0.3em #888888);
-        > p {
-         margin: 0em;
-        }
+        > p { margin: 0em; }
+        > ul { margin: 0em; }
       }
       .note {
         width: 100;
@@ -110,7 +109,7 @@
         padding: 0.5em;
         color: #666;
       }
-      .explain-bottom, .explain-top, .explain-middle {
+      .explain-bottom, .explain-abstop, .explain-top, .explain-middle, .explain-topright, .explain-bottomright {
         width: 80%;
         position: absolute;
         background-color: #FFDDDD;
@@ -118,15 +117,12 @@
         right: 4em;
         filter: drop-shadow(0.3em 0.3em 0.5em #888888);
       }
-      .explain-top {
-        top: 5em;
-      }
-      .explain-bottom {
-        bottom: 1.5em;
-      }
-      .explain-middle {
-        bottom: 10em;
-      }
+      .explain-abstop { top: 1em; }
+      .explain-top { top: 5em; }
+      .explain-bottom { bottom: 1.5em; }
+      .explain-middle { bottom: 10em; }
+      .explain-topright { top: 1em; right: 1em; width: 50%; }
+      .explain-bottomright { bottom: 1.5em; right: 1em; width: 50%; }
       .block {
         display: block;
       }

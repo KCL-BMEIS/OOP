@@ -383,7 +383,7 @@ class Image {
 };
 ```
 
-.explain-top[
+.explain-topright[
 Currently, our `Image` class is hard-coded to store `int` values
 ]
 
@@ -415,7 +415,7 @@ class Image {
 };
 ```
 
-.explain-top[
+.explain-topright[
 ... but if we changed the *type* from `int` to `float` at the locations
 highlighted, this class would work just as well for `float`!
 ]
@@ -448,7 +448,7 @@ class Image {
 };
 ```
 
-.explain-bottom[
+.explain-topright[
 Our `Image` class can readily be converted into a `template` class
 
 <br>As with template functions, we need to use the `template` keyword to denote
@@ -486,8 +486,43 @@ class Image {
 };
 ```
 
-.explain-top[
+.explain-topright[
 We can now use the (as  yet unknown) type `T` where required instead of `int`
+]
+
+
+---
+
+**In `image.h`:**
+```
+template <typename T>
+class Image {
+  public:
+    Image (`int` xdim, `int` ydim) :
+      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+
+    Image (`int` xdim, `int` ydim, const std::vector<T>& data) :
+      m_xdim (xdim), m_ydim (ydim), m_data (data) {
+        if (static_cast<`int`> (m_data.size()) != m_xdim * m_ydim)
+          throw std::runtime_error ("dimensions don't match");
+      }
+
+    `int` width () const { return m_xdim; }
+    `int` height () const { return m_ydim; }
+
+    const T& operator() (`int` x, `int` y) const { return m_data[x + m_xdim*y]; }
+    T& operator() (`int` x, `int` y) { return m_data[x + m_xdim*y]; }
+
+  private:
+    `int` m_xdim, m_ydim;
+    std::vector<T> m_data;
+};
+```
+
+.explain-topright[
+Note: we don't blindly replace every mention of `int` from the class!
+
+<br>We only replace it where it relates to its use as the pixel intensity
 ]
 
 
@@ -624,4 +659,4 @@ C++ provides several mechanisms to implement *polymorphism*:
 
 --
 
-Our template `Image` class is an example of compile-time polymorphism!
+Our template `Image` class is an example of *compile-time polymorphism*
