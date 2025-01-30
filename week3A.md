@@ -419,7 +419,7 @@ Classes are central to Object-Oriented Programming
 --
 
 We have already used a number of standard classes:
-- `std::string`, `std::vector`, `std::string_view`, ...
+- `std::string`, `std::vector`, `std::ifstream`, ...
 
 
 ---
