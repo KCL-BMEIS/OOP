@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [[ $# < 1 ]]; then 
+  echo "usage: $0 project"
+  echo ""
+  echo "where project is one of 'shotgun', 'fmri' or 'robot'"
+  exit 1
+fi
+
+user=kcl-bmeis
+repo=oop
+
+case $1 in
+  shotgun)
+    branch=shotgun_sequencing_solution
+    remote_folder=projects/DNA_shotgun_sequencing/solution
+    ;;
+  fmri)
+    branch=fmri_solution
+    remote_folder=projects/fMRI/solution
+    ;;
+  fmri)
+    branch=robot_solution
+    remote_folder=projects/robot_arm/solution
+    ;;
+  *)
+    echo "no such project: $1"
+    exit 1;
+    ;;
+esac
+
+
+curl -s https://api.github.com/repos/$user/$repo/git/trees/$branch?recursive=1 | \
+  while read -r line; do
+    [[ "$line" =~ \"path\":\ *\"${remote_folder}/(.*)\" ]] || continue
+    filename=${BASH_REMATCH[1]};
+    echo updating $filename
+    curl --silent --create-dirs --output $filename https://raw.githubusercontent.com/$user/$repo/$branch/$remote_folder/$filename
+  done
