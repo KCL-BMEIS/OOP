@@ -18,7 +18,7 @@ We continue working on our [fMRI analysis
 project](https://github.com/KCL-BMEIS/OOP/blob/main/projects/fMRI/assignment.md)
 
 You can find the most up to date version in [the project's `solution/`
-folder](https://github.com/KCL-BMEIS/OOP/tree/main/projects/fMRI/solution)
+folder](https://github.com/KCL-BMEIS/OOP/tree/fmri_solution/projects/fMRI/solution)
 
 .explain-bottom[
 Make sure your code is up to date now!

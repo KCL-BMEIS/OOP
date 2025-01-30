@@ -18,7 +18,7 @@ We continue working on our [DNA shotgun sequencing
 project](https://github.com/KCL-BMEIS/OOP/blob/main/projects/DNA_shotgun_sequencing/assignment.md)
 
 You can find the most up to date version in [the project's `solution/`
-folder](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
+folder](https://github.com/KCL-BMEIS/OOP/tree/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution)
 
 .explain-bottom[
 Make sure your code is up to date now!

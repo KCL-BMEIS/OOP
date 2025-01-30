@@ -18,7 +18,7 @@ This week, we start off on a new project: a simple correlation analysis of funct
 - Have a look at the [assignment instructions](https://github.com/KCL-BMEIS/OOP/blob/main/projects/fMRI/assignment.md)
 
 You will find the most up to date version of the project in [the project's `solution/`
-folder](https://github.com/KCL-BMEIS/OOP/tree/main/projects/fMRI/solution)
+folder](https://github.com/KCL-BMEIS/OOP/tree/fmri_solution/projects/fMRI/solution)
 
 
 ---
