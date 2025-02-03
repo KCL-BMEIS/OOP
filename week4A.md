@@ -428,7 +428,7 @@ We'll call our class `Image`
 --
 
 It will hold private data members:
-- two `int` members, one for each dimension
+- a [`std::array`](https://www.studyplan.dev/pro-cpp/std-array) of two `int` members, one for each dimension
 - a `std::vector` of `int` for the pixel intensities
 - remember that we recommend using the `m_` prefix to denote member variables
 
@@ -439,6 +439,54 @@ It will provide an abstract interface using public methods, including:
 - a constructor to create an image of a given size with intensities supplied
   as an additional argument
 - *getters* for the width and height of the image
+
+---
+
+# Fixed sized arrays: `std::array`
+
+We could store our image dimensions as separate variables
+- e.g. `m_xdim` and `m_ydim`
+
+But we can also use a statically-sized array: `std::array`
+- this is similar to a `std::vector`, but the size of the array is set at
+  compile time
+- this is useful to hold data where we know the size of the array ahead of time
+- ... and we know the size will not need to change during the execution of our program
+
+--
+
+Why not just use a `std::vector`?
+- There is a memory and performance overhead to using a dynamically-sized array
+- When the size does not need to change, it is better to use a statically-sized
+  array
+
+--
+
+The `Image` class is designed to hold 2D data
+- the number of dimensions is fixed at 2
+
+&rArr; we can therefore use a `std::array` here
+
+---
+
+# Fixed sized arrays: `std::array`
+
+To declare a `std::array`, we need to:
+- `#include` the `<array>` header
+- provide the *type* and *number* of elements:
+
+```
+#include <array>
+
+std::array<int,2> m_dim;
+```
+--
+
+We can use a `std::array` object in much the same way as a `std::vector`:
+```
+std::cout << "Image has " << m_dim.size() << " dimensions\n";
+std::cout << "dimensions are " << m_dim[0] << " x " << m_dim[1] << "\n";
+```
 
 --
 
@@ -451,26 +499,26 @@ your `load_pgm()` function to return an `Image` ]
 **`image.h`:**
 ```
 #pragma once
-
+#include <array>
 #include <vector>
+#include <stdexcept>
 
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<int>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (m_data.size() != m_xdim * m_ydim)
+      m_dim {xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions do not match data vector");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
     const std::vector<int>& data () const { return m_data; }
-
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<int> m_data;
 };
 ```
@@ -1139,7 +1187,7 @@ To locate the pixel intensity at index (*x*, *y*):
 
 --
 
-.explain-top[
+.explain-topright[
 Exercise: add public getter & setter methods to get & set the intensity for the pixel at coordinate (*x*,
 *y*)
 ]
@@ -1153,8 +1201,8 @@ class Image {
   public:
     ...
 
-    int get (int x, int y) const { return m_data[x + m_xdim*y]; }
-    void set (int x, int y, int value)  { m_data[x + m_xdim*y] = value; }
+    int get (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    void set (int x, int y, int value)  { m_data[x + m_dim[0]*y] = value; }
 
   private: 
     ...
@@ -1190,6 +1238,8 @@ $ ./fmri ../data/data/fmri-*.pgm
 we are asking the *shell* to find all files that match this pattern, and insert
 them as separate arguments to our command. 
 - note this happens *before* our command is executed!
+- this has nothing to do with C++ itself: this is purely a feature of the
+  *shell*
 
 --
 
@@ -1271,7 +1321,7 @@ This class should:
   - query the size of the data set (the number of time points / slices)
   - get one of the image slices given its index
   - get the full timecourse for a pixel of interest, given its *x* & *y*
-    coordinates
+    coordinates, returning a `std::vector<int>`
 - have a default constructor
 - have a non-default constructor that will also load the data from the
   relevant file(s)
