@@ -267,7 +267,7 @@ class: info
 
 --
 
-When using dynamic libraries, the final executable *does not contain the functionality* in the library
+With dynamic libraries, the executable *does not contain the functionality* provided by the library
 - this differs from header-only and static libraries
 - at run-time, the system will need to locate the shared library file and load it into our 
   program
@@ -306,6 +306,7 @@ provides just the functionality we need: the [`terminal_graphics`
 library](https://github.com/jdtournier/terminal_graphics)
 
 ---
+name: terminal_graphics
 
 # How to use the terminal_graphics library
 
