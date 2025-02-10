@@ -1242,12 +1242,40 @@ overlapping fragments remain
 
 # Merge fragment with current sequence
 
-Add our function *declaration* to `overlap.h`:
+Once we've identified the candidate fragment with the largest overlap, we need
+to merge it with the current sequence to produce a longer, updated sequence:
+
+--
+
+```
+                             `CTGAATGCTTGGGCTGAA`AGGGCGCGAGACGTATTCCCCGGTTGC
+                 CCCTCATCACAA`CTGAATGCTTGGGCTGAA`
+```
+
+--
+
+.center[
+ &dArr; 
+]
+
+```
+                 CCCTCATCACAA`CTGAATGCTTGGGCTGAA`AGGGCGCGAGACGTATTCCCCGGTTGC
+```
+
+--
+
+<br>
+Let's implement a function to do this. This is what our function *declaration*
+should look like. We can add it to `overlap.h`:
 ```
 void merge (std::string& sequence, const std::string& fragment, const int overlap);
 ```
 
-Add our function *definition* to `overlap.cpp`:
+---
+
+# Merge fragment with current sequence
+
+Next, add our function *definition* to `overlap.cpp`:
 ```
 void merge (std::string& sequence, const std::string& fragment, const int overlap)
 {
