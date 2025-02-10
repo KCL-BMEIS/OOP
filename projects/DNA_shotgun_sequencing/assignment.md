@@ -30,9 +30,6 @@ Further details for each step are provided below.
 
 Your task in this coursework is to write a C++ program which meets the requirements described above. Three example datasets are provided, each comprising of an input file with all the measured fragments (`fragments-N.txt`), along with the expected solution for each case (`solution-N.txt`). Your program should be written to handle any data file provided in the expected format (see description below). 
 
-To help with your initial implementation, you are also provided with three equivalent datasets (`fragments-N.txt` along with the corresponding solutions `solution-N.txt`). These data are provided only to allow you to test your program at an earlier stage in development than otherwise. A complete implementation should be able to process *all* datasets provided, and any other unseen datasets provided in the same format.
-
-
 ### Fragment data
 
 The fragment data come in the form a simple text file, which each fragment as a contiguous sequence of the letters `A`, `C`, `G` or `T` (corresponding to the adenine, cytosine, guanine, and thymine bases respectively). Each fragment can readily be stored as a `std::string`. There is one fragment per line, the length of each fragment is variable, and the number of fragments is also variable. You should load all fragments from the input file until the end of file. 
