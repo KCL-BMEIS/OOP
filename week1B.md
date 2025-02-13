@@ -1047,13 +1047,13 @@ Throughout the course, we will be gradually merging the code for our solutions
 to the course repository. 
 
 You will find the most up to date version in the project's `solution/` folder. 
-- [click here](https://github.com/KCL-BMEIS/OOP/tree/main/projects/DNA_shotgun_sequencing/solution)
+- [click here](https://github.com/KCL-BMEIS/OOP/tree/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution)
   for the DNA shotgun sequencing project
 
 --
 <br>
 
-You can also inspect [the *history* of the changes](https://github.com/KCL-BMEIS/OOP/commits/main/projects/DNA_shotgun_sequencing/solution) by clicking on the *History*
+You can also inspect [the *history* of the changes](https://github.com/KCL-BMEIS/OOP/commits/shotgun_sequencing_solution/projects/DNA_shotgun_sequencing/solution) by clicking on the *History*
 button 
 
 ![:right 30%](images/history_button.png)
@@ -1796,7 +1796,7 @@ terminal.
 Run-Length Encoding (RLE) is a basic compression technique where _runs_ of the
 same value occuring consecutively are replaced by the value and the
 _run-length_. For example, the string `abbcccabdddd` would be represented as `a
-1 b 2 c 3 a 1 b 1 c 4`. 
+1 b 2 c 3 a 1 b 1 d 4`. 
 
 1. Write a program that takes two filenames as input, reads the contents of the
   first filename, applies run-length encoding, and writes the result to the
