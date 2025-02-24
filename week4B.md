@@ -499,7 +499,10 @@ Most standard C++ operators can be overloaded:
 - we have already used overloaded operators:
   ```
   std::ifstream infile (filename);
-  if (`!infile`) ...
+  if (`!`infile) 
+    ...
+  std::string var;
+  infile `>>` var;
   ```
 
 --
@@ -789,12 +792,6 @@ class Dataset {
     ...
 };
 ```
-
---
-
-Note that in our solution (online), we only provide the `const` version
-- this is because our `Dataset` class only had a `.get()` method previously
-- you are free to make different design decisions!
 
 --
 

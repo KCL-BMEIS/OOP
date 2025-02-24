@@ -8,7 +8,7 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 5, session 1
-## lambda expressions<br>template programming
+## template programming<br>lambda expressions
 
 ---
 
@@ -112,8 +112,8 @@ Let's illustrate the concept by modifying our task `rescale()` function
 
 # Template functions
 
-Writing a template function avoids these issues by allowing us to provide a
-single definition:
+Writing a template function avoids the need for multiple overloaded functions
+by allowing us to provide a single generic definition:
 ```
 `template <typename T>`
 std::vector<float> rescale (const std::vector<`T`>& task, `T` min, `T` max)
@@ -169,7 +169,7 @@ We have to place the full definition *in the header file*, alongside the declara
 
 ---
 
-To illustrate, if we were to declare our template function in `task.h`:
+To illustrate the problem, imagine we declare our template function in `task.h`:
 ```
 template <typename T>
 std::vector<float> rescale (const std::vector<T>& task, T min, T max);
@@ -207,12 +207,11 @@ Then when compiling `task.cpp`:
 --
 
 When compiling `fmri.cpp`:
-- no definition would be available for the desired version of `rescale()`
-  (`rescale<int>()`)
+- no definition would be available for the desired `rescale<int>()` version 
 - the compiler would nonetheless assume that a version of `rescale<int>()`
   must have been produced elsewhere
-- the output file `task.o` would mention that the function `rescale<int>()` is
-  in use
+- the output file `task.o` would mention that he function `rescale<int>()` is
+  being used
 
 --
 
@@ -222,6 +221,7 @@ When linking `fmri.o`, `task.o`, etc:
 
 --
 
+<br>
 For this reason, **the definition of a template function must be included in the header file**!
 - *not* in the `.cpp` file
 - the function will implicitly be marked `inline` to prevent the multiple
@@ -599,7 +599,8 @@ class Dataset
 
 # Polymorphism
 
-[Polymorphism]() is one of the key feature of Object-Oriented Programming
+[Polymorphism](https://www.geeksforgeeks.org/cpp-polymorphism/) is one of the
+key feature of Object-Oriented Programming
 
 It refers to ability to define a single *interface* with multiple
 implementations
@@ -622,3 +623,5 @@ C++ provides several mechanisms to implement *polymorphism*:
 --
 
 Our template `Image` class is an example of *compile-time polymorphism*
+- and so were our overloaded `rescale()` functions
+- ... and so is our *templated* `rescale()` function
