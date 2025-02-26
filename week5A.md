@@ -530,12 +530,17 @@ in the header!
   symbol problem when linking 
 
 
---
+---
 
-.explain-bottom[
-Exercise: convert the `Image` class to a template class, and modify the rest of
-the code to make use of it
-]
+# Exercises
+
+- Convert the `Image` class to a template class, where the template parameter
+  determines the type to use for the image intensities. Modify the rest of the
+  code to make use of it
+
+- Convert the `Dataset` class to a template class, where the template parameter
+  determines the type to use for the image intensities. Modify the rest of the
+  code to make use of it
 
 ---
 

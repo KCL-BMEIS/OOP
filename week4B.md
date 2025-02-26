@@ -459,6 +459,19 @@ std::vector<float> rescale (const std::vector<int>& task, int min, int max)
 
 ---
 
+# Expected output
+
+![:scale 100%](images/fmri2.png)
+
+
+---
+class: section
+name: operator_overloading
+
+# Operator overloading
+
+---
+
 # Displaying the images themselves
 
 How about displaying the image slices themselves?
@@ -479,12 +492,6 @@ How about displaying the image slices themselves?
 
 To understand this, we need to learn about [operator
 overloading](https://www.geeksforgeeks.org/operator-overloading-cpp/)
-
----
-class: section
-name: operator_overloading
-
-# Operator overloading
 
 ---
 
@@ -665,6 +672,57 @@ Why do we need two almost identical `const` and non-`const` versions?
 
 
 ---
+layout: false
+
+# Why `const` and non-`const`?
+
+Consider this simple function to find the maximum intensity in the image:
+
+```
+int max (const Image& image) 
+{
+  int maxval = `image(0,0)`;
+  for (int y = 0; y < image.height(); y++)
+    for (int x = 0; x < image.width(); x++)
+      maxval = std::max (maxval, `image(x,y)`);
+  return maxval;
+}
+```
+
+This can only work if a `const` version of `Image::operator()` is available
+- this is because the `image` argument should not be modified, and is provided as a `const` reference
+- the `image` object is `const` within the context of this function &ndash; it
+  cannot be modified
+
+&rArr; only `const` methods of `image` can be used in this function
+
+---
+
+# Why `const` and non-`const`?
+
+Consider this simple function to add a constant intensity to the image:
+
+```
+void add (Image& image, int val) 
+{
+  for (int y = 0; y < image.height(); y++)
+    for (int x = 0; x < image.width(); x++)
+      `image(x,y)` += val; 
+}
+```
+
+This can only work if a non-`const` version of `Image::operator()` is available
+- the `image` object needs to be modified &ndash; we are adding to the
+  intensities. 
+- it therefore cannot be passed as a `const` argument
+- note that it does need to be provided as a (modifiable) reference since we
+  want to change the intensity values in the original image
+
+&rArr; In this case, the non-`const` version will be used
+
+---
+
+# Exercise
 
 ```
 class Image {
@@ -683,7 +741,6 @@ modify your code to display the first image slice.
 ]
 
 ---
-layout: false
 
 **In `image.h`:**
 ```
@@ -725,7 +782,7 @@ std::vector<int> Dataset::get_timecourse (int x, int y) const
 
 # Expected output
 
-![:scale 100%](images/fmri2.png)
+![:scale 100%](images/fmri3.png)
 
 --
 
@@ -743,7 +800,7 @@ void run (std::vector<std::string>& args)
   ...
   Dataset data ({ args.begin()+2, args.end() });
   ...
-  TG::imshow (`TG::magnify (data[0], 4)`, 0, 4000);
+  TG::imshow (`TG::magnify (data.get(0), 4)`, 0, 4000);
 
   ...
 }
@@ -754,7 +811,7 @@ void run (std::vector<std::string>& args)
 # Expected output
 
 .center[
-![:scale 90%](images/fmri3.png)
+![:scale 90%](images/fmri4.png)
 ]
 
 
@@ -816,6 +873,8 @@ class Dataset {
 
 **In `fmri.cpp`:**
 ```
+* TG::imshow (TG::magnify (data[0], 4), 0, 4000);
+
   // default values if x & y not set (<0):
   if (x < 0 || y < 0) {
 *   x = data[0].width()/2;
@@ -1049,3 +1108,82 @@ class: section
 - use your `Dataset` insertion operator in the `run()` function 
   - only use it when in verbose mode &ndash; this might be useful for debugging!
 
+
+---
+
+**In `image.h`:**
+```
+...
+*#include <iostream>
+
+...
+
+*inline std::ostream& operator<< (std::ostream& out, const Image& im)
+*{
+* out << "Image of size " << im.width() << "x" << im.height();
+* return out;
+*}
+```
+
+**In `dataset.h`:**
+```
+*inline std::ostream& operator<< (std::ostream& out, const Dataset& data)
+*{
+* out << "Data set with " << data.size() << " images:\n";
+* for (unsigned int n = 0; n < data.size(); ++n)
+*   out << "  image " << n << ": " << data[n] << "\n";
+* return out;
+*}
+```
+
+---
+
+**In `fmri.cpp`:**
+```
+  ...
+  Dataset data ({ args.begin()+2, args.end() });
+* std::cerr << data << "\n";
+  ...
+```
+
+---
+class: section
+
+# Completing the fMRI project
+
+---
+
+# Final touches
+
+We now have all the machinery in place to finish the project
+- an `Image` class to represent a single slice of data
+- the ability to display an image on the terminal
+- a `Dataset` class to represent a set of images as a time series
+- the ability to extract the time course for the image intensity for a given
+  pixel
+- the ability to load the task time course
+
+All that remains to be done is to compute the correlation coefficient and
+display!
+
+---
+
+# Exercises
+
+- Add a function to compute the correlation coefficient between the signal 
+  and the task time courses
+  - report the value of the correlation coefficient for the pixel of interest
+    on the terminal
+
+- Add a different function to compute the image of correlation coefficients for
+  every pixel in the image, and diplay this image on the terminal
+  - use your previous function to compute a single correlation coefficient
+  - hint: you will need to rescale your correlation coefficient values (which
+    range from -1 &rarr; 1) to allow them to be stored as integers with minimal
+   loss of precision (for example, multiply them by 1000 and round to nearest)
+
+- Modify your program so that:
+  - by default, it computes the image of correlation coefficients and displays
+    it on the terminal
+  - when provided with the `-p x y` option, it display only the signal time
+    course and corresponding correlation coefficient for that pixel
