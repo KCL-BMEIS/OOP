@@ -82,7 +82,7 @@ Function overloading is useful, but may not be the best tool here
 ---
 class: section
 
-# C++ templates
+# C++ template functions
 
 ## Generic programming in C++
 
@@ -90,7 +90,7 @@ class: section
 
 # Template functions
 
-C++ provides a way to define a function for one or more generic types
+C++ provides a way to define a function for one or more *generic* types
 - this allows us to provide a *blueprint* for what the function should do
 - when we need to use the function, the compiler will work out what the type
   is, substitute it into our code, and compile that
@@ -129,9 +129,38 @@ std::vector<float> rescale (const std::vector<`T`>& task, `T` min, `T` max)
 
 We can then use the function as before, for *any type* (within reason...):
 ```
-std::vector<`unsigned short int`> task; 
+std::vector<`double`> task; 
 ...
-auto task_rescaled = rescale (task, 0, 1000); 
+auto task_rescaled = rescale (task, 0.0, 1000.0); 
+```
+
+---
+
+# Template functions - how does this work?
+
+When the compiler encounters this line:
+```
+auto task_rescaled = rescale (task, 0.0, 1000.0);
+```
+It will look up the *types* of all the arguments, and note that they are:
+- `task`: `std::vector<double>`
+- `0.0`: `double`
+- `1000.0`: `double`
+
+--
+
+This matches the previously-declared template function, since `T` can be
+substituted for `double`:
+```
+template <typename T>
+std::vector<float> rescale (const std::vector<`T`>& task, `T` min, `T` max);
+```
+
+--
+
+The compiler can now actually compile the function:
+```
+std::vector<float> rescale (const std::vector<`double`>& task, `double` min, `double` max);
 ```
 
 ---
@@ -257,6 +286,76 @@ void add_in_place (std::vector<`A`>& vecA, const std::vector<`B`>&  vecB)
 ```
 
 ---
+
+# Template argument deduction
+
+Note that issues can occur due to template argument deduction, when the types
+provided don't match where they should. 
+
+For example, there can be issue with our `rescale()` function when the type deduced
+by the compiler for the `min` & `max` limits doesn't match the type for the
+elements of the vector.
+
+Consider this example:
+```
+std::vector<short unsigned int> task; 
+...
+auto task_rescaled = rescale (task, 0, 1000);
+```
+This will produced an error because the arguments `0` & `1000` are deduced as being
+of type `int`, but the type of the vector elements is declared as `short
+unsigned int`
+- according to our declaration, these should all be the same type (`T`)
+- the compiler can't work out which type to use for `T`!
+
+The full compiler error is shown on the next slide
+
+---
+
+# Compiler error due to template argument 
+
+```
+fmri.cpp: In function ‘void run(std::vector<std::__cxx11::basic_string<char> >&)’:
+fmri.cpp:67:23: error: no matching function for call to ‘rescale(std::vector<short unsigned int>&, int, int)’
+   67 |   auto task_rescaled = rescale (task, 0, 1000);
+      |               ~~~~~~~~^~~~~~~~~~~~~~
+In file included from fmri.cpp:13:
+task.h:9:20: note: candidate: ‘template<class ValueType> std::vector<float> rescale(const std::vector<ValueType>&, ValueType, ValueType)’
+    9 | std::vector<float> rescale (const std::vector<ValueType>& task, ValueType min, ValueType max)
+      |                    ^~~~~~~
+task.h:9:20: note:   template argument deduction/substitution failed:
+fmri.cpp:67:23: note:   deduced conflicting types for parameter ‘ValueType’ (‘short unsigned int’ and ‘int’)
+   67 |   auto task_rescaled = rescale (task, 0, 1000);
+      |                            ~~~~~~~~^~~~~~~~~~~~~~
+```
+
+---
+
+# Exercise
+
+A simple solution to this problem is to allow the types for the `min` & `max`
+arguments to differ from the type of the vector elements. 
+- modify the `rescale()` function by adding at least one more template
+  parameter to its declaration, to avoid the issue mentioned in the previous
+  slides.
+
+
+---
+
+# Solution
+
+```
+template <typename T`, typename C`>
+std::vector<float> rescale (const std::vector<T>& task, `C` min, `C` max)
+{
+  std::vector<float> out (task.size());
+  for (unsigned int n = 0; n < task.size(); ++n)
+    out[n] = min + task[n] * (max-min);
+  return out;
+}
+```
+
+---
 class: section
 
 # Class templates in C++
@@ -272,7 +371,7 @@ Over the last few sessions, we have come up with a useful `Image` class
 
 As written, our `Image` class is hard-coded to use `int` to store the intensity
 of each pixel
-- what if we wanted to use a smaller type (e.g. a 16-bit `unsigned int`) to
+- what if we wanted to use a smaller type (e.g. a 16-bit `short unsigned int`) to
   limit memory usage?
 - what if we needed to store floating-point values?
 
@@ -510,6 +609,12 @@ The compiler will then substitute the desired type (`int` or `float`) instead
 of `T` in the class definition, and compile the result
 - as if we had manually substituted the type ourselves!
 
+--
+
+You'll note that we have already been using class templates since the
+beginning!
+- `std::vector` is a class template
+
 ---
 
 # Where to define class templates
@@ -599,6 +704,11 @@ class Dataset
     std::vector<`Image<int>`> m_slices;
 };
 ```
+
+---
+
+Refer to the [online
+solutions](https://github.com/KCL-BMEIS/OOP/tree/fmri_solution/projects/fMRI/solution) for the solution to the `Dataset` question
 
 ---
 
