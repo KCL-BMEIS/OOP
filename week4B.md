@@ -570,8 +570,8 @@ To overload this operator, we declare it like any other method
 class Image {
   public:
     ...
-    int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    int&       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    const int& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -581,8 +581,8 @@ class Image {
 class Image {
   public:
     ...
-    int&       `operator()` (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& `operator()` (int x, int y) const { return m_data[x + m_xdim*y]; }
+    int&       `operator()` (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    const int& `operator()` (int x, int y) const { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -594,8 +594,8 @@ The method name is specified as `operator()`
 class Image {
   public:
     ...
-    `int&`       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    `const int&` operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `int&`       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    `const int&` operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -609,8 +609,8 @@ Both methods return a *reference* to the pixel intensity
 class Image {
   public:
     ...
-    `int&`       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    `int&`       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    const int& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -628,8 +628,8 @@ modify that value:
 class Image {
   public:
     ...
-    int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    `const` int& operator() (int x, int y) `const` { return m_data[x + m_xdim*y]; }
+    int&       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    `const` int& operator() (int x, int y) `const` { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -642,8 +642,8 @@ The `const` version returns a `const` reference
 class Image {
   public:
     ...
-    int&       operator() (int x, int y)       { `return m_data[x + m_xdim*y];` }
-    const int& operator() (int x, int y) const { `return m_data[x + m_xdim*y];` }
+    int&       operator() (int x, int y)       { `return m_data[x + m_dim[0]*y];` }
+    const int& operator() (int x, int y) const { `return m_data[x + m_dim[0]*y];` }
 };
 ```
 
@@ -658,8 +658,8 @@ However, there will be cases where the two versions work slightly differently
 class Image {
   public:
     ...
-    `int&       operator() (int x, int y)      ` { return m_data[x + m_xdim*y]; }
-    `const int& operator() (int x, int y) const` { return m_data[x + m_xdim*y]; }
+    `int&       operator() (int x, int y)      ` { return m_data[x + m_dim[0]*y]; }
+    `const int& operator() (int x, int y) const` { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -728,8 +728,8 @@ This can only work if a non-`const` version of `Image::operator()` is available
 class Image {
   public:
     ...
-    int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+    int&       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+    const int& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
 };
 ```
 
@@ -747,8 +747,8 @@ modify your code to display the first image slice.
 class Image {
   public:
     ...
-*   int&       operator() (int x, int y)       { return m_data[x + m_xdim*y]; }
-*   const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
+*   int&       operator() (int x, int y)       { return m_data[x + m_dim[0]*y]; }
+*   const int& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
     ...
 };
 ```
@@ -1019,7 +1019,7 @@ Here is what we might do for the `Image` class:
 ```
 std::ostream& operator<< (std::ostream& stream, const Image& image)
 {
-  stream << "Image of size " << im.width() << "x" << im.height();
+  stream << "Image of size " << image.width() << "x" << image.height();
   return stream;
 }
 ```
@@ -1118,9 +1118,9 @@ class: section
 
 ...
 
-*inline std::ostream& operator<< (std::ostream& out, const Image& im)
+*inline std::ostream& operator<< (std::ostream& out, const Image& image)
 *{
-* out << "Image of size " << im.width() << "x" << im.height();
+* out << "Image of size " << image.width() << "x" << image.height();
 * return out;
 *}
 ```
