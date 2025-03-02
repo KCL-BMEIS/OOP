@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 5, session 1: template programming, lambda expressions"
+title: "Week 5, session 1: template programming"
 ---
 
 class: title
@@ -8,7 +8,7 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 5, session 1
-## template programming<br>lambda expressions
+## template programming
 
 ---
 
@@ -50,7 +50,8 @@ std::vector<float> rescale (const std::vector<`float`>& task, `float` min, `floa
 
 ---
 
-**In `task.cpp`:**
+# Using function overloading
+
 ```
 std::vector<float> rescale (const std::vector<int>& task, int min, int max)
 {
@@ -69,15 +70,16 @@ std::vector<float> rescale (const std::vector<float>& task, float min, float max
 }
 ```
 
-Note that the functions are *identical* other than their declaration!
-
 --
 
+.explain-bottom[
+**Note that the functions are *identical* other than their declaration!**
+<br>
 Function overloading is useful, but may not be the best tool here
 - what if at some later stage, we need to do the same thing with a vector of `double`?
 - what if we find a subtle bug in the code? We would need to correct the error
   in all the different versions
-
+]
 
 ---
 class: section
@@ -707,11 +709,6 @@ class Dataset
 
 ---
 
-Refer to the [online
-solutions](https://github.com/KCL-BMEIS/OOP/tree/fmri_solution/projects/fMRI/solution) for the solution to the `Dataset` question
-
----
-
 # Polymorphism
 
 [Polymorphism](https://www.geeksforgeeks.org/cpp-polymorphism/) is one of the
@@ -740,3 +737,16 @@ C++ provides several mechanisms to implement *polymorphism*:
 Our template `Image` class is an example of *compile-time polymorphism*
 - and so were our overloaded `rescale()` functions
 - ... and so is our *templated* `rescale()` function
+
+---
+
+# Exercises
+
+- Convert the `Image` class to a template class, where the template parameter
+  determines the type to use for the image intensities. Modify the rest of the
+  code to make use of it
+
+- Convert the `Dataset` class to a template class, where the template parameter
+  determines the type to use for the image intensities. Modify the rest of the
+  code to make use of it
+

@@ -66,12 +66,12 @@ Week 4:
 - [sesson 2: using external libraries, operator overloading](https://kcl-bmeis.github.io/OOP/week4B)
 
 Week 5:
-- [sesson 1: lambda expressions, template programming](https://kcl-bmeis.github.io/OOP/week5A)
-- [sesson 2: robot arm project, inheritance](https://kcl-bmeis.github.io/OOP/week5B)
+- [sesson 1: template programming](https://kcl-bmeis.github.io/OOP/week5A)
+- [sesson 2: pointers, iterators and lambda functions](https://kcl-bmeis.github.io/OOP/week5B)
 
 Week 6:
-- [sesson 1: object-oriented design](https://kcl-bmeis.github.io/OOP/week6A)
-- [sesson 2: peer marking of design assignment](https://kcl-bmeis.github.io/OOP/week6B)
+- [sesson 1: robot arm project, inheritance](https://kcl-bmeis.github.io/OOP/week6A)
+- [sesson 2: object-oriented design](https://kcl-bmeis.github.io/OOP/week6B)
 
 Week 7:
 - [sesson 1: stringstream, robot arm project](https://kcl-bmeis.github.io/OOP/week7A)
