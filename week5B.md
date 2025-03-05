@@ -182,7 +182,7 @@ pointer value: 0x7ffffcc34, value pointed to: 10
 
 ---
 
-# Multple pointers, same address
+# Multiple pointers, same address
 
 We can have multiple pointers all point to the same memory location:
 ```
@@ -246,20 +246,138 @@ This can be used to allow functions to modify their arguments:
 ```
 void increment (int* val) { *p += 2; }
 ```
+--
+
+which can then be used as
+```
+int x = 10;
+increment (&x);   // <-- we need to pass the address of x!
+std::cout << "value of x is now " << x << "\n";
+```
 
 --
+
+this produces:
+```
+value of x is now 12
+```
+---
+
+# Pointers compared to references
 
 Compare this to the same operation using C++ references (the recommended way!):
 ```
 void increment (int& val) { p += 2; }
+```
+--
+
+which can then be used as
+```
+int x = 10;
+increment (x);   // <-- no need to take the address of x
+std::cout << "value of x is now " << x << "\n";
+```
+
+--
+
+to produce:
+```
+value of x is now 12
 ```
 
 --
 
 As you can appreciate, there is a very tight relationship between *pointers* and *references*
 - references act as another name (an alias) for the same variable
-  - no need to use the address-of operator, or the dereferencing operator
 - pointers store the address of the variable
+
+---
+
+# Pointers to classes
+
+Pointers can also be used to point to a class or struct:
+```
+class MyClass {
+  public:
+    int x;
+    float f;
+    std::string text;
+};
+
+MyClass var = { 5, 3.14, "hello!" };
+MyClass* pvar = &var;
+
+std::cerr << "pvar points to x = " << (*pvar).x
+          << ", f = " << (*pvar).f
+          << ", text = \"" << (*pvar).text << "\"\n";
+```
+this produces:
+```
+pvar points to x = 5, f = 3.14, text = "hello!"
+```
+
+---
+
+# Pointers to classes
+
+Referring to a member of a class from a pointer is so common it has its own
+operator:
+```
+class MyClass {
+  public:
+    int x;
+    float f;
+    std::string text;
+};
+
+MyClass var = { 5, 3.14, "hello!" };
+MyClass* pvar = &var;
+
+std::cerr << "pvar points to x = " << `pvar->x`
+          << ", f = " << `pvar->f`
+          << ", text = \"" << `pvar->text` << "\"\n";
+```
+this produces:
+```
+pvar points to x = 5, f = 3.14, text = "hello!"
+```
+
+---
+
+# The problem with pointers
+
+Pointers are an incredibly powerful tool, but also provide multiple ways of
+introducing errors
+
+--
+
+What if the object that an pointer refers to is no longer in scope?
+
+```
+int* get_pointer_to_value () {
+  int value = complicated_calculation();
+  return &value;  // points to local variable!
+}
+```
+
+--
+
+What if the address in the pointer is modified so that it points to an
+  invalid location?
+
+```
+int x = 10;
+int* p = &x;
+...
+p++;
+...
+process_value (&p); // what value does p refer to now?
+```
+
+---
+class: section
+
+# C-style arrays
 
 ---
 
@@ -308,6 +426,8 @@ Value in pv at offset 2: 1.9
 ```
 
 How does this work?
+
+&rArr; let's look at the operations that we can perform with pointers
 
 ---
 
@@ -374,7 +494,9 @@ produces:
 ```
 difference is 3
 ```
-&rArr; even though difference in actual memory location is 12 bytes, the difference between pointers is expressed in units of the type pointed to
+&rArr; even though difference in actual memory location is 12 bytes, the
+difference between pointers is expressed in units of the type pointed to:
+`float`
 
 ---
 
@@ -384,8 +506,8 @@ We can request the element at some offset relative to the pointer:
 ```
 float v[5] = { 2.3, 6.3, 1.9, -3.12, 5.356 };
 
-std::cerr << "Value in v at offset 4:  " << v[4] << "\n";
-std::cerr << "Value in v at offset 4:  " << *(v+4) << "\n";
+std::cerr << "Value in v at offset 4:  " << `v[4]` << "\n";
+std::cerr << "Value in v at offset 4:  " << `*(v+4)` << "\n";
 ```
 
 produces:
@@ -396,7 +518,7 @@ Value in v at offset 4:  5.356
 --
 
 You can see that the subscript operator `[]` is equivalent to dereferencing the
-address at the specified offset relative to the pointer:
+address at the specified offset from the pointer:
 - `v[4]` is equivalent to `*(v+4)`
 
 
@@ -430,6 +552,11 @@ array, anything can happen...
 
 
 ---
+class: section
+
+# C-style strings
+
+---
 
 # C-style strings
 
@@ -446,12 +573,12 @@ the array `some text`
 ... d641b172e0747349e94e6fbd`some text0`6915ca4990b2f8cbc1e205813aba0ead50ec761b ...
 ```
 Each character is stored according to its [ASCII code](https://en.wikipedia.org/wiki/ASCII)
+- e.g. the character `A` is stored as the integer value 65.
 
 --
 
-Because the pointer has no knowledge of the size of the array it points to,
-C-style strings need to be
-[null-terminated](https://en.wikipedia.org/wiki/Null-terminated%5fstring)
+A pointer does not 'know' the size of the array it points to
+&rArr; C-style strings are [null-terminated](https://en.wikipedia.org/wiki/Null-terminated%5fstring)
 - the last character must be the integer value `0` &ndash; the null character
  - note: this is different from the [ASCII code](https://en.wikipedia.org/wiki/ASCII) for the character `0` !
 
@@ -467,9 +594,9 @@ What is the issue with C-style strings?
     array to find the terminating null character
 - they are statically-sized
 - manipulating C-style strings requires careful handling and memory management
-  &ndash; which introduce scope for serious errors!
+  - this introduces scope for serious errors!
 
-For these any many other reasons besides, modern C++ provides the much safer
+For these and many other reasons besides, modern C++ provides the much safer
 and more convenient `std::string` class
 
 --
@@ -479,14 +606,14 @@ understand them
 
 ---
 
-# A C-style array of C-style strings
+# C-style array of pointers
 
 It is possible to declare a C-style array of *pointers*:
 ```
 int x[5] = { 4, 1, 6, 12, 3 };
 int y[3] = { 7, 9, 2 };
 
-int* ap[2] = { x, y };
+*int* ap[2] = { x, y };
 
 std::cerr << "item 3 of first entry: " << ap[0][3] << "\n";
 ```
@@ -494,7 +621,162 @@ this produces:
 ```
 item 3 of first entry: 12
 ```
+--
 
+- `ap[0]` is the first entry in the `ap` array: `x`
+- `ap[0][3]` is entry 3 of `ap[0]` &ndash; in other words, `x[3]`
+- alternatively: `ap[0][3]` can be interpreted as `(ap[0])[3]`
+
+
+---
+
+# C-style array of C-style strings
+
+One use case for a C-style array of pointers is to store an array of strings:
+```
+char* a = "one";
+char* b = "two";
+char* c = "three";
+
+char* list[] = { a, b, c };
+
+std::cout << "Entry 2 in list is \"" << list[2] << "\"\n";
+```
+which produces:
+```
+Entry 2 in list is "three"
+```
+
+--
+
+You will recognise this from the definition of the `main()` function:
+```
+int main (int argc, `char* argv[]`)
+```
+
+---
+
+# The command-line arguments
+
+We are now finally in a position to explain how the arguments are provided to
+our command!
+
+```
+int main (int argc, char* argv[])
+```
+
+- `argv` is a C-style array of C-style strings
+- `argc` is the number of arguments
+  - since the `argv` pointer can't provide information about the size of the array it
+    points to
+
+--
+
+We can now make more direct use of these arguments:
+```
+int main (int argc, char* argv[]) 
+{
+  for (int n = 0; n < argc; n++)
+    std::cout << "argument " << n << " is \"" << argv[n] << "\"\n";
+  return 0;
+}
+```
+
+--
+
+However, we still recommend converting to a `std::vector<std::string>` on this
+course!
+
+---
+class: section
+
+# STL iterators
+
+---
+
+# The C++ Standard Template Library (STL)
+
+The C++ STL provides many useful *containers* and *algorithms*
+
+We have already made extensive use of the `std::vector` container
+- but [there are many
+  others](https://www.geeksforgeeks.org/containers-cpp-stl/)
+
+We have already made use of many STL algorithms
+- `std::min(), `std::max()`, `std::find()`, ...
+
+--
+
+<br>
+But much of this functionality requires the use of *iterators*
+
+&rArr; what are they, and how do they work?
+
+---
+
+# Iterators
+
+In essence, STL iterators are objects that behave just like pointers
+- in fact, regular pointers can often be used as iterators!
+
+--
+
+They are designed to provide a lightweight object that can:
+- *point* to an element of a container
+- *provide the value* of the element it points to
+- be *incremented* to point to the next element
+- have an integer added to it to point to the element that many positions along
+  in the container
+- ...
+
+--
+
+STL containers all provide:
+- a `begin()` method that returns an iterator to the first element in the
+  container
+- an `end()` method that return an iterator to one past the last element in the
+  container 
+  - the iterator returned by `end()` does not point to a valid element!
+
+
+---
+
+# How to use iterators
+
+Iterators are designed to be used as if they were pointers
+- this is achieved using [operator
+  overloading](https://www.geeksforgeeks.org/iterators-operations-in-cpp/)
+
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = x.begin();
+std::cout << "iterator value is " << *it << "\n";
+
+it++;
+std::cout << "value at iterator is now " << *it << "\n";
+
+
+it += 4;
+std::cout << "value at iterator is now " << *it << "\n";
+
+std::cout << "value at (iterator+2) is " << *(it+2) << "\n";
+
+std::cout << "iterator is at offset " << it-x.begin() << "\n";
+```
+
+---
+
+# How to use iterators
+
+the code on the previous slide produces:
+```
+iterator value is 1
+value at iterator is now 2
+value at iterator is now 6
+value at (iterator+2) is 8
+iterator is at offset 5
+```
 
 
 
