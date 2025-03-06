@@ -192,7 +192,7 @@ to the full *definition*
 
 --
 
-We have to place the full definition *in the header file*, alongside the declaration
+The simplest approach is to place the full definition *in the header file*, alongside the declaration
 - there is no point including it in the corresponding `.cpp` file
   - the compiler won't generate any code until the type is specified
   - this is different from regular functions
@@ -253,7 +253,7 @@ When linking `fmri.o`, `task.o`, etc:
 --
 
 <br>
-For this reason, **the definition of a template function must be included in the header file**!
+For this reason, **the definition of a template function should be included in the header file**!
 - *not* in the `.cpp` file
 - the function will implicitly be marked `inline` to prevent the multiple
   symbol problem when linking 

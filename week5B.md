@@ -778,5 +778,100 @@ value at (iterator+2) is 8
 iterator is at offset 5
 ```
 
+--
 
+But we could already do all this just as easily using the subscript `[]`
+operator!
+https://www.geeksforgeeks.org/cpp-20-ranges-library/
+&rArr; why do we really need iterators?
+
+---
+
+# How to use iterators with STL algorithms
+
+Iterators are the main interface to STL algorithms
+
+**Example: `std::find()`:**
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = std::find (v.begin(), v.end(), 7);
+std::cerr << "element with value 7 is at position " 
+          << it - v.begin() << "\n";
+```
+produces:
+```
+element with value 7 is at position 6
+```
+
+---
+
+# How to use iterators with STL algorithms
+
+Note: you can also use the `std::distance()` function instead of the
+subtraction:
+
+**Example: `std::find()`:**
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = std::find (v.begin(), v.end(), 7);
+std::cerr << "element with value 7 is at position " 
+          << `std::distance (v.begin(), it)` << "\n";
+```
+produces:
+```
+element with value 7 is at position 6
+```
+
+---
+
+# How to use iterators with STL algorithms
+
+C++20 also introduces a slightly simpler version with the [ranges library](https://www.geeksforgeeks.org/cpp-20-ranges-library/)
+
+**Example: `std::ranges::find()`:**
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = `std::ranges::find (v, 7)`;
+std::cerr << "element with value 7 is at position " 
+          << std::distance (v.begin(), it) << "\n";
+```
+produces:
+```
+element with value 7 is at position 6
+```
+
+This version assumes we want to search from `begin()` to `end()` of the
+container supplied as the first argument.
+
+---
+
+# How to use iterators with STL algorithms
+
+What happens when the container doesn't have the requested element?
+
+**Example: `std::ranges::find()`:**
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = std::ranges::find (v, `12`);
+std::cerr << "element with value 12 is at position " 
+          << std::distance (v.begin(), it) << "\n";
+```
+produces:
+```
+element with value 7 is at position 10
+```
+
+When the item is not found, `std::find()` / `std::ranges::find()` return
+`v.end()`
+- this is one past the last element in the container
+
+---
+
+# How to use iterators with STL algorithms
+
+**Example: `std::max_element()`**
 
