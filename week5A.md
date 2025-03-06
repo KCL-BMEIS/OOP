@@ -399,22 +399,22 @@ We could:
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<int>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
 
-    const int& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
-    int& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+    const int& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    int& operator() (int x, int y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<int> m_data;
 };
 ```
@@ -426,22 +426,22 @@ class Image {
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<`int`>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
 
-    const `int`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
-    `int`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+    const `int`& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    `int`& operator() (int x, int y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<`int`> m_data;
 };
 ```
@@ -458,22 +458,22 @@ Currently, our `Image` class is hard-coded to store `int` values
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<`float`>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
 
-    const `float`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
-    `float`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+    const `float`& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    `float`& operator() (int x, int y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<`float`> m_data;
 };
 ```
@@ -491,22 +491,22 @@ highlighted, this class would work just as well for `float`!
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<T>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
 
-    const T& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
-    T& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+    const T& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    T& operator() (int x, int y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<T> m_data;
 };
 ```
@@ -529,22 +529,22 @@ template <typename T>
 class Image {
   public:
     Image (int xdim, int ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (int xdim, int ydim, const std::vector<`T`>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<int> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    int width () const { return m_xdim; }
-    int height () const { return m_ydim; }
+    int width () const { return m_dim[0]; }
+    int height () const { return m_dim[1]; }
 
-    const `T`& operator() (int x, int y) const { return m_data[x + m_xdim*y]; }
-    `T`& operator() (int x, int y) { return m_data[x + m_xdim*y]; }
+    const `T`& operator() (int x, int y) const { return m_data[x + m_dim[0]*y]; }
+    `T`& operator() (int x, int y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    int m_xdim, m_ydim;
+    std::array<int,2> m_dim;
     std::vector<`T`> m_data;
 };
 ```
@@ -562,22 +562,22 @@ template <typename T>
 class Image {
   public:
     Image (`int` xdim, `int` ydim) :
-      m_xdim (xdim), m_ydim (ydim), m_data (xdim*ydim, 0) { }
+      m_dim { xdim, ydim }, m_data (xdim*ydim, 0) { }
 
     Image (`int` xdim, `int` ydim, const std::vector<T>& data) :
-      m_xdim (xdim), m_ydim (ydim), m_data (data) {
-        if (static_cast<`int`> (m_data.size()) != m_xdim * m_ydim)
+      m_dim { xdim, ydim }, m_data (data) {
+        if (static_cast<int> (m_data.size()) != m_dim[0] * m_dim[1])
           throw std::runtime_error ("dimensions don't match");
       }
 
-    `int` width () const { return m_xdim; }
-    `int` height () const { return m_ydim; }
+    `int` width () const { return m_dim[0]; }
+    `int` height () const { return m_dim[1]; }
 
-    const T& operator() (`int` x, `int` y) const { return m_data[x + m_xdim*y]; }
-    T& operator() (`int` x, `int` y) { return m_data[x + m_xdim*y]; }
+    const T& operator() (`int` x, `int` y) const { return m_data[x + m_dim[0]*y]; }
+    T& operator() (`int` x, `int` y) { return m_data[x + m_dim[0]*y]; }
 
   private:
-    `int` m_xdim, m_ydim;
+    std::array<`int`,2> m_dim;
     std::vector<T> m_data;
 };
 ```

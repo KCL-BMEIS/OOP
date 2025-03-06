@@ -244,7 +244,7 @@ Pointers can therefore act as *references* to other data
 
 This can be used to allow functions to modify their arguments:
 ```
-void increment (int* val) { *p += 2; }
+void increment (int* pval) { *pval += 2; }
 ```
 --
 
@@ -267,7 +267,7 @@ value of x is now 12
 
 Compare this to the same operation using C++ references (the recommended way!):
 ```
-void increment (int& val) { p += 2; }
+void increment (int& val) { val += 2; }
 ```
 --
 
