@@ -703,7 +703,7 @@ We have already made extensive use of the `std::vector` container
   others](https://www.geeksforgeeks.org/containers-cpp-stl/)
 
 We have already made use of many STL algorithms
-- `std::min(), `std::max()`, `std::find()`, ...
+- `std::min()`, `std::max()`, `std::find()`, ...
 
 --
 
@@ -782,27 +782,31 @@ iterator is at offset 5
 
 But we could already do all this just as easily using the subscript `[]`
 operator!
-https://www.geeksforgeeks.org/cpp-20-ranges-library/
+
 &rArr; why do we really need iterators?
 
 ---
 
 # How to use iterators with STL algorithms
 
-Iterators are the main interface to STL algorithms
+[STL algorithms](https://www.geeksforgeeks.org/algorithms-library-c-stl/) rely
+on iterators, and are found in the `<algorithm>` header
 
 **Example: `std::find()`:**
 ```
-std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+*std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-auto it = std::find (v.begin(), v.end(), 7);
+auto it = std::find (x.begin(), x.end(), 7);
 std::cerr << "element with value 7 is at position " 
-          << it - v.begin() << "\n";
+          << it - x.begin() << ", value = " << *it << "\n";
 ```
 produces:
 ```
-element with value 7 is at position 6
+element with value 7 is at position 6, value = 7
 ```
+
+`x.begin()` and `x.end()` specify the *range* over which to perform the search:
+- from `x.begin()` up to (but not including) `x.end()`
 
 ---
 
@@ -815,13 +819,13 @@ subtraction:
 ```
 std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-auto it = std::find (v.begin(), v.end(), 7);
+auto it = std::find (x.begin(), x.end(), 7);
 std::cerr << "element with value 7 is at position " 
-          << `std::distance (v.begin(), it)` << "\n";
+          << `std::distance (x.begin(), it)` << ", value = " << *it << "\n";
 ```
 produces:
 ```
-element with value 7 is at position 6
+element with value 7 is at position 6, value = 7
 ```
 
 ---
@@ -834,17 +838,19 @@ C++20 also introduces a slightly simpler version with the [ranges library](https
 ```
 std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-auto it = `std::ranges::find (v, 7)`;
+auto it = `std::ranges::find (x, 7)`;
 std::cerr << "element with value 7 is at position " 
-          << std::distance (v.begin(), it) << "\n";
+          << std::distance (x.begin(), it) << ", value = " << *it << "\n";
 ```
 produces:
 ```
-element with value 7 is at position 6
+element with value 7 is at position 6, value = 7
 ```
 
 This version assumes we want to search from `begin()` to `end()` of the
 container supplied as the first argument.
+
+You need to `#include <ranges>` to use functions in the `std::ranges` namespace
 
 ---
 
@@ -856,22 +862,156 @@ What happens when the container doesn't have the requested element?
 ```
 std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-auto it = std::ranges::find (v, `12`);
+auto it = std::ranges::find (x, `12`);
 std::cerr << "element with value 12 is at position " 
-          << std::distance (v.begin(), it) << "\n";
+          << std::distance (x.begin(), it) << ", value = " << *it << "\n";
 ```
 produces:
 ```
-element with value 7 is at position 10
+element with value 12 is at position 10, value = `???`
 ```
 
 When the item is not found, `std::find()` / `std::ranges::find()` return
-`v.end()`
+`x.end()`
 - this is one past the last element in the container
+- &rArr; in this case, this is 10 elements from the beginning
+- dereferencing the iterator may return nonsense, crash the program, ...
 
 ---
 
 # How to use iterators with STL algorithms
 
+What happens when the container doesn't have the requested element?
+
+**Example: `std::ranges::find()`:**
+```
+std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+auto it = std::ranges::find (x, 12);
+`if (it == x.end())`
+  std::cerr << "element with value 12 not found!\n";
+else 
+  std::cerr << "element with value 12 is at position " 
+            << std::distance (x.begin(), it) << ", value = " << *it << "\n";
+```
+produces:
+```
+element with value 12 not found!
+```
+
+We need to check whether the item has been found before dereferencing the
+iterator!
+
+---
+
+# How to use iterators with STL algorithms
+
+`std::max_element()` and `std::min_element()` return the
+*iterator* to the relevant item:
+
 **Example: `std::max_element()`**
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+auto it = `std::max_element (x.begin(), x.end())`;
+std::cerr << "max value is " << *it << "\n";
+```
+produces
+```
+max value is 82
+```
+
+
+---
+
+# How to use iterators with STL algorithms
+
+There is a more convenient version in the [ranges library](https://www.geeksforgeeks.org/cpp-20-ranges-library/):
+
+**Example: `std::ranges::max()`**
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::cerr << "max value is " << `std::ranges::max (x)` << "\n";
+```
+produces
+```
+max value is 82
+```
+
+---
+
+# How to use iterators with STL algorithms
+
+The `std::sort()` function sorts the items in-place:
+
+**Example: `std::sort()`**
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+`std::sort (x.begin(), x.end())`;
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+produces
+```
+-23 -2 1 5 9 13 18 21 42 82
+```
+
+This operation modifies the vector. If you need to preserve the original order,
+make a copy before sorting!
+
+---
+
+# How to use iterators with STL algorithms
+
+As before, there is a slightly more convenient version in the [ranges library](https://www.geeksforgeeks.org/cpp-20-ranges-library/):
+
+**Example: `std::ranges::sort()`**
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+`std::ranges::sort (x)`;
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+produces
+```
+-23 -2 1 5 9 13 18 21 42 82
+```
+---
+
+# How to use iterators with STL algorithms
+
+There are many more algorithms available in the STL
+
+Please [consult the documentation
+online](https://www.geeksforgeeks.org/algorithms-library-c-stl/) if you need to use any others.
+
+
+---
+
+# Providing operations to STL algorithms
+
+Some of the algorithms in the STL expect you to provide an *operation* to apply to
+individual items
+
+These include:
+- `std::for_each()`
+- `std::transform()`
+- `std::generate()`
+- ...
+
+This can take the form of:
+- a regular function
+- a class with an overloaded `operator()`
+- a *lambda function*
+
+
+---
+
+# Providing operations to STL algorithms
+
+For example:
+```
+std::for_each ();
+```
 
