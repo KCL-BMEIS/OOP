@@ -1005,6 +1005,7 @@ This can take the form of:
 - a class with an overloaded `operator()`
 - a *lambda expression*
 
+There are also equivalent versions of these algorithms in the [ranges library](https://www.geeksforgeeks.org/cpp-20-ranges-library/)
 
 ---
 
