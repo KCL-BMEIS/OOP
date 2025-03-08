@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 5, session 2: pointers, iterators and lambda functions"
+title: "Week 5, session 2: pointers, iterators and lambda expressions"
 ---
 
 class: title
@@ -8,7 +8,7 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 5, session 2
-## pointers, iterators<br>and lambda functions
+## pointers, iterators<br>and lambda expressions
 
 ---
 
@@ -1003,15 +1003,367 @@ These include:
 This can take the form of:
 - a regular function
 - a class with an overloaded `operator()`
-- a *lambda function*
+- a *lambda expression*
 
 
 ---
 
 # Providing operations to STL algorithms
 
-For example:
+For example, using a regular function:
 ```
-std::for_each ();
+int dist_from_12 (int v) { return std::abs(12-v); }
+...
+
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::transform (x.begin(), x.end(), x.begin(), dist_from_12);
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+produces
+```
+11 9 1 70 14 3 30 7 35 6
 ```
 
+---
+
+# Providing operations to STL algorithms
+
+For example, using a regular function:
+```
+int dist_from_12 (int v) { return std::abs(12-v); }
+...
+
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::transform (`x.begin(), x.end()`, x.begin(), dist_from_12);
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+produces
+```
+11 9 1 70 14 3 30 7 35 6
+```
+
+`std::transform` applies the operation to each element in the *input range*
+
+---
+
+# Providing operations to STL algorithms
+
+For example, using a regular function:
+```
+int dist_from_12 (int v) { return std::abs(12-v); }
+...
+
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::transform (x.begin(), x.end(), `x.begin()`, dist_from_12);
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+produces
+```
+11 9 1 70 14 3 30 7 35 6
+```
+
+`std::transform` applies the operation to each element in the *input
+range*,<br>
+storing the transformed element in the *output range*, starting from the position
+specified
+- here, the output range is the same as the input range, to apply the operation
+  in-place
+
+
+---
+
+# Providing operations to STL algorithms
+
+This time, using a class with an overloaded `operator()` method:
+```
+class dist_from {
+  public:
+    dist_from (int value) : m_value (value) { }
+*   int operator() (int v) const { return std::abs(m_value-v); }
+  private:
+    const int m_value;
+};
+
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::transform (x.begin(), x.end(), x.begin(), `dist_from (5)`);
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+
+With a class, we can store other parameters in the class 
+- here, we can specify a different value at the point of use
+
+---
+
+# Providing operations to STL algorithms
+
+For simple operations, a struct can be used to the same effect:
+```
+struct dist_from {
+    int operator() (int v) const { return std::abs(m_value-v); }
+    const int m_value;
+};
+
+
+
+
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+std::transform (x.begin(), x.end(), x.begin(), `dist_from { 5 }`);
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+
+- structs are `public` by default
+- the `m_value` member doesn't need to be private &ndash; especially if
+  `const`
+- we can use aggregate initialisation and avoid the need to provide an explicit
+  constructor
+
+
+
+---
+class: section
+
+# Lambda expressions
+
+---
+layout:true
+
+# Lambda expressions
+
+These allow small functions to be declared in line with the code, near or at
+the point of use
+
+A simple lambda expression might look like this:
+
+---
+```
+auto dist_from_12 = [](int v) { return std::abs(v-12); }
+```
+---
+```
+`auto` dist_from_12 = [](int v) { return std::abs(v-12); }
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+
+---
+```
+auto `dist_from_12` = [](int v) { return std::abs(v-12); }
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+- If needed, you can give a name to the lambda expression 
+
+---
+```
+auto dist_from_12 = `[]`(int v) { return std::abs(v-12); }
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+- If needed, you can give a name to the lambda expression 
+- The *capture clause* can be used to give access to variables from the
+  enclosing scope, if required
+  - here, we leave it empty for now
+
+
+---
+```
+auto dist_from_12 = []`(int v)` { return std::abs(v-12); }
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+- If needed, you can give a name to the lambda expression 
+- The *capture clause* can be used to give access to variables from the
+  enclosing scope, if required
+  - here, we leave it empty for now
+- Next, we provide the arguments to the expression, as we would for normal
+  functions
+
+
+---
+```
+auto dist_from_12 = [](int v) `{ return std::abs(v-12); }`
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+- If needed, you can give a name to the lambda expression 
+- The *capture clause* can be used to give access to variables from the
+  enclosing scope, if required
+  - here, we leave it empty for now
+- Next, we provide the arguments to the expression, as we would for normal
+  functions
+- Finally, we provide the *body* of expression, to define what the function
+  should do
+
+
+---
+```
+auto dist_from_12 = [](int v) `-> int` { return std::abs(v-12); }
+```
+- The type of a lambda expression is obscure, and best left for the compiler to
+work out.
+- If needed, you can give a name to the lambda expression 
+- The *capture clause* can be used to give access to variables from the
+  enclosing scope, if required
+  - here, we leave it empty for now
+- Next, we provide the arguments to the expression, as we would for normal
+  functions
+- Finally, we provide the *body* of expression, to define what the function
+  should do
+- (optional) If the compiler cannot deduce the type of the return value, this can also be
+  specified as shown
+
+---
+layout: false
+
+# Lambda expressions and STL algorithms
+
+We can use these lambda expressions with our STL algorithms:
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+
+*auto dist_from_12 = [](int v) { return std::abs(v-12); }
+
+std::transform (x.begin(), x.end(), x.begin(), `dist_from_12`);
+
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+
+---
+
+# Lambda expressions and STL algorithms
+
+If we don't need to re-use our expression elsewhere, we can use an *anonymous
+lambda*:
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+
+
+std::transform (x.begin(), x.end(), x.begin(), 
+                `[](int v) { return std::abs(v-12); }`);
+
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+The combination of STL algorithms with Lambda expressions provides a powerful
+framework
+- the operation can be specified in a concise way at the point of use
+- the way the operation is applied to the container is implicit in the choice
+  of algorithm
+
+---
+
+# Lambda capture
+
+The capture clause can be used to provide access to variables from the current
+scope:
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+
+`int ref = 5;`
+std::transform (x.begin(), x.end(), x.begin(), 
+                [`ref`](int v) { return std::abs(v-`ref`); });
+
+for (auto i : x)
+  std::cout << i << " ";
+std::cout << "\n";
+```
+
+This can be useful if the operation depends on some other parameter(s)
+- in this case, `ref` may not be known at compile-time, for example
+
+---
+
+# Lambda capture
+
+Parameters can also be captured by reference, which allows modification of the
+original variable:
+
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+
+`int sos = 0;`
+`std::for_each` (x.begin(), x.end(), 
+               `[&sos]`(int n) { `sos += n*n;` });
+
+std::cout << "sum of squares is " << sos << "\n";
+```
+produces:
+```
+sum of squares is 10062
+```
+
+`std::for_each` performs an operation on each item, but does not expect a
+return value
+- it cannot be used to *transform* the items
+
+---
+
+# Lambda capture
+
+It is possible to capture multiple parameters, by copy or by reference:
+
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+`int ref = 12;`
+`int sos = 0;`
+std::for_each (x.begin(), x.end(), 
+               `[ref,&sos]`(int n) { sos += (n-ref)*(n-ref); });
+
+std::cout << "sum of squared difference from " << ref << " is " << sos << "\n";
+```
+produces:
+```
+sum of squared difference from 12 is 7518
+```
+
+Here, `ref` can be passed by copy, since it does not need to be modified
+- it is also small enough that passing by copy will not affect performance
+
+On the other hand, `sos` needs to be passed by reference as it needs to be
+modified in the lambda
+
+---
+
+# Lambda capture
+
+Finally, it is also possible to capture *all* local variables by reference:
+
+```
+std::vector<int> x = { 1, 21, 13, 82, -2, 9, 42, 5, -23, 18 };
+
+int ref = 12;
+int sos = 0;
+std::for_each (x.begin(), x.end(), 
+               `[&]`(int n) { sos += (n-ref)*(n-ref); });
+
+std::cout << "sum of squared difference from " << ref << " is " << sos << "\n";
+```
+produces:
+```
+sum of squared difference from 12 is 7518
+```
+
+---
+
+# Exercises
+
+Use a lambda function to perform the task rescaling in the fMRI project
+- you can then remove the `rescale()` function in `task.h` / `task.cpp`
