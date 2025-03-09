@@ -411,6 +411,71 @@ method
 
 ---
 
+# Type aliasing
+
+We are currently using the type `std::array<double,3>` to store a position
+
+We can simplify our code slightly by defining a [type
+alias](https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/):
+- we can provide a *shorthand* name for this type, reducing the amount of code
+  we need to write elsewhere
+- we can make our intended purpose for this type more explicit
+
+--
+
+We can create a type alias with the `using` keyword:
+```
+using Point = std::array<double,3>;
+```
+We can now use `Point` as our type: the compiler will know this means
+`std::array<double,3>`
+
+--
+
+Another advantage: if needed, we can change this type later 
+by modifying a single line of code
+- e.g. we might at some point decide to switch to `std::array<float,3>`
+
+--
+
+We should place this definition in a separate header (e.g. `point.h`)
+- it will be needed in many different code files
+
+---
+
+**In `point.h`:**
+```
+#pragma once
+#include <array>
+using Point = std::array<double,3>;
+```
+
+**In `segment/base.h`:**
+```
+#include <point.h>
+namespace Segment {
+  class Base {
+    public:
+      Base (const Base& next_segment, const std::string& type) :
+         m_type (type),
+         m_segment (segment) { }
+  
+      const std::string& type () const { return m_type; }
+      virtual `Point` tip_position () const { return { }; }
+  
+    private:
+      Segment& m_next;
+      const std::string m_type;
+  };
+}
+```
+
+
+
+
+
+---
+
 # Writing our first derived class
 
 We now have a functional base class
@@ -421,7 +486,8 @@ We now have a functional base class
 --
 
 We also need an existing `Segment` to initialise it with!
-- this will be true for all segments &ndash; apart from the tip
+- this will be true for all segments 
+- ... apart from the tip!
 
 
 &rArr; Let's start with the tip segment
@@ -585,7 +651,7 @@ The `this` pointer is valid even before the class is fully initialised
 The `this` pointer is often used in the return value for various methods and
 operators
 - this allows operations to be *chained*
-- this is the mechanism used in the terminal_graphics library:
+- this is the mechanism used in the  [terminal_graphics library](https://github.com/jdtournier/terminal_graphics):
   ```
   TG::plot()              // <- returns an object of type TG::Plot
       .set_ylim (...)       // <- returns *this
@@ -621,11 +687,9 @@ namespace Segment {
 ```
 
 We can therefore use `*this` as the parameter to the `Base` object
-- this allows us to *terminate* the chain
+- this allows us to *terminate* the chain: `m_next` refers back to the tip!
 
-In our case, this is OK as the `Tip` class will not need to access the next
-segment
-- we will make sure none of our methods refer to `m_next`
+Moreover, the `Tip` class will not need to access the next segment anyway
 
 
 ---
@@ -640,7 +704,7 @@ namespace Segment {
         Base (*this, "tip"),
         m_length (length) { }
 
-*     std::array<double,3> Tip::tip_position () const override {
+*     Point Tip::tip_position () const {
 *       return { 0.0, 0.0, m_length };
 *     }
 
@@ -661,20 +725,143 @@ the *z*-axis
 
 ---
 
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+      Tip (double length) :
+        Base (*this, "tip"),
+        m_length (length) { }
+
+      Point Tip::tip_position () const `override` {
+        return { 0.0, 0.0, m_length };
+      }
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+When overriding a virtual method, it is good practice to add the `override`
+keyword
+- this ensures that a matching virtual method really does exist in the base class
+- this alerts users of our class that we intend this method to override the
+  base class implementation
+- this helps to avoid a number of subtle errors 
+
+---
+
 # Testing our design
 
 We can now write a program to use our classes:
 - We now have a class that can be instantiated!
 
 ```
+#include <segment/tip.h>
+
+...
+
 void run (std::vector<std::string>& args) 
 {
 
   ...
   Segment::Tip tip (20.0);
+
+  return 0;
 }
 ```
 
+This won't do anything interesting, but at least we can check that it compiles
+and runs without errors
+
+---
+
+# Exercise
+
+Create the `Segment` and `Tip` classes
+- use separate headers for both, and place method definitions in corresponding `.cpp` files
+
+Organise your code by grouping all the segment files within a distinct folder
+to match the `Segment` namespace:
+```
+robot_arm
+├── segment
+│    ├── base.h
+│    ├── base.cpp
+│    ├── tip.h
+│    └── tip.cpp
+└── robot.cpp
+```
+- this means your `#include` directives will also need to state the folder,
+  e.g.:
+  ```
+  #include <segment/tip.h>
+  ```
+
+.explain-topright[
+You can use the
+[`mkdir`](https://www.geeksforgeeks.org/mkdir-command-in-linux-with-examples/) command to create a folder
+]
+
+---
+
+# Exercise
+
+Modify your `run()` code to also report the tip position
+
+To simplify printing out the position, define the insertion operator for
+the type we use to store the position (`Point`)
+- you can also place the definition for this operator in the `point.h` file
+
+You can then verify that the position of the tip is as expected
+
+---
+
+# What happens when a class inherits from another?
+
+It is at first difficult to understand how inheritance really works.
+To appreciate what is happening, it helps to understand what each class stores:
+
+<br>
+
+|      | Segment |  Tip  | type  | size |
+|:----:|:-------:|:-----:|:-----:|:----:|
+| `m_next` | &#x2713; | &#x2713; | `Segment*` | 8 bytes |
+| `m_type` | &#x2713; | &#x2713; | `std::string` | 32 bytes |
+| `m_length` |        | &#x2713; | `double` | 8 bytes |
+| **total size** | 40 bytes | 48 bytes |  |  |
+
+--
+
+**Key points:**
+- the derived class *is a full version* of the base class 
+  - our `Tip` class includes data members `m_next` and `m_type`, which it
+    *inherited* from the `Base` class
+--
+- the derived class *extends* the base class with its own members
+  - our `Tip` class has an additional `m_length` member, which the `Base` class
+    does not
+--
+- the base and derived classes are not (necessarily) the same size!
+  - the derived class will typically be larger due to the additional members
+
+
+
+---
+
+# Designing the other segments
+
+We can now set up the remaining segments
+
+This time, they will need to be initialised from an existing segment
+
+--
+
+&rArr; Let's start with the straight segment, since its implementation is relatively
+straightforward
 
 ---
 
@@ -682,7 +869,7 @@ void run (std::vector<std::string>& args)
 
 ```
 namespace Segment {
-  class Straight `:` `public Base` { 
+* class Straight : public Base { 
 
 
 
@@ -697,12 +884,8 @@ namespace Segment {
   };
 }
 ```
-We define our `Straight` class as a regular class, with one key difference:
-- we specify that it inherits from `Base` using the syntax shown
-- `public` here means that public methods of the base class will also be
-  public in the derived class
-  - it is the most common mode of inheritance (`private` and `protected` are
-    also possible, but rarely used)
+
+As for the `Tip`, we declare our class with `Base` as the parent class
 
 ---
 
@@ -726,12 +909,7 @@ namespace Segment {
 }
 ```
 
-Note that the `Straight` class only not needs one additional data member: its
-length
-- it will already have the `m_type` and `m_next` data members from the base class!
-
-As for the `Straight` segment, we need only one additional data member: the tip
-length
+In this case, we need also only one additional data member: its length
 
 ---
 
@@ -739,10 +917,10 @@ length
 
 ```
 namespace Segment {
-  class Straight : public Base { 
-*   Straight (const Base& next, double length);
- 
-
+  class Straight : public Base {
+*   Straight (const Base& next, double length) :
+*     Base (next, "straight"),
+*     m_length (length) { }
 
 
 
@@ -755,7 +933,7 @@ namespace Segment {
 }
 ```
 
-The constructor for the Straight segment needs two pieces of information: 
+This time, the constructor needs *two* pieces of information: 
 - a reference to the next segment
 - its own length
 
@@ -767,8 +945,8 @@ The constructor for the Straight segment needs two pieces of information:
 ```
 namespace Segment {
   class Straight : public Base { 
-    Straight (const Base& next, double length) :
-*     Base (next, "straight"),
+    Straight (`const Base& next`, double length) :
+      Base (`next`, "straight"),
       m_length (length) { }
 
 
@@ -781,13 +959,8 @@ namespace Segment {
   };
 }
 ```
-
-Note that the constructor of the derived class must invoke the constructor for
-its base class first
-- if not explicitly stated, the base class default constructor will
-  implicitly be invoked (if one exists)
-- this ensures the base class is fully initialised in case the derived class depends on any of its functionality 
-- this must be done within the [member initialiser list](https://www.geeksforgeeks.org/when-do-we-use-initializer-list-in-c/)
+This time, we can pass the segment provided in the `Straight` constructor
+through to the `Base` constructor
 
 ---
 
@@ -800,7 +973,7 @@ namespace Segment {
       Base (next, "straight"),
       m_length (length) { }
 
-*   std::array<double,3> tip_position () const {
+*   Point tip_position () const override {
       auto p = m_next.tip_position();
       return { p[0], p[1], m_length+p[2] };
     }
@@ -813,7 +986,7 @@ namespace Segment {
 
 Finally, we can provide our implementation for the *virtual* `tip_position()`
 method
-- its declaration must match that from the base class exactly
+- again, its declaration must match that from the base class exactly
 
 
 ---
@@ -827,7 +1000,7 @@ namespace Segment {
       Base (next, "straight"),
       m_length (length) { }
 
-    std::array<double,3> tip_position () const {
+    Point tip_position () const override {
 *     auto p = m_next.tip_position();
 *     return { p[0], p[1], m_length+p[2] };
     }
@@ -842,36 +1015,39 @@ For the `Straight` segment, the implementation is relatively straightforward:
 - we retrieve the tip position from the next segment
   - remember we've inherited the `m_next` member from the `Base` class!
 - add its length to the *z*-component
-- and return a `std::array` with that position
+- and return a `Point` with that position
 
 
 ---
 
-## Designing the Straight segment class
+# Exercise
+
+Add the `Straight` class to your code, and use it in your code
+- again, place the header and corresponding `.cpp` file in the `segment` folder
+
+In your main code, set up your robot arm to have a single straight segment connected
+to the tip segment:
 
 ```
-namespace Segment {
-  class Straight : public Base { 
-    Straight (const Base& next, double length) :
-      Base (next, "straight"),
-      m_length (length) { }
+  ...
+  Segment::Tip tip (20.0);
+  Segment::Straight straight (tip, 30.0);
 
-    std::array<double,3> tip_position () const `override` {
-      auto p = m_next.tip_position();
-      return { p[0], p[1], m_length+p[2] };
-    }
-
-    private:
-      const double m_length;
-  };
+  std::cout << "tip position: " << straight.tip_position() << "\n";
+  return 0;
 }
 ```
+--
+Note that `tip` needs to exist *before* we can create the next (`straight`)
+segment
+- the *lifetime* of the `tip` also needs to exceed that of `straight`
+  - `tip` does not depend on `straight`, but `straight` holds a reference to
+    `tip`!
 
-When overriding a virtual method, it is good practice to add the `override`
-keyword
-- this ensures that a matching virtual method really does exist in the base class
-- this alerts users of our class that we intend this method to override the
-  base class implementation
-- this helps to avoid a number of subtle errors 
+---
 
+# Exercise
 
+Implement the other segment types: `bend`, `rotate`
+
+Use these to set up the full robot arm as specified in the instructions
