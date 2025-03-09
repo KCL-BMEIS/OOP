@@ -209,7 +209,7 @@ Segment (rotate)
 ```
 --
 
-Need a way to terminate the chain
+We will need a way to terminate the chain &ndash; more on that later
 - not too important since tip segment has no need to refer to next segment
 
 ---
@@ -253,8 +253,8 @@ namespace Segment {
 
 
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -274,7 +274,7 @@ We only need to 2 data members:
 namespace Segment {
   class Base {
     public:
-      Segment (const std::string& type, Segment& next_segment) :
+      Base (const Base& next_segment, const std::string& type) :
          m_type (type),
          m_segment (segment) { }
   
@@ -282,8 +282,8 @@ namespace Segment {
   
   
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -303,7 +303,7 @@ Both data members are *immutable*:
 namespace Segment {
   class Base {
     public:
-      Segment (const std::string& type, Segment& next_segment) :
+      Base (const Base& next_segment, const std::string& type) :
          m_type (type),
          m_segment (segment) { }
   
@@ -311,8 +311,8 @@ namespace Segment {
   
   
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -331,7 +331,7 @@ Add a getter / accessor method for the type
 namespace Segment {
   class Base {
     public:
-      Segment (const std::string& type, Segment& next_segment) :
+      Base (const Base& next_segment, const std::string& type) :
          m_type (type),
          m_segment (segment) { }
   
@@ -339,8 +339,8 @@ namespace Segment {
       std::array<double,3> tip_position () const;
   
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -360,7 +360,7 @@ base of the current segment
 namespace Segment {
   class Base {
     public:
-      Segment (const std::string& type, Segment& next_segment) :
+      Base (const Base& next_segment, const std::string& type) :
          m_type (type),
          m_segment (segment) { }
   
@@ -368,8 +368,8 @@ namespace Segment {
       `virtual` std::array<double,3> tip_position () const;
   
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -388,7 +388,7 @@ If the implementation of a method depends on the sub-type, it must be declared
 namespace Segment {
   class Base {
     public:
-      Segment (const std::string& type, Segment& next_segment) :
+      Base (const Base& next_segment, const std::string& type) :
          m_type (type),
          m_segment (segment) { }
   
@@ -396,8 +396,8 @@ namespace Segment {
       virtual std::array<double,3> tip_position () const { `return { };` }
   
     private:
+      Segment& m_next;
       const std::string m_type;
-      Segment& m_next_segment;
   };
 }
 ```
@@ -420,8 +420,260 @@ We now have a functional base class
 
 --
 
+We also need an existing `Segment` to initialise it with!
+- this will be true for all segments &ndash; apart from the tip
 
-Let's start with the simplest one: the straight segment
+
+&rArr; Let's start with the tip segment
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+* class Tip : public Base {
+
+
+
+
+
+
+
+
+
+
+
+  };
+}
+```
+
+We define our `Tip` class as a regular class, with one key difference:
+- we specify that it inherits from `Base` using the syntax shown
+- `public` here means that public methods of the base class will also be
+  public in the derived class
+  - it is the most common mode of inheritance (`private` and `protected` are
+    also possible, but rarely used)
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+
+
+
+
+
+
+
+
+
+*   private:
+*     const double m_length;
+  };
+}
+```
+
+
+Note that the `Tip` class only not needs one additional data member: its length
+- it will already have the `m_type` and `m_next` data members from the base class!
+- the length should not change once initialised: we declare it `const`
+
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+*     Tip (double length) :
+        Base (*this, "tip"),
+        m_length (length) { }
+
+
+
+
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+The constructor for the `Tip` segment only needs one piece of information: 
+- its own length
+
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+      Tip (double length) :
+*       Base (*this, "tip"),
+        m_length (length) { }
+
+
+
+
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+Note that the constructor of the derived class must invoke the constructor for
+its base class first
+- if not explicitly stated, the base class default constructor will
+  implicitly be invoked (if one exists)
+- this ensures the base class is fully initialised in case the derived class depends on any of its functionality 
+- this must be done within the [member initialiser list](https://www.geeksforgeeks.org/when-do-we-use-initializer-list-in-c/)
+  - before initialising any other members!
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+      Tip (double length) :
+        Base (`*this`, "tip"),
+        m_length (length) { }
+
+
+
+
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+The constructor for the `Base` object needs a reference to an existing
+`Segment`
+- where do we find an existing object of type `Segment`?
+
+&rArr; we can use the current object!
+- the `Tip` segment will refer to *itself* as the next segment
+
+---
+
+# The `this` pointer
+
+All objects have a [`this`
+pointer](https://www.geeksforgeeks.org/this-pointer-in-c/), which points to the current instance
+- it holds the *memory address* of the current instance
+
+The `this` pointer is valid even before the class is fully initialised
+- this makes sense: the class needs somewhere to store its data *before* that
+  data can be initialised
+
+--
+
+The `this` pointer is often used in the return value for various methods and
+operators
+- this allows operations to be *chained*
+- this is the mechanism used in the terminal_graphics library:
+  ```
+  TG::plot()              // <- returns an object of type TG::Plot
+      .set_ylim (...)       // <- returns *this
+      .add_line (...)       // <- also returns *this
+      .add_line (...);
+  ```
+--
+
+We can use `*this` to get a reference to the current instance
+- although it is not initialised yet, we only need to a reference to it &ndash;
+  OK as long as we don't try to access values via the reference
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+      Tip (double length) :
+        Base (`*this`, "tip"),
+        m_length (length) { }
+
+
+
+
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+We can therefore use `*this` as the parameter to the `Base` object
+- this allows us to *terminate* the chain
+
+In our case, this is OK as the `Tip` class will not need to access the next
+segment
+- we will make sure none of our methods refer to `m_next`
+
+
+---
+
+## Designing the Tip segment class
+
+```
+namespace Segment {
+  class Tip : public Base {
+    public:
+      Tip (double length) :
+        Base (*this, "tip"),
+        m_length (length) { }
+
+*     std::array<double,3> Tip::tip_position () const override {
+*       return { 0.0, 0.0, m_length };
+*     }
+
+    private:
+      const double m_length;
+  };
+}
+```
+
+
+Finally, we can provide our implementation for the *virtual* `tip_position()`
+method
+- its declaration must match that from the base class exactly
+
+For the `Tip`, we just need to report a position a distance *length* away along
+the *z*-axis
+
+
+---
+
+# Testing our design
+
+We can now write a program to use our classes:
+- We now have a class that can be instantiated!
+
+```
+void run (std::vector<std::string>& args) 
+{
+
+  ...
+  Segment::Tip tip (20.0);
+}
+```
 
 
 ---
@@ -476,8 +728,10 @@ namespace Segment {
 
 Note that the `Straight` class only not needs one additional data member: its
 length
-- it will already have the `m_type` and `m_next_segment` data members from the base class!
+- it will already have the `m_type` and `m_next` data members from the base class!
 
+As for the `Straight` segment, we need only one additional data member: the tip
+length
 
 ---
 
@@ -586,7 +840,7 @@ namespace Segment {
 
 For the `Straight` segment, the implementation is relatively straightforward:
 - we retrieve the tip position from the next segment
-  - remember we've inherited the `m_next_segment` member from the `Base` class!
+  - remember we've inherited the `m_next` member from the `Base` class!
 - add its length to the *z*-component
 - and return a `std::array` with that position
 
@@ -619,77 +873,5 @@ keyword
 - this alerts users of our class that we intend this method to override the
   base class implementation
 - this helps to avoid a number of subtle errors 
-
-
----
-
-# The next derived class: the tip
-
-We now have:
-- a Base class for our segments
-- one derived class for segments of 'straight' type
-
---
-
-But we can't use any of this code yet:
-- we need an instance of the next segment to construct a `Straight` segment
-- but the only type of segment we can currently instantiate is a `Straight`
-  segment!
-
---
-
-We need at least one derived class that can be instantiated *without* a next
-segment!
-
-&rArr; the tip segment
-
-
----
-
-## The next derived class: the tip
-
-```
-namespace Segment {
-  class Tip : public Base {
-
-
-
-
-
-
-
-
-
-    private:
-      const double m_length;
-  };
-}
-```
-
-As for the `Straight` segment, we need only one additional data member: the tip
-length
-
-
----
-
-## The next derived class: the tip
-
-```
-namespace Segment {
-  class Tip : public Base {
-    public:
-      Tip (double length) :
-        Base (*this, "tip"),
-        m_length (length) { }
-
-      std::array<double,3> Tip::tip_position () const override {
-        return { 0.0, 0.0, m_length };
-      }
-
-    private:
-      const double m_length;
-  };
-}
-```
 
 
