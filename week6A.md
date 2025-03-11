@@ -12,7 +12,7 @@ class: title
 
 ---
 
-# Our next project: fMRI analysis
+# Our next project: a module robot arm
 
 This week, we start off on a new project: a simple system to control a modular
 robot arm
@@ -253,18 +253,18 @@ namespace Segment {
 
 
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
 ```
 
 We only need to 2 data members: 
+- a *reference* to the next segment, which is also of type `Base`
+  - *note:* this cannot be a *copy* &ndash; we will see why later
+--
 - a string to hold the type
   - this will not need to be modified after construction &rArr; declare it `const`
---
-- a *reference* to the next segment
-  - *note:* this cannot be a *copy* &ndash; we will see why later
 
 ---
 
@@ -274,15 +274,15 @@ We only need to 2 data members:
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
   
   
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -303,15 +303,15 @@ Both data members are *immutable*:
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
       const std::string& type () const { return m_type; }
   
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -331,15 +331,15 @@ Add a getter / accessor method for the type
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
       const std::string& type () const { return m_type; }
       std::array<double,3> tip_position () const;
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -360,15 +360,15 @@ base of the current segment
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
       const std::string& type () const { return m_type; }
       `virtual` std::array<double,3> tip_position () const;
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -388,15 +388,15 @@ If the implementation of a method depends on the sub-type, it must be declared
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
       const std::string& type () const { return m_type; }
       virtual std::array<double,3> tip_position () const { `return { };` }
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -452,19 +452,19 @@ using Point = std::array<double,3>;
 
 **In `segment/base.h`:**
 ```
-#include <point.h>
+#include "point.h"
 namespace Segment {
   class Base {
     public:
-      Base (const Base& next_segment, const std::string& type) :
-         m_type (type),
-         m_segment (segment) { }
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
   
       const std::string& type () const { return m_type; }
       virtual `Point` tip_position () const { return { }; }
   
     private:
-      Segment& m_next;
+      Base& m_next;
       const std::string m_type;
   };
 }
@@ -628,8 +628,8 @@ namespace Segment {
 ```
 
 The constructor for the `Base` object needs a reference to an existing
-`Segment`
-- where do we find an existing object of type `Segment`?
+`Segment::Base`
+- where do we find an existing object of type `Segment::Base`?
 
 &rArr; we can use the current object!
 - the `Tip` segment will refer to *itself* as the next segment
@@ -704,7 +704,7 @@ namespace Segment {
         Base (*this, "tip"),
         m_length (length) { }
 
-*     Point Tip::tip_position () const {
+*     Point tip_position () const {
 *       return { 0.0, 0.0, m_length };
 *     }
 
@@ -735,7 +735,7 @@ namespace Segment {
         Base (*this, "tip"),
         m_length (length) { }
 
-      Point Tip::tip_position () const `override` {
+      Point tip_position () const `override` {
         return { 0.0, 0.0, m_length };
       }
 
@@ -760,7 +760,7 @@ We can now write a program to use our classes:
 - We now have a class that can be instantiated!
 
 ```
-#include <segment/tip.h>
+#include "segment/tip.h"
 
 ...
 
@@ -769,6 +769,7 @@ void run (std::vector<std::string>& args)
 
   ...
   Segment::Tip tip (20.0);
+  Segment::Base base (tip, "base");
 
   return 0;
 }
@@ -798,7 +799,7 @@ robot_arm
 - this means your `#include` directives will also need to state the folder,
   e.g.:
   ```
-  #include <segment/tip.h>
+  #include "segment/tip.h"
   ```
 
 .explain-topright[
