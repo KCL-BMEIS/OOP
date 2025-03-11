@@ -15,6 +15,7 @@ void run (std::vector<std::string>& args)
   Segment::Tip tip (20.0);
   Segment::Base root (tip, "root");
 
+  std::cout << "tip position: " << root.tip_position() << "\n";
 }
 
 
