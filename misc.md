@@ -803,3 +803,92 @@ should be hidden from users
 In practice, the two concepts go hand in hand: abstraction relies on
 encapsulation, and vice-versa
 
+---
+
+# The copy constructor and assignment operator
+
+If we have a class that requires a non-default destructor, we will typically
+also need to redefine the [copy
+constructor](https://www.geeksforgeeks.org/copy-constructor-in-cpp/) and
+[assignment operator](https://www.geeksforgeeks.org/cpp-assignment-operators/)
+- this is also referred to as [the rule of
+  five](https://www.geeksforgeeks.org/rule-of-five-in-cpp/)
+  - technically, we would also need to define the *move constructor* and *move assignment
+  operator*, but this involves [move
+semantics](https://www.learncpp.com/cpp-tutorial/returning-stdvector-and-an-introduction-to-move-semantics/), which is beyond the scope of
+this course.
+
+--
+
+Let's consider the `std::string` as an example of how this works:
+- `std::string` needs to manage a region of memory to hold its data
+--
+- its **constructor** needs to acquire the required amount of memory from the
+  system
+--
+- its **destructor** needs to release that memory back to the system
+  - otherwise programs that use `std::string` will suffer from [memory
+    leaks](https://en.wikipedia.org/wiki/Memory_leak)
+  - for long-running programs, this will eventually use up all of the available memory and crash
+--
+- the **copy constructor** needs to acquire some memory from the system and copy the contents of
+  the other string into that memory
+--
+- the **assignment operator** needs to release the memory it was previously
+  managing, acquire enough memory to hold the new contents, and copy the
+  contents of the other string into its own memory
+  - it may skip the memory release / re-acquire if it already had enough memory
+    to hold the new contents
+
+---
+
+## The copy constructor and assignment operator
+
+The [copy constructor](https://www.geeksforgeeks.org/copy-constructor-in-cpp/)
+is invoked when creating an instance initialised as a copy of another:
+
+```
+std::string a = "hello!";   // <= use normal constructor
+
+// the following all invoke the copy constructor:
+std::string b (a); 
+std::string c = a;    // <= equivalent to "std::string c (a);"
+auto d = a;
+```
+
+- All of the above will invoke `std::string`'s copy constructor
+- Note: when using the assignment operator (`=`) at declaration time, the C++
+  standard specifies that this actually invokes the copy constructor
+
+--
+
+The [assignment
+operator](https://www.geeksforgeeks.org/cpp-assignment-operators/) is invoked
+when an instance is assigned to another 
+- as long as the assignment is not done as part of the declaration, since that
+  uses the copy constructor
+
+```
+std::string a = "hello!";
+std::string b = "goodbye";
+
+b = a;    // <= invokes assignment operator
+```
+
+
+---
+
+# The copy constructor and assignment operator
+
+To illustrate, let's consider a class to manage a session with a remote server:
+```
+class Session {
+  public:
+    Session (const std::string& url, const std::string& username);
+    ~Session ();
+
+  private:
+    int m_socket;
+};
+```
+

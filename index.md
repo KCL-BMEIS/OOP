@@ -71,23 +71,11 @@ Week 5:
 
 Week 6:
 - [sesson 1: robot arm project, inheritance](https://kcl-bmeis.github.io/OOP/week6A)
-- [sesson 2: Abstract classes, copy constructor, destructor and assignment operator](https://kcl-bmeis.github.io/OOP/week6B)
+- [sesson 2: Abstract classes, class destructor, finalise robot arm project](https://kcl-bmeis.github.io/OOP/week6B)
 
 Week 7:
-- [sesson 1: stringstream, robot arm project](https://kcl-bmeis.github.io/OOP/week7A)
-- [sesson 2: finalise robot arm project](https://kcl-bmeis.github.io/OOP/week7B)
-
-Week 8:
-- [sesson 1: practice session: design and initial implementation](https://kcl-bmeis.github.io/OOP/week8A)
-- [sesson 2: practice session: finalise project](https://kcl-bmeis.github.io/OOP/week8B)
-
-Week 9:
-- [sesson 1: OOP design and principles](https://kcl-bmeis.github.io/OOP/week9A)
-- [sesson 2: templates and the Standard Template Library](https://kcl-bmeis.github.io/OOP/week9B)
-
-Week 10:
-- [sesson 1: pointers and manual memory management](https://kcl-bmeis.github.io/OOP/week10A)
-- [sesson 2: handling memory in C++ classes](https://kcl-bmeis.github.io/OOP/week10B)
+- [sesson 1: OOP design and principles](https://kcl-bmeis.github.io/OOP/week7A)
+- [sesson 2: Resource and memory management](https://kcl-bmeis.github.io/OOP/week7B)
 
 ---
 

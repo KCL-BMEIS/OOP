@@ -49,7 +49,6 @@ This is a list of topics to be covered on this module. Note that during the cour
 - the `do`/`while` loop
 - conditional operators: `==`, `!=`, `<`, `>`, `<=`, `>=`
 - compound conditional expressions using logical operators: `&&`, `||`, `!`
-- the conditional (ternary) `?:` operator
 
 ## Functions
 - purpose of functions (control flow, code re-use, code clarity, ...)
@@ -57,7 +56,6 @@ This is a list of topics to be covered on this module. Note that during the cour
 - general syntax
 - function arguments, default arguments
 - return statement, return type
-- returning _multiple_ values from functions using [C++17 structured binding](https://www.cppstories.com/2022/structured-bindings/)
 - function overloading
 - `inline` keyword
 - lambda functions
@@ -121,7 +119,7 @@ This is a list of topics to be covered on this module. Note that during the cour
 - template functions
 - template classes
 - template class methods
-- why template functions & methods must all be defined in headers, not cpp files
+- why template functions & methods should all be defined in headers, not cpp files
 
 ## The Standard Template Library
 - useful containers: `std::vector`, `std::array`, `std::string`

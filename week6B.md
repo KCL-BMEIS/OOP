@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 6, session 2: abstract classes, special methods
+title: "Week 6, session 2: abstract classes, class destructor, finalise robot arm project"
 ---
 
 class: title
@@ -8,7 +8,7 @@ class: title
 5CCYB041
 # OBJECT-ORIENTED PROGRAMMING
 ### Week 6, session 2
-## Abstract classes, copy constructor, destructor and assignment operator
+## Abstract classes, class destructor<br>finalise robot arm project
 
 ---
 
@@ -333,6 +333,11 @@ specific to its role.
 ]
 
 ---
+class: section
+
+# Pure virtual methods<br> and abstract classes
+
+---
 
 # Pure virtual methods and abstract classes
 
@@ -391,6 +396,11 @@ Verify that this makes it impossible to create an object of type
 
 Verify that derived classes must indeed implement their own version of the pure
 virtual `tip_position()` method
+
+---
+class: section
+
+# Runtime polymorphism
 
 ---
 
@@ -545,6 +555,11 @@ parts of the segment that correspond to the base class!
   - this would produce a compiler error
 
 ---
+class: section
+
+# Object lifetime
+
+---
 
 # Object lifetime
 
@@ -593,6 +608,11 @@ When used as regular variables:
 **Importantly, objects will be destroyed in reverse construction order**
 - in our case, `tip` was constructed first, so is guaranteed to be destroyed
   last
+
+---
+class: section
+
+# The class destructor
 
 ---
 
@@ -810,82 +830,133 @@ Verify that the lifetime of the tip segment exceeds that of the next segment,
 etc. 
 
 ---
+class: section
 
-# The copy constructor and assignment operator
-
-If we have a class that requires a non-default destructor, we will typically
-also need to redefine the [copy
-constructor](https://www.geeksforgeeks.org/copy-constructor-in-cpp/) and
-[assignment operator](https://www.geeksforgeeks.org/cpp-assignment-operators/)
-- this is also referred to as [the rule of
-  five](https://www.geeksforgeeks.org/rule-of-five-in-cpp/)
-  - technically, we would also need to define the *move constructor* and *move assignment
-  operator*, but this involves [move
-semantics](https://www.learncpp.com/cpp-tutorial/returning-stdvector-and-an-introduction-to-move-semantics/), which is beyond the scope of
-this course.
-
---
-
-Let's consider the `std::vector` as an example of how this works:
-- `std::vector` needs to manage a region of memory to hold its data
-- its constructor needs to acquire the required amount of memory from the
-  system
-- its destructor needs to release that memory back to the system
-  - otherwise programs that use `std::vector` will suffer from [memory
-    leaks](https://en.wikipedia.org/wiki/Memory_leak)
-  - for long-running programs, this will eventually use up all of the available memory and crash
-- the copy constructor needs to acquire some memory from the system and copy the contents of
-  the other vector into that memory
-- the assignment operator needs to release the memory it was previously
-  managing, acquire enough memory to hold the new contents, and copy the
-  contents of the other vector into its own memory
-  - it may skip the memory release / re-acquire if it already had enough memory
-    to hold the new contents
+# Finishing off <br>the robot arm project
 
 ---
 
+# Finishing off the robot arm project
 
-The [copy constructor](https://www.geeksforgeeks.org/copy-constructor-in-cpp/)
-is invoked when creating an instance initialised as a copy of another:
+We have code to setup the robot arm, and we can use it to report the tip
+position
 
+The next steps are to:
+1. load the parameter file
+1. set the various angles to their corresponding values in the parameter file
+  for each time frame
+1. iterate over the time frames, compute the trajectory, and display on the
+  terminal
+1. compute the speed of the tip and display this as a function of time
+1. compute the acceleration of the tip and display this alongside the speed
+1. compute the maximum speed and acceleration and check whether they are within
+  the specified safety margins
+
+--
+
+We have covered *almost* all the material necessary to implement the above
+- let's look at step 1 in more detail
+
+---
+
+# Reading text line-by-line
+
+The parameter file consists of a some number of parameters per time point, all
+on the same line, with each line corresponding to a different time point
 ```
-std::vector<int> a (10, 0);
-
-std::vector<int> b (a);
-std::vector<int> c = a;    // <= equivalent to "std::vector<int> c (a);"
-auto d = a;
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 1.20830487e-02 1.20830487e-02 1.20830487e-02 1.20830487e-02 0.00000000e+00 1.20830487e-02
+ 2.41660973e-02 2.41660973e-02 2.41660973e-02 2.41660973e-02 0.00000000e+00 2.41660973e-02
+ 3.62491460e-02 3.62491460e-02 3.62491460e-02 3.62491460e-02 0.00000000e+00 3.62491460e-02
+ 4.83321947e-02 4.83321947e-02 4.83321947e-02 4.83321947e-02 0.00000000e+00 4.83321947e-02
+...
 ```
 
-All of the above will invoke `std::vector`'s copy constructor
-- when using the assignment operator (`=`) at declaration time, the C++
-  standard specifies that this actually invokes the copy constructor
+--
 
-# The copy constructor and assignment operator
+We could load all the parameters as one long vector of values, then 
+to re-arrange the data into sets of 6 parameters
+- or we could read the data 6 parameters at a time
 
-The [assignment
-operator](https://www.geeksforgeeks.org/cpp-assignment-operators/) is invoked
-when an instance is assigned to another 
-- as long as the assignment is not done as part of the declaration, since that
-  will use the copy constructor
+--
 
+Both approaches rely on *a priori* knowledge that there are 6 values per time point!
+- we cannot handle files that may have different numbers of parameters
+- we cannot detect errors in the file (maybe some lines have too many
+  or too few parameters)
+
+---
+
+# Reading text line-by-line
+
+
+Ideally, we would:
+- read one line at a time
+- read each value on that line into a parameter vector
+- check that the size of that vector is as expected, and/or matches the size of
+  the previous lines in the file
+
+--
+
+We can read text one line at a time using the [std::getline()
+method](https://www.geeksforgeeks.org/getline-string-c/):
 ```
-std::vector<int> a (10, 0);
-std::vector<int> b (2, 1);
-
-b = a;    // <= invokes assignment operator
+std::ifstream infile (filename); 
+...
+std::string line;
+while (`std::getline (infile, line)`) {
+  // process that line:
+  ... 
+}
 ```
 
+--
 
+But we then need to read the values from that line
+- how can we do that?
 
-To illustrate, let's consider a class to manage a session with a remote server:
+---
+
+# Treating a *string* as a *stream*
+
+We can use the [std::stringstream](https://www.geeksforgeeks.org/stringstream-c-applications/) class to treat a string as if it were a stream
+- It's like writing your string into a file, and then using a stream to read
+  from that file
+- This allows us to use the same interface that we've been using to read from
+  stream, but this time reading from our string
+
+--
+
+This is how this works:
 ```
-class Session {
-  public:
-    Session (const std::string& url, const std::string& username);
-    ~Session ();
+#include <sstream>   // <= this is where the std::stringstream class is declared
 
-  private:
-    int m_socket;
-};
+...
+std::string line;    // <= the string we want to read from
+...
+std::stringstream sstream (line);
+
+// we can read from our string stream using the same syntax as before!
+// for example:
+std::vector<double> param;
+while (sstream >> val)
+  param.push_back (val);
 ```
+
+---
+
+# Exercises
+
+We have now covered all the material necessary to finish the project!
+
+Modify your code to implement the remaining steps:
+1. load the parameter file (including all relevant error checking)
+1. set the various angles to their corresponding values in the parameter file
+  for each time frame
+1. iterate over the time frames, compute the trajectory, and display on the
+  terminal
+1. compute the speed of the tip and display this as a function of time
+1. compute the acceleration of the tip and display this alongside the speed
+1. compute the maximum speed and acceleration and check whether they are within
+  the specified safety margins
 
