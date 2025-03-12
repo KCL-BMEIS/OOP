@@ -71,7 +71,7 @@ Week 5:
 
 Week 6:
 - [sesson 1: robot arm project, inheritance](https://kcl-bmeis.github.io/OOP/week6A)
-- [sesson 2: object-oriented design](https://kcl-bmeis.github.io/OOP/week6B)
+- [sesson 2: Abstract classes, copy constructor, destructor and assignment operator](https://kcl-bmeis.github.io/OOP/week6B)
 
 Week 7:
 - [sesson 1: stringstream, robot arm project](https://kcl-bmeis.github.io/OOP/week7A)
