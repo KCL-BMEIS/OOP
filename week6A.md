@@ -1047,6 +1047,119 @@ segment
 
 ---
 
+# Accessing private members of base class
+
+If you tried the previous exercise, you will have noticed that the compiler
+will refuse to compile the `Straight::tip_position()` method:
+```
+segment/straight.cpp: In member function ‘virtual Point Segment::Straight::tip_position() const’:
+segment/straight.cpp:7:14: error: ‘Segment::Base& Segment::Base::m_next’ is private within this context
+    7 |     auto p = m_next.tip_position();
+      |              ^~~~~~
+In file included from ./segment/straight.h:3,
+                 from segment/straight.cpp:1:
+./segment/base.h:19:13: note: declared private here
+   19 |       Base& m_next;
+      |             ^~~~~~
+```
+The key message here is:
+```
+'Segment::Base::m_next' is private within this context
+```
+
+---
+
+# Accessing private members of base class
+
+**In `segment/base.h`:**
+```
+#include "point.h"
+namespace Segment {
+  class Base {
+    public:
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
+  
+      const std::string& type () const { return m_type; }
+      virtual Point tip_position () const { return { }; }
+  
+*   private:
+*     Base& m_next;
+      const std::string m_type;
+  };
+}
+```
+.explain-bottomright[
+`m_next` is indeed private to the `Base` class
+
+<br>
+This means it is not accessible to derived classes!
+]
+
+---
+
+# The `protected` access specifier
+
+The `protected` [access specifier](https://www.geeksforgeeks.org/access-modifiers-in-c/) is a more nuanced version of `public` or `private`
+
+- `public`: accessible directly from any other part of the
+  code
+
+- `private`: can *only* be accessed from methods of this class
+
+- `protected`: cannot be accessed from any other part of the
+  code, *apart from methods of derived classes*
+
+--
+
+When a class is intended to be inherited, we need to consider:
+- which elements should remain entirely `private` to that class
+- which elements should remain `protected`, but nonetheless accessible to
+  derived classes
+- which elements should be `public` and usable from anywhere else in the code
+
+--
+
+Derived classes often need privileged access to private members of their base
+class
+<br>
+&rArr; the `protected` access specifier is often used in such cases
+- click on the links for examples illustrating the difference between
+  [protected and public](https://www.geeksforgeeks.org/public-vs-protected-in-c-with-examples/), and between
+  [public and private](https://www.geeksforgeeks.org/difference-between-public-and-private-in-c-with-example/)
+---
+
+# The `protected` access specifier
+
+
+**In `segment/base.h`:**
+```
+#include "point.h"
+namespace Segment {
+  class Base {
+    public:
+      Base (Base& next_segment, const std::string& type) :
+         m_next (next_segment),
+         m_type (type) { }
+  
+      const std::string& type () const { return m_type; }
+      virtual Point tip_position () const { return { }; }
+  
+    `protected`:
+      Base& m_next;
+      const std::string m_type;
+  };
+}
+```
+.explain-bottomright[
+We can therefore avoid the previous compilation error by declaring the relevant
+members as `protected`
+]
+
+
+---
+
 # Exercise
 
 Implement the other segment types: `bend`, `rotate`
