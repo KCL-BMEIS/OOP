@@ -74,7 +74,7 @@ The length will not need to change once initialised
 .explain-bottomright[
 ... but the angle needs to be adjustable at run-time
 - we do *not* declare it `const`
-- we provide a 'getter' method to allow it to be specified
+- we provide a 'setter' method to allow it to be specified
 ]
 
 ---
