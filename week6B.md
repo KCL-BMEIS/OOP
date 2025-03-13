@@ -582,12 +582,20 @@ segment, and is not destroyed before the bend segment
 Otherwise, there is a risk of one segment attempting to access information that
 is no longer valid!
 
+--
+
+.explain-bottom[
+Poor handling of object lifetime is a major source of bugs and security
+issues!
+]
+
 ---
 
 # Object lifetime and scope
 
 The strategy we have used provides these guarantees, thanks to the rules around
-construction and destruction
+[construction and
+destruction](https://www.geeksforgeeks.org/order-constructor-destructor-call-c/)
 
 ```
 {
@@ -601,11 +609,11 @@ construction and destruction
 When used as regular variables:
 - object are constructed when declared
 - destroyed when they go [out of scope](https://www.geeksforgeeks.org/scope-of-variables-in-c/) 
-  - normally, this is the end of the enclosing block or function
+  - normally, this corresponds to the end of the enclosing block or function
 
 --
 
-**Importantly, objects will be destroyed in reverse construction order**
+**Importantly, objects will be destroyed in *reverse construction* order**
 - in our case, `tip` was constructed first, so is guaranteed to be destroyed
   last
 
@@ -620,7 +628,7 @@ class: section
 
 The [destructor](https://www.geeksforgeeks.org/destructors-c/) is the counterpart of the [constructor](https://www.geeksforgeeks.org/constructors-c/)
 - it is invoked when the object is destroyed
-- it can be used to perform any clean-up operations that might be required
+- it can be used to perform any additional clean-up operations that might be required
 
 --
 
@@ -651,7 +659,7 @@ Using well-behaved data members means we can safely rely on the default implicit
 
 When a derived class is destroyed, the destructor for the derived class must
   be run *before* the destructor for the base class
-- once again, destruction happens in reverse construction order
+- once again, destruction happens in *reverse construction* order
 
 --
 
@@ -760,6 +768,16 @@ In our case, the destructor does not need to do anything: all of our data
 members are well-behaved
 
 <br> &rArr; we can define it as an empty function
+]
+
+--
+
+.explain-topright[
+Note: destructors should not throw exceptions
+
+<br>
+This is to avoid issues that may arise if the destructor is invoked in the
+process of handling a previous exception
 ]
 
 ---
@@ -923,20 +941,35 @@ We can use the [std::stringstream](https://www.geeksforgeeks.org/stringstream-c-
 - It's like writing your string into a file, and then using a stream to read
   from that file
 - This allows us to use the same interface that we've been using to read from
-  stream, but this time reading from our string
+  streams, but this time reading from our string
 
 --
 
-This is how this works:
+As with file streams, there are 3 variants:
+- `std::stringstream` for both read and write access
+- `std::istringstream` if we only need to *read* from the string
+- `std::ostringstream` if we only need to *write* to the string
+
+---
+
+# Illustration of string stream
+
 ```
-#include <sstream>   // <= this is where the std::stringstream class is declared
+// The std::stringstream classes are declared in the <sstream> header:
+#include <sstream>
 
 ...
-std::string line;    // <= the string we want to read from
+// the string we want to read from:
+std::string line;
 ...
-std::stringstream sstream (line);
+// maybe read line using std::getline(), etc.
+...
 
-// we can read from our string stream using the same syntax as before!
+// set up an input string stream, initialised with 
+// the string we want to read from:
+std::istringstream sstream (line);
+
+// we can now read from our string stream using the same syntax as before!
 // for example:
 std::vector<double> param;
 while (sstream >> val)
