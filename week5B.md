@@ -25,6 +25,11 @@ Make sure your code is up to date now!
 ]
 
 ---
+class: section
+
+# Pointers and iterators
+
+---
 
 # Pointers and iterators
 
@@ -47,6 +52,7 @@ Iterators are inspired from the concept of *pointers*
 To understand iterators, we need to start with pointers
 
 ---
+name: pointers
 class: section
 
 # Pointers
@@ -375,6 +381,7 @@ process_value (&p); // what value does p refer to now?
 ```
 
 ---
+name: cstyle_array
 class: section
 
 # C-style arrays
@@ -430,6 +437,7 @@ How does this work?
 &rArr; let's look at the operations that we can perform with pointers
 
 ---
+name: pointer_arithmetic
 
 # Pointer arithmetic
 
@@ -552,6 +560,7 @@ array, anything can happen...
 
 
 ---
+name: cstyle_string
 class: section
 
 # C-style strings
@@ -655,6 +664,7 @@ int main (int argc, `char* argv[]`)
 ```
 
 ---
+name: cstyle_cmdline_args
 
 # The command-line arguments
 
@@ -688,6 +698,7 @@ However, we still recommend converting to a `std::vector<std::string>` on this
 course!
 
 ---
+name: stl_iterators
 class: section
 
 # STL iterators
@@ -786,6 +797,7 @@ operator!
 &rArr; why do we really need iterators?
 
 ---
+name: stl_algorithms
 
 # How to use iterators with STL algorithms
 
@@ -1131,6 +1143,7 @@ std::cout << "\n";
 
 
 ---
+name: lambda
 class: section
 
 # Lambda expressions

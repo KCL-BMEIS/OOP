@@ -82,6 +82,7 @@ Function overloading is useful, but may not be the best tool here
 ]
 
 ---
+name: template_function
 class: section
 
 # C++ template functions
@@ -358,6 +359,7 @@ std::vector<float> rescale (const std::vector<T>& task, `C` min, `C` max)
 ```
 
 ---
+name: template_class
 class: section
 
 # Class templates in C++
@@ -708,6 +710,7 @@ class Dataset
 ```
 
 ---
+name: static_polymorphism
 
 # Polymorphism
 

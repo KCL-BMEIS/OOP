@@ -828,9 +828,9 @@ To appreciate what is happening, it helps to understand what each class stores:
 
 <br>
 
-|      | Segment |  Tip  | type  | size |
+|      | Base |  Tip  | type  | size |
 |:----:|:-------:|:-----:|:-----:|:----:|
-| `m_next` | &#x2713; | &#x2713; | `Segment*` | 8 bytes |
+| `m_next` | &#x2713; | &#x2713; | `Base&` | 8 bytes |
 | `m_type` | &#x2713; | &#x2713; | `std::string` | 32 bytes |
 | `m_length` |        | &#x2713; | `double` | 8 bytes |
 | **total size** | 40 bytes | 48 bytes |  |  |
