@@ -262,7 +262,7 @@ class ShotgunSequencer {
 In `shotgun_sequencer.cpp`:
 ```
 *   ShotgunSequencer::ShotgunSequencer () : 
-*       m_minimum_overlap (10 { }
+*       m_minimum_overlap (10) { }
 ```
 
 If you need to define the constructor *outside* the class declaration, note
