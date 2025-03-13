@@ -919,7 +919,7 @@ In this case, we need also only one additional data member: its length
 ```
 namespace Segment {
   class Straight : public Base {
-*   Straight (const Base& next, double length) :
+*   Straight (Base& next, double length) :
 *     Base (next, "straight"),
 *     m_length (length) { }
 
@@ -946,7 +946,7 @@ This time, the constructor needs *two* pieces of information:
 ```
 namespace Segment {
   class Straight : public Base { 
-    Straight (`const Base& next`, double length) :
+    Straight (`Base& next`, double length) :
       Base (`next`, "straight"),
       m_length (length) { }
 
@@ -970,7 +970,7 @@ through to the `Base` constructor
 ```
 namespace Segment {
   class Straight : public Base { 
-    Straight (const Base& next, double length) :
+    Straight (Base& next, double length) :
       Base (next, "straight"),
       m_length (length) { }
 
@@ -997,7 +997,7 @@ method
 ```
 namespace Segment {
   class Straight : public Base { 
-    Straight (const Base& next, double length) :
+    Straight (Base& next, double length) :
       Base (next, "straight"),
       m_length (length) { }
 
