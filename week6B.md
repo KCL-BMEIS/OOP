@@ -333,6 +333,7 @@ specific to its role.
 ]
 
 ---
+name: abstract_class
 class: section
 
 # Pure virtual methods<br> and abstract classes
@@ -398,6 +399,7 @@ Verify that derived classes must indeed implement their own version of the pure
 virtual `tip_position()` method
 
 ---
+name: runtime_polymorphism
 class: section
 
 # Runtime polymorphism
@@ -555,6 +557,7 @@ parts of the segment that correspond to the base class!
   - this would produce a compiler error
 
 ---
+name: lifetime
 class: section
 
 # Object lifetime
@@ -618,6 +621,7 @@ When used as regular variables:
   last
 
 ---
+name: destructor
 class: section
 
 # The class destructor
@@ -876,6 +880,7 @@ We have covered *almost* all the material necessary to implement the above
 - let's look at step 1 in more detail
 
 ---
+name: stringstream
 
 # Reading text line-by-line
 

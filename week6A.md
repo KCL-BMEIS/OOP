@@ -52,6 +52,12 @@ This kind of design can be implemented through
 - this is one of the four core features of OOP
 
 ---
+name: inheritance
+class: section
+
+# Inheritance
+
+---
 
 # Inheritance
 
@@ -186,6 +192,7 @@ $$
 ]
 
 ---
+name: base_class
 
 # Designing the Segment base class
 
@@ -410,6 +417,7 @@ method
 - we will see how to deal with this later
 
 ---
+name: type_aliasing
 
 # Type aliasing
 
@@ -475,6 +483,7 @@ namespace Segment {
 
 
 ---
+name: derived_class
 
 # Writing our first derived class
 
@@ -635,6 +644,7 @@ The constructor for the `Base` object needs a reference to an existing
 - the `Tip` segment will refer to *itself* as the next segment
 
 ---
+name: this_pointer
 
 # The `this` pointer
 
@@ -1046,6 +1056,7 @@ segment
     `tip`!
 
 ---
+name: protected
 
 # Accessing private members of base class
 

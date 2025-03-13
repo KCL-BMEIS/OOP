@@ -49,6 +49,8 @@ These will be updated as needed, and can be found on the [OOP course code reposi
 
 ## Slides
 
+[Click here for full table of contents](https://kcl-bmeis.github.io/OOP/toc)
+
 Week 1:
 - [session 1: the Unix command-line, compiling our first C++ programs](https://kcl-bmeis.github.io/OOP/week1A)
 - [session 2: Starting our first project](https://kcl-bmeis.github.io/OOP/week1B)
