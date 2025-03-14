@@ -10,19 +10,28 @@ class: title
 ### Week 7, session 1
 ## OOP design and principles
 
+
 ---
 
-# Picking up where we left off
+# Exercises
 
-We continue working on our [robot arm
+We have now covered all the material necessary to finish the [robot arm
 project](https://github.com/KCL-BMEIS/OOP/blob/main/projects/robot_arm/assignment.md)
 
 You can find the most up to date version in [the project's `solution/`
 folder](https://github.com/KCL-BMEIS/OOP/tree/robot_solution/projects/robot_arm/solution)
 
-.explain-bottom[
-Make sure your code is up to date now!
-]
+Modify your code to implement the remaining steps:
+1. load the parameter file (including all relevant error checking)
+1. set the various angles to their corresponding values in the parameter file
+  for each time frame
+1. iterate over the time frames, compute the trajectory, and display on the
+  terminal
+1. compute the speed of the tip and display this as a function of time
+1. compute the acceleration of the tip and display this alongside the speed
+1. compute the maximum speed and acceleration and check whether they are within
+  the specified safety margins
+
 
 ---
 name: OOP_principles
@@ -235,15 +244,55 @@ class: section
 # Relationships between classes
 
 ---
+name: association
+
+# Association
+
+---
+name: composition
 
 # Composition 
 
 ---
+name: aggregation
 
 # Aggregation
 
 ---
+name: inheritance_relationship
 
 # Inheritance
 
 ---
+name: relationship_examples
+
+# Examples of relationships
+
+---
+name: design_principles
+class: section
+
+# Design principles
+
+---
+name: solid
+
+# The SOLID principles
+
+---
+name: composition_over_inheritance
+
+# Favor Composition over Inheritance
+
+---
+name: design_dry
+
+# Don't repeat yourself
+
+---
+name: yagni
+
+# You ain't gonna need it!
+
+
+

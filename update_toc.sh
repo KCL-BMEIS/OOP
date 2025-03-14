@@ -15,7 +15,7 @@ for f in week*.md; do
   while read line; do 
     if [[ "$line" =~ ^title: ]]; then 
       line="${line#*:}"
-      echo "# ${line/\"/}"
+      echo "# ${line//\"/}"
       echo ""
       continue
     fi
@@ -23,7 +23,7 @@ for f in week*.md; do
     if [[ "$line" =~ ^name: ]]; then
       get_name=1
       ref=${line#*:}
-      ref=${ref/ /}
+      ref=${ref// /}
       continue
     fi
 
@@ -31,6 +31,7 @@ for f in week*.md; do
 
     if [[ "$line" =~ ^\#\  ]]; then
       name=${line#\# }
+      name=${name//<br>/ }
       echo "- [$name]($url/${f%.md}.html#$ref)"
       unset ref
     fi

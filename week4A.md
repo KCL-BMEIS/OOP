@@ -196,6 +196,7 @@ int load_pgm (const std::string& filename)
 
 
 ---
+name: pgm
 
 # The PGM format
 
