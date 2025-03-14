@@ -89,11 +89,6 @@ name: double_free
 
 # Double free
 
----
-name: ownership
-
-# Object ownership
-
 
 
 ---
@@ -105,6 +100,13 @@ class: section
 ---
 
 # First line of defence: don't do it!
+
+---
+name: ownership_lifetime
+
+# Object ownership and lifetime
+
+
 
 ---
 name: raii
@@ -168,6 +170,25 @@ class: section
 name: object_slicing
 
 # Object slicing
+
+---
+name: vector_of_base
+
+# Vector of base class objects
+
+---
+name: reference_wrapper
+
+# The `std::reference_wrapper` class
+
+Need to consider ownership & lifetime
+
+---
+name: vector_smart_ptr
+
+# A vector of smart pointers
+
+Vector now has ownership of objects
 
 ---
 

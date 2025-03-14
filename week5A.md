@@ -167,8 +167,9 @@ std::vector<float> rescale (const std::vector<`double`>& task, `double` min, `do
 ```
 
 ---
+name: template_function_issues
 
-# Template functions
+# Considerations when using template functions
 
 When using templates, there are a few issues to watch out for:
 
@@ -266,8 +267,9 @@ Exercise: convert the `rescale()` function to a template function
 ]
 
 ---
+name: template_function_arguments
 
-# Template functions
+# Multiple arguments for template functions
 
 There can be more than a single template argument
 
