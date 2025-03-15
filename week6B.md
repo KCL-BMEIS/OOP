@@ -450,7 +450,7 @@ binding](https://www.geeksforgeeks.org/dynamic-binding-in-cpp/):
 
 This works because we can declare *references* (or iterators or pointers) to
 objects of the base class, and have them refer (or point) to objects of a type
-derived from that base class:
+*derived* from that base class:
 
 
 ```
@@ -480,7 +480,7 @@ binding](https://www.geeksforgeeks.org/dynamic-binding-in-cpp/):
 
 This works because we can declare *references* (or iterators or pointers) to
 objects of the base class, and have them refer (or point) to objects of a type
-derived from that base class:
+*derived* from that base class:
 
 
 ```
@@ -567,19 +567,19 @@ class: section
 # Object lifetime
 
 Our design relies on:
-- creating an instance of the tip segment
-- creating an instance of the bend segment, which will hold a reference to
-  the tip segment
-- creating an instance of the straight segment, which will hold a reference to the
-  bend segment
+- creating an instance of the `Tip` segment
+- creating an instance of the `Bend` segment, which will hold a reference to
+  the `Tip` segment
+- creating an instance of the `Straight` segment, which will hold a reference to the
+  `Bend` segment
 - ...
 
 --
 
-This design can only work if the tip segment is instantiated before the bend
-segment, and is not destroyed before the bend segment
-- the *lifetime* of the tip must exceed that of the bend segment
-- the *lifetime* of the bend segment must exceed that of the straight segment
+This design can only work if the `Tip` segment is instantiated before the
+`Bend` segment, and is not destroyed before the `Bend` segment
+- the *lifetime* of the `Tip` must exceed that of the `Bend` segment
+- the *lifetime* of the `Bend` segment must exceed that of the `Straight` segment
 - ...
 
 Otherwise, there is a risk of one segment attempting to access information that
@@ -676,7 +676,8 @@ To ensure this, if any derived classes require a destructor, the base class shou
 
 When designing the base class, we will not in general know whether any derived
 class will need to provide their own destructor
-- we should therefore *always* provide a virtual destructor, even if it is
+
+&rArr; We should therefore *always* provide a virtual destructor, even if it is
   empty!
 
 ---
@@ -777,7 +778,8 @@ members are well-behaved
 --
 
 .explain-topright[
-Note: destructors should not throw exceptions
+Note: [destructors should not throw
+exceptions](https://isocpp.org/wiki/faq/exceptions#dtors-shouldnt-throw)
 
 <br>
 This is to avoid issues that may arise if the destructor is invoked in the
@@ -909,8 +911,8 @@ Both approaches rely on *a priori* knowledge that there are 6 values per time po
   or too few parameters)
 
 ---
-
-# Reading text line-by-line
+name: getline
+# The `std::getline()` function
 
 
 Ideally, we would:
@@ -939,8 +941,9 @@ But we then need to read the values from that line
 - how can we do that?
 
 ---
+name: stringstream
 
-# Treating a *string* as a *stream*
+# `std::stringstream`: treating a *string* as a *stream*
 
 We can use the [std::stringstream](https://www.geeksforgeeks.org/stringstream-c-applications/) class to treat a string as if it were a stream
 - It's like writing your string into a file, and then using a stream to read

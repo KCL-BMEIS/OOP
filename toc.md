@@ -147,6 +147,8 @@ title: links to topics in slides - Object-Oriented Programming (5CCYB041)
 - [Object lifetime](https://kcl-bmeis.github.io/OOP/week6B.html#lifetime)
 - [The class destructor](https://kcl-bmeis.github.io/OOP/week6B.html#destructor)
 - [Reading text line-by-line](https://kcl-bmeis.github.io/OOP/week6B.html#stringstream)
+- [The `std::getline()` function](https://kcl-bmeis.github.io/OOP/week6B.html#getline)
+- [`std::stringstream`: treating a *string* as a *stream*](https://kcl-bmeis.github.io/OOP/week6B.html#stringstream)
 
 ---
 
