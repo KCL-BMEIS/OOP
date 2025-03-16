@@ -446,6 +446,19 @@ class ProblemBase {
 };
 ```
 
+--
+
+.columns[
+.col[
+Let's imagine we need to fit an exponential *S* = *x*<sub>0</sub> exp
+(*x*<sub>1</sub> t) to a set of measurements of *S<sub>n</sub>* performed at various times
+*t<sub>n</sub>*
+]
+.col[
+![:scale 70%](images/exponential_fitting.png)
+]
+]
+
 ---
 
 # Run-time polymorphism
@@ -472,6 +485,78 @@ class Exponential : public ProblemBase {
     std::vector<double> m, t;
 };
 ```
+
+---
+
+# Run-time polymorphism
+
+We can then provide a derived class to exponential fitting:
+
+```
+class Exponential : public ProblemBase {
+  public:
+    Exponential (const std::vector<double>& measurements, 
+                 const std::vector<double>& timepoints) :
+       m (measurements), t (timepoints) { } 
+*   int size () const override { return 2; }
+    double eval (const std::vector<double>& x) const override {
+      double cost = 0.0;
+      for (int n = 0; n < m.size(); n++) {
+        double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+        cost += diff*diff;
+      }
+      return cost;
+    }
+    double eval (const std::vector<double>& x) const override {
+  private: 
+    std::vector<double> m, t;
+};
+```
+
+.explain-bottomright[
+The problem is characterised by 2 parameters: the amplitude and decay rate
+$$
+S = x_0 \exp (x_1 t)
+$$
+]
+
+---
+
+# Run-time polymorphism
+
+We can then provide a derived class to exponential fitting:
+
+```
+class Exponential : public ProblemBase {
+  public:
+    Exponential (const std::vector<double>& measurements, 
+                 const std::vector<double>& timepoints) :
+       m (measurements), t (timepoints) { } 
+    int size () const override { return 2; }
+*   double eval (const std::vector<double>& x) const override {
+*     double cost = 0.0;
+*     for (int n = 0; n < m.size(); n++) {
+*       double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+*       cost += diff*diff;
+*     }
+*     return cost;
+*   }
+*   double eval (const std::vector<double>& x) const override {
+  private: 
+    std::vector<double> m, t;
+};
+```
+
+.explain-topright[
+The `eval()` call then evaluates the goodness of fit:
+$$
+\phi = \sum_n (x_0 \exp (x_1 t_n) - m_n)^2
+$$
+In other words, the sum of squares difference between measurements
+*m<sub>n</sub>* at
+specified times *t<sub>n</sub>* and corresponding predictions from exponential model
+parameterised by amplitude *x*<sub>0</sub> and exponent *x*<sub>1</sub>
+]
 
 ---
 
@@ -503,44 +588,6 @@ class Exponential : public ProblemBase {
 .explain-bottomright[
 We can provide the measurements and their corresponding time points in the
 constructor
-]
-
----
-
-# Run-time polymorphism
-
-We can then provide a derived class to exponential fitting:
-
-```
-class Exponential : public ProblemBase {
-  public:
-    Exponential (const std::vector<double>& measurements, 
-                 const std::vector<double>& timepoints) :
-       m (measurements), t (timepoints) { } 
-    int size () const override { return 2; }
-*   double eval (const std::vector<double>& x) const override {
-*     double cost = 0.0;
-*     for (int n = 0; n < m.size(); n++) {
-*       double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
-*       cost += diff*diff;
-*     }
-*     return cost;
-*   }
-*   double eval (const std::vector<double>& x) const override {
-  private: 
-    std::vector<double> m, t;
-};
-```
-
-.explain-topright[
-... and then evaluates the goodness of fit:
-$$
-\phi = \sum_n (x_0 \exp (x_1 t_n) - m_n)^2
-$$
-In other words, the sum of squares difference between measurements
-*m<sub>n</sub>* at
-specified times *t<sub>n</sub>* and corresponding predictions from exponential model
-parameterised by amplitude *x*<sub>0</sub> and exponent *x*<sub>1</sub>
 ]
 
 ---
