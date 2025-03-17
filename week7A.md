@@ -448,22 +448,42 @@ class ProblemBase {
 
 --
 
-.columns[
-.col[
-Let's imagine we need to fit an exponential *S* = *x*<sub>0</sub> exp
-(*x*<sub>1</sub> t) to a set of measurements of *S<sub>n</sub>* performed at various times
-*t<sub>n</sub>*
-]
-.col[
-![:scale 70%](images/exponential_fitting.png)
-]
-]
+<br>
+We can then write a function to minimise any problem defined in this way:
+
+```
+std::vector<double> minimise (const ProblemBase& problem);
+```
+which could use some suitable [optimisation
+algorithm](https://en.wikipedia.org/wiki/Category:Optimization_algorithms_and_methods)
+to identify and return the optimal parameter vector.
+
 
 ---
 
 # Run-time polymorphism
 
-We can then provide a derived class to exponential fitting:
+.columns[
+.col[
+One such problem might be to fit an exponential:
+$$
+S = x_0 \exp (x_1 t)
+$$
+to a set of measurements of acquired at various times.
+]
+.col[
+![:scale 100%](images/exponential_fitting.png)
+]
+]
+
+The task is to identify the parameters of the curve that minimise the sum of
+squared differences between the fitted curve and the measurements. 
+
+---
+
+# Run-time polymorphism
+
+We can then represent our exponential fitting problem by deriving from `ProblemBase`:
 
 ```
 class Exponential : public ProblemBase {
@@ -490,7 +510,7 @@ class Exponential : public ProblemBase {
 
 # Run-time polymorphism
 
-We can then provide a derived class to exponential fitting:
+We can then represent our exponential fitting problem by deriving from `ProblemBase`:
 
 ```
 class Exponential : public ProblemBase {
@@ -524,7 +544,7 @@ $$
 
 # Run-time polymorphism
 
-We can then provide a derived class to exponential fitting:
+We can then represent our exponential fitting problem by deriving from `ProblemBase`:
 
 ```
 class Exponential : public ProblemBase {
@@ -548,13 +568,13 @@ class Exponential : public ProblemBase {
 ```
 
 .explain-topright[
-The `eval()` call then evaluates the goodness of fit:
+The `eval()` call evaluates the goodness of fit:
 $$
 \phi = \sum_n (x_0 \exp (x_1 t_n) - m_n)^2
 $$
 In other words, the sum of squares difference between measurements
 *m<sub>n</sub>* at
-specified times *t<sub>n</sub>* and corresponding predictions from exponential model
+specified times *t<sub>n</sub>* and corresponding predictions from the exponential model
 parameterised by amplitude *x*<sub>0</sub> and exponent *x*<sub>1</sub>
 ]
 
@@ -562,7 +582,7 @@ parameterised by amplitude *x*<sub>0</sub> and exponent *x*<sub>1</sub>
 
 # Run-time polymorphism
 
-We can then provide a derived class to exponential fitting:
+We can then represent our exponential fitting problem by deriving from `ProblemBase`:
 
 ```
 class Exponential : public ProblemBase {
@@ -594,13 +614,21 @@ constructor
 
 # Run-time polymorphism
 
-We can then write a generic solver for any problem defined in this way:
+Similarly, we could use this approach to solve any other problem of interest that can be
+expressed as a cost that depends on a vector of parameters.
 
-```
-std::vector<double> solve (const ProblemBase& problem);
-```
-which could use any suitable approach to identify the optimal parameters and
-return the solution vector.
+- the placement of sensors to optimise sensitivity to a signal of interest
+- optimising the parameters of a machine learning algorithm
+- finding the transformation that best aligns two images
+- ...
+
+--
+
+[Runtime polymorphism](https://www.geeksforgeeks.org/cpp-polymorphism/) is
+useful when the system needs to interact with a generic type of object, but the
+specific type cannot be known at runtime, or may change at runtime.
+- the base class can be used to specify the *interface*
+- derived classes can provide specific implementations suitable for each sub-type
 
 
 ---
@@ -610,29 +638,324 @@ class: section
 # Relationships between classes
 
 ---
-name: association
 
-# Association
+# Relationships between classes
+
+A fundamental aspect of OOP design is to:
+- break up a problem into distinct *objects*
+- identify the *relationships* between these objects
+
+--
+
+When designing an OOP solution, the first challenge is to identify which
+aspects of the problem should be represented as distinct classes
+- the general rule is that each class should have a clear, distinct role or *responsability*
+
+--
+
+The next challenge is to specify how these classes and objects relate to each other. There
+are different types of relationships in OOP, including notably:
+- association
+- aggregation
+- composition
+- inheritance
+
+
+
+Let's look into these relationships more closely
 
 ---
-name: composition
+name: association
 
-# Composition 
+# Dependency
+
+Dependency is the most 'loose' form of relationship
+
+Objects may 'know' about each other, but are otherwise independent.
+- it may be used to represent "uses-a" relationships
+
+.center[ ![:scale 50%](images/dependency.png) ]
+
+--
+
+For example, a class to load and store a matrix of data would depend on
+the `std::string` and the `std::ifstream` classes
+- `std::string` is used to provide the filename
+- `std::ifstream` might be used internally in the class' `load()` method 
+
+--
+
+More generally, classes `A` & `B` can be said to be in a *dependency*
+relationship if class `A` is only used in class `B`'s method(s) (whether as
+arguments or local variables), but not in a more persistent manner.
 
 ---
 name: aggregation
 
 # Aggregation
 
+Aggregation implies a tighter relationship between two classes
+
+This applies in situations where one class holds a reference to another, but
+does not otherwise 'own' it
+- it is said to represent "has-a" relationships
+
+.center[ ![:scale 50%](images/aggregation.png) ]
+
+--
+
+For example, a student has-a university, and vice-versa, but neither 'own' each
+other
+- this can be considered from the point of view of *lifetime*: closing down the
+  university will not automatically terminate the student (or vice-versa)
+- it is also possible for the student to drop out of university, or change to a
+  different university
+
+---
+
+# Aggregation
+
+More examples of aggregation:
+
+- `Company` has-a `Employee` (in fact, has-many `Employee`s) 
+  - `Employee`s exist even if `Company` closes
+  - An `Employee` can be employed in multiple `Company`s
+
+--
+
+- `Airplane` has-a `Passenger` (again, has-many `Passenger`s)
+  - Decommissioning `Airplane` does not imply `Passenger`s need to be terminated
+  - Here, `Passenger` can only be on one `Airplane` at a time
+
+--
+
+- `Computer` has-a `Keyboard`
+  - `Computer` can exist without a `keyboard`
+  - `Keyboard` can be removed, replaced, etc.
+
+--
+
+<br>
+Aggregation can be unidirectional or bidirectional
+- a computer has-a keyboard, but there is no need to say that
+  the keyboard has-a computer...
+
+---
+name: composition
+
+# Composition 
+
+Composition is implies a tight relationship between two classes
+
+This applies in situtations where one class is made up of other objects,
+including the other class under consideration
+- it is said to represent "is-made-of" relationships
+
+.center[ ![:scale 50%](images/composition.png) ]
+
+--
+
+For example, a car is-made-of a chassis, engine, 4 wheels, etc. 
+- composition implies *ownership*: one object *contains* and manages the other
+- it also implies the *lifetime* of the *contained* object is tied to that of
+  the *container* object
+
+--
+
+Composition can only be unidirectional
+- the *container* object is responsible for the *contained* object
+- the *contained* object will (typically) have no knowledge of or reference to its *container*
+
+---
+
+# Composition
+
+More examples of composition:
+
+- a `Building` is-made-of (multiple) `Room`s
+  - `Room` cannot exist outside of a `Building`
+
+--
+
+- a `Book` is-made-of (many) `Page`s 
+  - Here, relationship is one of lifetime: if `Book` is destroyed, so are its `Page`s
+
+--
+
+
+- `Car` is-made-of `Motor` (amongst other parts!)
+  - this is a more contentious example, depending on context
+  - `Motor` can be taken out of `Car`, replaced, etc
+  - But `Car` is not complete without `Motor`, and `Motor` is (usually!) destroyed if `Car` is destroyed
+  - &rArr; this reflects the intention of the designer: a `Car` shall be made-of a `Motor`
+
 ---
 name: inheritance_relationship
 
 # Inheritance
 
----
-name: relationship_examples
+Inheritance (also known as *generalisation*) is the strongest form of relationship 
 
-# Examples of relationships
+This applies in situtations where one class is a specialisation of another,
+more general class
+- it is said to represent "is-a" relationships
+
+.center[ ![:scale 50%](images/vertical-hierarchy-light.png) ]
+
+---
+
+# Inheritance
+
+Example of inheritance include:
+
+- a computer screen is-a general type of display, and the computer
+   will need to know how to interact with it in a generic way
+  - but actual computer screens may use different technologies (LCD, LED, plasma,
+    CRT, ...)
+  - or use different connectors (VGA, DisplayPort, HDMI, Thunderbolt, ...)
+  - and provide different native resolutions and refresh rates, etc. 
+
+--
+
+- `Dog` is-a `Animal`
+  - So is `Cat`, `Mouse`, `Pangolin`, ...
+
+--
+
+- `4WheelDrive` is-a `Car`
+  - So is `FrontWheelDrive`, `RearWheelDrive`, `Formula1`, ...
+
+--
+
+- `BluetoothMouse` is-a `Mouse`
+  - So is `USBMouse`, `PS/2Mouse`, `TouchPad`, `TouchScreen`, ...
+
+---
+
+# Inheritance
+
+Inheritance implies that derived classes are full instances of the class they
+inherit from
+- it is a stronger relationship than ownership
+- the *lifetime* of the *base* object is obviously tied to that of the *derived* object
+  - the 'base' object is a *part* of the derived object
+- inheritance can only be unidirectional
+
+--
+
+Derived classes *extend* the functionality of the base class
+
+--
+
+The Base class will have no 'knowledge' of or dependence on the derived classes
+
+--
+
+Object of a derived type can be used anywhere the Base type is expected
+
+--
+
+... but objects of the Base type cannot be used where a specific derived type is
+expected
+
+---
+name: oop_design_examples
+class: section
+
+# Examples of OOP design
+
+---
+
+# OOP Design: class relationships
+
+Design in Object-Oriented Programming involves:
+- identifying relevant *classes* to represent the various components
+- identifying *relationships* between these classes / objects
+
+--
+
+The first step in the design process is to take look at the project brief
+(or assignment instructions) and map out how to express it in terms of classes
+and relationships
+
+--
+
+Let's look at a few illustrative examples
+
+---
+
+# Number representations
+
+We are designing a system to handle mathematics on numbers provided in
+different forms: real, rational, and complex
+
+- real numbers can be simply represented as regular floating-point values
+- rational numbers are represented as the ratio of two integer numbers
+- complex numbers are represented as the combination of real and imaginary
+  components, both represented as real numbers
+
+We need to support display and basic operations on these numbers
+- for now, let's focus on just one basic operation: negation
+
+We also need to provide:
+- a way to simplify a rational number
+- a way to get the complex conjugate of a complex number
+
+
+---
+
+# Number representations
+
+Our design might involves:
+
+- an [abstract base
+  class](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/)
+for numbers, specifying the *interface* that all numbers are expecting to
+provide. This interface involves (at least) these [pure virtual
+methods](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/):
+  - a `display()` method
+  - a `negate()` method
+  - ...
+
+--
+
+- a set of 3 classes that *derive* from that base class, and override the
+  implementations for the virtual methods
+  - a `Real` class 
+  - a `Rational` class, with an additional `simplify()` method
+  - a `Complex` class, with an additional `conjugate()` method
+
+--
+
+- the `Complex` class may also be *composed* of two `Real` numbers
+
+--
+
+- All of these classes will also need to provide *getter* (accessor) & *setter*
+(mutator) methods to get & set the values
+
+---
+
+# Medical catheters
+
+A medical catheter manufacturer wishes to store information about all of the
+catheter types it produces. The following statements summarise the
+characteristics of catheters:
+
+- All catheters should have a stiffness (nm<sup>-1</sup>), a cost (in pounds/pence) and a
+  diameter. Diameters are represented in the French scale, in which 1Fr =
+  0.33mm. All catheter diameters will be an integer between 3Fr and 34Fr
+
+- All catheters produced by the manufacturer are either ablation catheters or
+  balloon catheters. Ablation catheters have a power in Watts. Balloon
+  catheters have a balloon size in mm
+
+- The company manufactures both MR-compatible and non-MR-compatible ablation
+  catheters. MR-compatible ablation catheters consist of a number of segments,
+  although the precise number of segments varies
+
+In the software application, the classes for all types of catheter should be able to display their parameters to the screen
+
 
 ---
 name: design_principles
