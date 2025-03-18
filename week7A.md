@@ -302,6 +302,8 @@ C++ supports different types of polymorphism:
 In this form, a common interface is defined in the (human-readable) C++ code, and the compiler
 deduces which implementation to use when generating the binary code
 
+--
+
 ## Run-time or *dynamic* polymorphism
 
 In this form, a common interface is defined in the C++ code, and *also* 
@@ -495,7 +497,7 @@ class Exponential : public ProblemBase {
     double eval (const std::vector<double>& x) const override {
       double cost = 0.0;
       for (int n = 0; n < m.size(); n++) {
-        double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+        double diff = x[0] * std::exp (x[1]*t[n]) - m[n];
         cost += diff*diff;
       }
       return cost;
@@ -522,7 +524,7 @@ class Exponential : public ProblemBase {
     double eval (const std::vector<double>& x) const override {
       double cost = 0.0;
       for (int n = 0; n < m.size(); n++) {
-        double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+        double diff = x[0] * std::exp (x[1]*t[n]) - m[n];
         cost += diff*diff;
       }
       return cost;
@@ -556,7 +558,7 @@ class Exponential : public ProblemBase {
 *   double eval (const std::vector<double>& x) const override {
 *     double cost = 0.0;
 *     for (int n = 0; n < m.size(); n++) {
-*       double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+*       double diff = x[0] * std::exp (x[1]*t[n]) - m[n];
 *       cost += diff*diff;
 *     }
 *     return cost;
@@ -594,7 +596,7 @@ class Exponential : public ProblemBase {
     double eval (const std::vector<double>& x) const override {
       double cost = 0.0;
       for (int n = 0; n < m.size(); n++) {
-        double diff = m[n] - x[0] * std::exp (x[1]*t[n]);
+        double diff = x[0] * std::exp (x[1]*t[n]) - m[n];
         cost += diff*diff;
       }
       return cost;
@@ -650,22 +652,22 @@ A fundamental aspect of OOP design is to:
 When designing an OOP solution, the first challenge is to identify which
 aspects of the problem should be represented as distinct classes
 - the general rule is that each class should have a clear, distinct role or *responsability*
+  - this is also known as the [single responsability
+    principle](https://www.geeksforgeeks.org/single-responsibility-in-solid-design-principle/)
 
 --
 
 The next challenge is to specify how these classes and objects relate to each other. There
 are different types of relationships in OOP, including notably:
+- dependency
 - association
-- aggregation
-- composition
+  - aggregation
+  - composition
 - inheritance
 
 
-
-Let's look into these relationships more closely
-
 ---
-name: association
+name: dependency
 
 # Dependency
 
@@ -692,9 +694,9 @@ arguments or local variables), but not in a more persistent manner.
 ---
 name: aggregation
 
-# Aggregation
+# Association: aggregation
 
-Aggregation implies a tighter relationship between two classes
+Aggregation implies a weak association between two classes
 
 This applies in situations where one class holds a reference to another, but
 does not otherwise 'own' it
@@ -713,7 +715,7 @@ other
 
 ---
 
-# Aggregation
+# Association: aggregation
 
 More examples of aggregation:
 
@@ -737,19 +739,20 @@ More examples of aggregation:
 
 <br>
 Aggregation can be unidirectional or bidirectional
-- a computer has-a keyboard, but there is no need to say that
-  the keyboard has-a computer...
+- a `Company` has-a `Employee`, but it's also possible that an `Employee` has-a `Company`
+- a `Computer` has-a `Keyboard`, but there is no need to say that
+  the `Keyboard` has-a `Computer`...
 
 ---
 name: composition
 
-# Composition 
+# Association: composition 
 
-Composition is implies a tight relationship between two classes
+Composition is implies a stronger association between two classes
 
 This applies in situtations where one class is made up of other objects,
 including the other class under consideration
-- it is said to represent "is-made-of" relationships
+- it can be said to represent "is-made-of" relationships
 
 .center[ ![:scale 50%](images/composition.png) ]
 
@@ -768,7 +771,7 @@ Composition can only be unidirectional
 
 ---
 
-# Composition
+# Association: composition
 
 More examples of composition:
 
@@ -798,7 +801,7 @@ Inheritance (also known as *generalisation*) is the strongest form of relationsh
 
 This applies in situtations where one class is a specialisation of another,
 more general class
-- it is said to represent "is-a" relationships
+- it can be said to represent "is-a" relationships
 
 .center[ ![:scale 50%](images/vertical-hierarchy-light.png) ]
 
@@ -834,7 +837,7 @@ Example of inheritance include:
 
 # Inheritance
 
-Inheritance implies that derived classes are full instances of the class they
+Inheritance implies that derived classes are *full instances* of the class they
 inherit from
 - it is a stronger relationship than ownership
 - the *lifetime* of the *base* object is obviously tied to that of the *derived* object
