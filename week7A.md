@@ -438,7 +438,10 @@ use, based on the specific *type* of the object being handled at that time
 
 # Run-time polymorphism
 
-For example, let's design a class for a generic *problem*:
+For example, let's design a class to represent a generic *numerical problem*
+- i.e. any problem that can be expressed as a function of a *parameter
+  vector*, and for which a *cost* can be computed
+- the solution is the *parameter vector* that minimises the *cost*
 
 ```
 class ProblemBase {
@@ -865,25 +868,69 @@ expected
 name: oop_design_examples
 class: section
 
-# Examples of OOP design
+# OOP design
 
 ---
 
-# OOP Design: class relationships
+# OOP design
 
-Design in Object-Oriented Programming involves:
-- identifying relevant *classes* to represent the various components
-- identifying *relationships* between these classes / objects
-
---
-
-The first step in the design process is to take look at the project brief
-(or assignment instructions) and map out how to express it in terms of classes
-and relationships
+Object-Oriented Design (OOD) is a method of designing software by
+conceptualizing it as a group of interacting objects, each representing an
+instance of a class.
 
 --
 
-Let's look at a few illustrative examples
+These objects encapsulate both data (attributes) and behavior (methods). 
+
+--
+
+The aim of Object-Oriented Design is to create a system with the following
+properties:
+- **Modularity**: Breaks down complex problems into manageable pieces.
+- **Reusability**: Promotes reuse of existing components.
+- **Scalability**: Makes it easier to extend and scale software.
+- **Maintainability**: Enhances code readability and maintainability.
+
+--
+
+<br>The OOP design process involves:
+- Understanding the project brief and figuring out all the requirements
+- mapping out *classes* that best represent the different components of the problem
+- working out the *relationships* between these different classes
+- writing out code that matches the design
+
+---
+
+# The OOP design process
+
+When writing out an OOP design, we need to state:
+
+- what is the *purpose* or *responsability* of each class?
+
+--
+
+- what data will each class need to *encapsulate*?
+
+--
+
+- what *methods* or *behaviours* will each class provide? 
+  - in other words, what *interface* or *abstraction* will it provide?
+
+--
+
+- which aspects of this *interface* need to be *polymorphic*?
+  - in other words, which methods need to be *virtual*? 
+  - Should any of them be *pure* virtual? If so, this class should be labelled
+    as *abstract*
+
+--
+
+- what are the relationships between the different classes?
+
+--
+
+<br>
+&rArr; Let's look at a few illustrative examples
 
 ---
 
@@ -939,6 +986,60 @@ methods](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-class
 
 ---
 
+# Number representations
+
+Here what this might look like in C++ (ignoring constructors and
+getter/setter methods)
+
+.columns[
+.col[
+```
+class NumberBase {
+  public:
+    virtual void display () = 0;
+    virtual void negate () = 0;
+    virtual ~NumberBase() { }
+};
+
+```
+```
+class Rational : public NumberBase {
+  public:
+    void display () override;
+    void negate () override;
+    void simplify ();
+  private:
+    int m_numerator, m_denominator;
+};
+```
+]
+.col[
+```
+class Real : public NumberBase {
+  public:
+    void display () override;
+    void negate () override;
+  private:
+    double m_value;
+};
+
+```
+```
+class Complex : public NumberBase {
+  public:
+    void display () override;
+    void negate () override;
+    void conjugate ();
+  private:
+    Real m_real, m_imag;
+};
+```
+]
+]
+
+
+---
+
 # Medical catheters
 
 A medical catheter manufacturer wishes to store information about all of the
@@ -959,6 +1060,290 @@ characteristics of catheters:
 
 In the software application, the classes for all types of catheter should be able to display their parameters to the screen
 
+---
+
+# Medical catheters
+
+This project brief calls for:
+
+An [abstract base
+class](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/) to represent a generic `Catheter`, with:
+- data members:
+  - stiffness (a floating-point value)
+  - cost (a floating-point value, or an integer if expressed in pence)
+  - diameter (a floating-point value)
+- a [pure virtual method](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/) to display the parameters
+
+--
+
+A `BallonCatheter` class derived from `Catheter`, with:
+- additional data members: ballon size (a floating-point value)
+- methods / behaviours: a concrete implementation of the display method
+
+
+---
+
+# Medical catheters
+
+This project also calls for:
+
+Another abstract class derived from `Catheter`, to represent an `AblationCatheter`, with:
+- additional data members: power (a floating-point value)
+- this will also be an abstract class since we need to know which sub-type to
+  implement 
+  - we will not define the display method in this class, so it will remain *pure virtual*
+
+--
+
+A `NonMRCompatibleAblationCatheter` class:
+- methods / behaviours: a concrete implementation of the display method
+
+--
+
+A `MRCompatibleAblationCatheter` class:
+- additional data members: number of segments (an integer value)
+- methods / behaviours: a concrete implementation of the display method
+
+
+---
+
+.columns[
+.col[
+What this might look like in C++ (ignoring constructors and getter/setter
+methods):
+```
+class Catheter {
+  public:
+    virtual void display () const = 0;
+    virtual ~Catheter () { }
+  protected:
+    double m_stiffness;
+    double m_cost;
+    double m_diameter;
+};
+```
+```
+class BallonCatheter : public Catheter {
+  public:
+    void display () const override;
+  private:
+    double m_balloon_size;
+};
+```
+]
+.col[
+```
+class AblationCatheter : 
+        public Catheter {
+  public:
+    virtual ~AblationCatheter () { }
+  protected:
+    double m_power;
+};
+```
+```
+class MRCompatibleAblationCatheter :
+        public AblationCatheter {
+  public:
+    void display () const override;
+  protected:
+    int m_num_segments;
+};
+```
+```
+class NonMRCompatibleAblationCatheter :
+        public AblationCatheter {
+  public:
+    void display () const override;
+};
+```
+]
+]
+
+---
+
+# Numerical optimisation
+
+We are developing software to perform numerical optimisation of any
+well-behaved continuous function or problem. Problems to be solved will all
+compute a *cost* as a function of the *parameter vector* of a size dependent on
+the problem. The software will provide implementations of multiple optimisation
+algorithms, allowing the user to choose the most appropriate approach for their
+particular problem.
+
+A problem will need to report its number of parameters, and provide a method to
+compute the cost for a given parameter vector of the stated size.
+
+Optimisation algorithms will all provide methods to:
+- initialise the optimisation with an initial guess for the solution
+- iterate
+- check for convergence.
+- get the solution vector
+
+To start with, the software will provide implementations for 3 [derivative-free](https://en.wikipedia.org/wiki/Derivative-free_optimization) optimisation algorithms: the [Nelder-Mead method](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method); [Particle Swarm Optimisation](https://en.wikipedia.org/wiki/Particle_swarm_optimization); and the [Genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm)
+
+---
+
+# Numerical optimisation
+
+This project calls for: 
+- an abstract base class to represent a numerical problem: `ProblemBase`
+- an abstract base class to represent an optimisation algorithm: `OptimiserBase`
+
+--
+
+The `OptimiserBase` class will be inherited by (at least) 3 *derived* classes:
+- `NelderMeadOptimiser`
+- `ParticleSwarmOptimiser`
+- `GeneticOptimiser`
+
+--
+
+The `ProblemBase` class will be inherited by any problem that software users
+wish to optimise
+- the software we are developing does not *need* to provide an implementation
+- but it is nonetheless a good idea to provide a `DemoProblem` to illustrate
+  the use of the software!
+
+---
+
+# Numerical optimisation
+
+The `ProblemBase` class:
+- purpose: specifies the *interface* for the types of problems to be optimised
+- no attributes / data members
+- behaviours / methods: 
+  - a pure virtual `size()` method to return its number of parameters
+  - a pure virtual `compute()` method to calculate the cost,
+    given a parameter vector as its argument
+
+--
+
+The `OptimiserBase` class:
+- purpose: specifies the *interface* for the available optimisation algorithms
+- attributes / data members: 
+  - a reference to the problem to be solved
+  - the current best parameter vector
+- behaviours / methods:
+  - a pure virtual `init()` method to initialise the algorithm, providing a
+    reference to the problem to be solved
+  - a pure virtual `iterate()` method to perform the next iteration of the
+    algorithm and update the current best estimate of the parameter vector
+  - a pure virtual `converged()` method to check for convergence
+  - a `get_solution()` method to retrieve the current best estimate
+
+---
+
+# Numerical optimisation
+
+The relationship between `ProblemBase` and `OptimiserBase` is one of
+*aggregation*:
+- `OptimiserBase` 'has-a' `ProblemBase`
+
+--
+
+The relationship between `OptimiserBase` and the 3 specific implementations (`NelderMeadOptimiser`,
+`ParticleSwarmOptimiser`, `GeneticOptimiser`) is one of *inheritance*:
+- e.g. `NelderMeadOptimiser` 'is-a' `OptimiserBase`
+
+--
+
+Likewise, the relationship between `ProblemBase` and any specific problem (notably `DemoProblem`)
+is also one of *inheritance*:
+- `DemoProblem` 'is-a' `ProblemBase`
+
+---
+
+# Numerical optimisation
+
+The `NelderMeadOptimiser` class:
+- purpose: provide a concrete realisation of a `ProblemBase` that implements
+  the Nelder-Mead method
+- attributes / data members:
+  - a set of N+1 parameter vectors to represent the internal state of the
+    algorithm
+  - a set of reflection, expansion, contraction and shrink coefficients
+- behaviours / methods:
+  - an override `init()` method
+  - an override `iterate()` method
+  - an override `converged()` method
+
+--
+
+The other optimisers will loop very similar, though the attributes will
+necessarily differ according to the needs of the specific optimisation
+algorithm
+
+
+---
+
+# Numerical optimisation
+
+The `DemoProblem` class:
+- purpose: provide a concrete realisation of `ProblemBase` in the expected format to demonstrate the
+  use of the software
+- attributes / data members: none required
+- behaviours / methods:
+  - an override `size()` method
+  - an override `compute()` method
+
+--
+
+Other problems can be set up by copying `DemoProblem` and implementing the
+specific calculations required for their problem
+
+---
+
+# Numerical optimisation
+
+```
+class ProblemBase {
+  public:
+    virtual int size () const = 0;
+    virtual double compute (const std::vector<double>& x) const = 0;
+};
+```
+```
+class OptimiserBase {
+  public:
+    OptimiserBase (const ProblemBase& problem) :
+      m_problem (problem) { } 
+    virtual void init (const std::vector<double>& initial_guess) = 0;
+    virtual void iterate () = 0;
+    virtual bool converged () = 0;
+    const std::vector<double> get_solution () const { return m_estimate; }
+  protected:
+   ProblemBase& m_problem;
+   std::vector<double> m_estimate;
+};
+```
+
+---
+
+```
+class DemoProblem : public ProblemBase {
+  public:
+    int size () override { return 5; } // for example...
+    double compute (const std::vector<double>& x) const override;
+};
+```
+
+<br>
+```
+class NelderMeadOptimiser : public OptimiserBase {
+  public:
+    NelderMeadOptimiser (const ProblemBase& problem) :
+     OptimiserBase (problem) { }
+    void init (const std::vector<double>& initial_guess) override;
+    void iterate () override;
+    bool converged () override;
+  private:
+    std::vector<std::vector<double>> m_simplex;
+    double m_reflection, m_expansion, m_contraction, m_shrink;
+};
+```
+
+and similarly for the other optimisers
 
 ---
 name: design_principles
@@ -967,24 +1352,332 @@ class: section
 # Design principles
 
 ---
+
+# Design principles
+
+It is difficult to provide general advice about how to engineer an OOP design
+for a given problem
+- Problems vary enormously in their requirements and structure, and solutions
+  have to match the problem!
+
+--
+
+Nonetheless, there are some broad principles that can be used to design robust,
+maintainable, and scalable software.
+
+--
+
+The best known such principles are known as the [SOLID
+principles](https://www.geeksforgeeks.org/solid-principle-in-programming-understand-with-real-life-examples/)
+- but there are many others!
+
+--
+
+We'll go over a few such principles over The next few slides to give you an
+idea of what to have in mind when faced with an Object-Oriented Design problem
+
+---
 name: solid
+class: info
 
 # The SOLID principles
 
+The [SOLID principles](https://www.geeksforgeeks.org/solid-principle-in-programming-understand-with-real-life-examples/)
+are five widely-used guidelines
+
+The five principles spell out the acronym *SOLID*:
+1. **S**ingle Responsibility Principle
+2. **O**pen/Closed Principle
+3. **L**iskov’s Substitution Principle
+4. **I**nterface Segregation Principle
+5. **D**ependency Inversion Principle
+
+---
+class: info
+
+# The SOLID principles
+
+## 1. Single Responsibility Principle
+
+
+> A class should have one and only one reason to change, meaning that a class should have only one job.
+
+If you find that your class is responsable for distinct aspects of your code,
+then you should consider splitting the functionality across multiple classes.
+
+--
+
+For example, if you have a class to manage patient records, but it also has
+functionality to manage patient appointments, you should consider having
+separate classes to manage each aspects separately
+- you could then also have a class that provides an interface into both &ndash;
+  but its single job would be to provide that interface
+
+
+---
+class: info
+
+# The SOLID principles
+
+## 2. Open/Closed Principle
+
+> Objects or entities should be open for extension but closed for modification
+
+The idea here is that we should create a design that allows for the addition of
+functionality, without requiring modification of any code that might be used
+elsewhere.
+
+--
+
+For example, imagine our robot arm was written assuming a fixed
+configuration, with the calculation of the tip position all done as a single function
+- if we wanted to insert another segment, or another *type* of segment, that
+  would require modification of that one function &ndash; which risks
+introducing errors
+
+A better approach is to use inheritance: 
+- we can trivially extend the system with additional types of segments by
+  adding more derived segment classes &ndash; without modifying any of the
+  existing code!
+- we can easily define new configurations by using the existing segments and
+  connecting them differently
+
+---
+class: info
+
+# The SOLID principles
+
+## 3. Liskov Substitution Principle
+
+> Subtypes must be substitutable for their base types without altering the correctness of the program.
+
+Essentially, this means that derived classes should not behave in unexpected
+ways 
+- with respect to their base class
+
+--
+
+For example, imagine we have a base class representing a general 3D shape, with a
+virtual method `get_volume()` to obtain its volume
+- the `get_volume()` method of any derived type should always return the correct volume
+- the `get_volume()` method of any derived type should always succeed (for a properly initialised shape)
+
+--
+
+More explicitly, if the base class provides certain functionality that is
+expected to work in a certain way, it should work the same way for all derived
+classes as well. 
+
+---
+class: info
+
+# The SOLID principles
+
+## 4. Interface Segregation Principle 
+
+> Clients should not be forced to depend on interfaces they do not use
+
+This means that interfaces should be kept minimal and specific to a single
+task. If a class provides functionality for many loosely related tasks, you
+should consider splitting this off into distinct interfaces.
+
+The main advantage of this principle is to avoid bloated interfaces that become
+difficult to maintain. 
+
+--
+
+A good example is the addition of functionality such as stapling and faxing to Xerox
+printers (this is actually [where this principle
+originates](https://en.wikipedia.org/wiki/Interface_segregation_principle#Origin)!).
+- over time, all this functionality was added to the main interface
+- this eventually made almost impossible to make modifications as it would take
+  too long to make even simple changes!
+
+
+---
+class: info
+
+# The SOLID principles
+
+## 5. Dependency Inversion Principle
+
+> High-level modules should not depend on low-level modules. Both should depend
+> on abstractions. Abstractions should not depend on details. Details should
+> depend on abstractions.
+
+The idea behind this principle is to avoid introducing dependencies between
+specific sub-systems that would be hard to untangle later.
+
+--
+
+For example, a patient record system might need to interface with a database
+where the records are stored. If we write the code for the database we
+currently use, it may be very difficult to modify this code to swap to a
+different (presumably better) database at a later stage. 
+- we may need to make many changes in many places deep in the code
+
+--
+
+A better approach is to introduce another level of abstraction to represent a
+database and all the generic interactions required, so that switching to a
+different database can be done by modifying that interface, without affecting
+any other parts of the code.
+
 ---
 name: composition_over_inheritance
+class: info
 
 # Favor Composition over Inheritance
 
+While inheritance is a powerful tool, it has its downsides, introducing very
+tight coupling between the different components, and making it harder to
+modify.
+
+--
+
+For example, if we had designed a base class for a car that assumed manual
+transmission, introducing automatic transmission into the class hierarchy would
+require extensive changes in the base and derived classes.
+
+--
+
+Rather than trying to identify common features between components and forming a
+hierarchy, it is often easier to *compose* complex components out of
+simpler ones. 
+
+--
+
+Inheritance is best reserved for cases that truly require *runtime* polymorphism.
+
 ---
 name: design_dry
+class: info
 
 # Don't repeat yourself
 
+One of the aims of Object-Oriented design to maximise code re-use: don't repeat yourself!
+
+If you have the same block of code in more than two places, consider making it a
+separate method. 
+
+Similarly, if you use a hard-coded value more than once, consider defining them
+as a constant at global scope.
+
+--
+
+The benefit of this principle is reduced maintenance:
+- if we need to fix or update this particular functionality, we only need to do
+  it in one place
+
+
 ---
 name: yagni
+class: info
 
 # You ain't gonna need it!
 
+This principle suggests that you should only implement the features you need
+&ndash; not the features you *think* you might need in the future
+
+--
+
+The point is to avoid unnecessary code bloat, maintenance burden, source of
+bugs &ndash; and wasting your own time!
+
+--
+
+This is closely related to the widely used [Keep It Simple Stupid (KISS)](https://www.geeksforgeeks.org/kiss-principle-in-software-development/)
+
+---
+name: kiss
+class: info
+
+# Keep It Simple, Stupid (KISS)
+
+The [KISS principle](https://www.geeksforgeeks.org/kiss-principle-in-software-development/) 
+suggests that designs (in software and more broadly!) should aim for simplicity
+
+Simple solutions are often better in practice
+- they are easier to understand and reason about
+- they are easier to implement and get right
+- they are easier to maintain and use
+- they are often more efficient in terms of resource use
+
+--
+
+... and simple designs are often more elegant!
 
 
+---
+class: info
+
+# Design principles: summary
+
+There are many design principles that can help to guide the design process
+
+Some of these can at times be contradictory
+- for example, the dependency inversion principle advocates for the use of
+  abstract interfaces to avoid unnecessary coupling
+- but the 'You ain't gonna need it' principle suggests not implementing
+  unnecessary features unless you need them now
+
+--
+
+Remember these are only guidelines
+- they are not hard-and-fast rules!
+
+Ultimately, the best design is one that is sufficiently complex to perform the
+task at hand, while remaining as simple as it can be.
+- think about how you would interact with your code a year from now: 
+  - will you be able to understand it?
+  - would you be able to modify it easily to extend its functionality or fix
+    bugs?
+  - what if someone else needs to maintain your code in the future?
+
+
+---
+
+# Exercise
+
+## Propose an Object-Oriented Design for the following project:
+
+A medical device manufacturer specialises in designing and producing stent
+grafts, which are tubular devices typically composed of a special fabric
+supported by a rigid structure (the stent). They are commonly employed in
+endovascular surgery to repair aneurysms, which are balloon-like bulges in
+arteries (e.g. the aorta) caused by weakness in the arterial wall. The
+manufacturer produces two different types of stent graft: bifurcated and
+complex (see images below). In a bifurcated stent graft the tubular structure
+splits into two, and each branch is typically placed in a separate branch of
+the artery undergoing repair. In a complex stent grant, the tubular structure
+contains a number of holes which should be located over the smaller arteries
+that branch off of the main artery. Complex stent grafts come in two types:
+branched (in which the holes have tubes attached to them which fit into the
+smaller arteries) or fenestrated (in which they are just holes). 
+
+The extra information in the following slides may be useful.
+
+---
+
+The rigid structure of all stent grafts is made of either nitinol or stainless
+steel. Some stent grafts have a fabric cover whilst others are uncovered.  All
+stent grafts should have a diameter and a length, both stored in millimetres.
+For a bifurcated stent graft it is also necessary to store the diameter of each
+of the bifurcations.  For a complex stent graft it is necessary to store the
+number of holes it has. For each hole the following extra information is
+required: the angular position (an integer between 1 and 12 which represents
+the position of the hole on a 'clock face' viewed from above the stent graft;
+and the height of the hole in millimetres.
+
+There will not normally be more than 20 holes in a stent graft.
+
+You are tasked with creating an object-oriented design to represent this
+problem domain. In your final design, the classes for each type of stent graft
+should be able to display their information to the screen.
+
+.center[
+![:scale 7%](images/stent_bifurcated.png) &emsp;
+![:scale 20%](images/stent_complex.png)
+
+*Stent grafts: (left) bifurcated, and (right) complex.*
+]
