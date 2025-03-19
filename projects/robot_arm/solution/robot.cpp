@@ -94,19 +94,32 @@ void run (std::vector<std::string>& args)
   if (args.size() < 2)
     throw std::runtime_error ("expected parameter file as first argument");
 
-  // set up robot arm:
+  // create instances of all the segments:
 
   Segment::Tip tip (10.0);
-  Segment::Bend bend3 (&tip, 6.0);
-  Segment::Straight straight3 (&bend3, 15.0);
-  Segment::Rotate rotate3 (&straight3, 5.0);
-  Segment::Bend bend2 (&rotate3, 8.0);
-  Segment::Straight straight2 (&bend2, 20.0);
-  Segment::Rotate rotate2 (&straight2, 5.0);
-  Segment::Bend bend1 (&rotate2, 10.0);
-  Segment::Straight straight1 (&bend1, 30.0);
-  Segment::Rotate rotate1 (&straight1, 5.0);
-  Segment::Root root (&rotate1);
+  Segment::Bend bend3 (6.0);
+  Segment::Straight straight3 (15.0);
+  Segment::Rotate rotate3 (5.0);
+  Segment::Bend bend2 (8.0);
+  Segment::Straight straight2 (20.0);
+  Segment::Rotate rotate2 (5.0);
+  Segment::Bend bend1 (10.0);
+  Segment::Straight straight1 (30.0);
+  Segment::Rotate rotate1 (5.0);
+  Segment::Root root;
+
+  // connect all the segments in the desired configuration:
+  root
+    .set_next (rotate1)
+    .set_next (straight1)
+    .set_next (bend1)
+    .set_next (rotate2)
+    .set_next (straight2)
+    .set_next (bend2)
+    .set_next (rotate3)
+    .set_next (straight3)
+    .set_next (bend3)
+    .set_next (tip);
 
   // read parameter list:
   auto params = load_parameters (args[1]);
