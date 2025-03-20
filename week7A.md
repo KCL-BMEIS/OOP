@@ -1071,7 +1071,7 @@ class](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes
 - data members:
   - stiffness (a floating-point value)
   - cost (a floating-point value, or an integer if expressed in pence)
-  - diameter (a floating-point value)
+  - diameter (an integer value)
 - a [pure virtual method](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/) to display the parameters
 
 --
@@ -1119,7 +1119,7 @@ class Catheter {
   protected:
     double m_stiffness;
     double m_cost;
-    double m_diameter;
+    int m_diameter;
 };
 ```
 ```
@@ -1311,7 +1311,7 @@ class OptimiserBase {
     virtual void init (const std::vector<double>& initial_guess) = 0;
     virtual void iterate () = 0;
     virtual bool converged () = 0;
-    const std::vector<double> get_solution () const { return m_estimate; }
+    const std::vector<double>& get_solution () const { return m_estimate; }
   protected:
    ProblemBase& m_problem;
    std::vector<double> m_estimate;

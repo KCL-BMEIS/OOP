@@ -162,20 +162,21 @@ title: links to topics in slides - Object-Oriented Programming (5CCYB041)
 - [Compile-time polymorphism](https://kcl-bmeis.github.io/OOP/week7A.html#compiletime_polymorphism)
 - [Run-time polymorphism](https://kcl-bmeis.github.io/OOP/week7A.html#runtime_polymorphism)
 - [Relationships between classes](https://kcl-bmeis.github.io/OOP/week7A.html#relationships)
-- [Dependency](https://kcl-bmeis.github.io/OOP/week7A.html#association)
-- [Aggregation](https://kcl-bmeis.github.io/OOP/week7A.html#aggregation)
-- [Composition](https://kcl-bmeis.github.io/OOP/week7A.html#composition)
+- [Dependency](https://kcl-bmeis.github.io/OOP/week7A.html#dependency)
+- [Association: aggregation](https://kcl-bmeis.github.io/OOP/week7A.html#aggregation)
+- [Association: composition](https://kcl-bmeis.github.io/OOP/week7A.html#composition)
 - [Inheritance](https://kcl-bmeis.github.io/OOP/week7A.html#inheritance_relationship)
-- [Examples of OOP design](https://kcl-bmeis.github.io/OOP/week7A.html#oop_design_examples)
+- [OOP design](https://kcl-bmeis.github.io/OOP/week7A.html#oop_design_examples)
 - [Design principles](https://kcl-bmeis.github.io/OOP/week7A.html#design_principles)
 - [The SOLID principles](https://kcl-bmeis.github.io/OOP/week7A.html#solid)
 - [Favor Composition over Inheritance](https://kcl-bmeis.github.io/OOP/week7A.html#composition_over_inheritance)
 - [Don't repeat yourself](https://kcl-bmeis.github.io/OOP/week7A.html#design_dry)
 - [You ain't gonna need it!](https://kcl-bmeis.github.io/OOP/week7A.html#yagni)
+- [Keep It Simple, Stupid (KISS)](https://kcl-bmeis.github.io/OOP/week7A.html#kiss)
 
 ---
 
-##  Week 7, session 1: Resource and memory management
+##  Week 7, session 2: Resource and memory management
 
 - [Memory management](https://kcl-bmeis.github.io/OOP/week7B.html#memory_management)
 - [The stack](https://kcl-bmeis.github.io/OOP/week7B.html#stack_memory)

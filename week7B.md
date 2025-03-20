@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: "Week 7, session 1: Resource and memory management"
+title: "Week 7, session 2: Resource and memory management"
 ---
 
 class: title
