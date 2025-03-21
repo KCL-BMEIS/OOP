@@ -654,8 +654,8 @@ A fundamental aspect of OOP design is to:
 
 When designing an OOP solution, the first challenge is to identify which
 aspects of the problem should be represented as distinct classes
-- the general rule is that each class should have a clear, distinct role or *responsability*
-  - this is also known as the [single responsability
+- the general rule is that each class should have a clear, distinct role or *responsibility*
+  - this is also known as the [single responsibility
     principle](https://www.geeksforgeeks.org/single-responsibility-in-solid-design-principle/)
 
 --
@@ -905,7 +905,7 @@ properties:
 
 When writing out an OOP design, we need to state:
 
-- what is the *purpose* or *responsability* of each class?
+- what is the *purpose* or *responsibility* of each class?
 
 --
 
@@ -1402,7 +1402,7 @@ class: info
 
 > A class should have one and only one reason to change, meaning that a class should have only one job.
 
-If you find that your class is responsable for distinct aspects of your code,
+If you find that your class is responsible for distinct aspects of your code,
 then you should consider splitting the functionality across multiple classes.
 
 --

@@ -1286,7 +1286,7 @@ They provide a way to
 
 --
 
-We can use functions to break up the functionality in our program into distinct responsabilities, for example:
+We can use functions to break up the functionality in our program into distinct responsibilities, for example:
 - load the data
 - compute and provide statistics
 - identify longest fragment
