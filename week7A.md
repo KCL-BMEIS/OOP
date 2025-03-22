@@ -505,7 +505,6 @@ class Exponential : public ProblemBase {
       }
       return cost;
     }
-    double eval (const std::vector<double>& x) const override {
   private: 
     std::vector<double> m, t;
 };
@@ -532,7 +531,6 @@ class Exponential : public ProblemBase {
       }
       return cost;
     }
-    double eval (const std::vector<double>& x) const override {
   private: 
     std::vector<double> m, t;
 };
@@ -566,7 +564,6 @@ class Exponential : public ProblemBase {
 *     }
 *     return cost;
 *   }
-*   double eval (const std::vector<double>& x) const override {
   private: 
     std::vector<double> m, t;
 };
@@ -753,7 +750,7 @@ name: composition
 
 Composition is implies a stronger association between two classes
 
-This applies in situtations where one class is made up of other objects,
+This applies in situations where one class is made up of other objects,
 including the other class under consideration
 - it can be said to represent "is-made-of" relationships
 
@@ -802,7 +799,7 @@ name: inheritance_relationship
 
 Inheritance (also known as *generalisation*) is the strongest form of relationship 
 
-This applies in situtations where one class is a specialisation of another,
+This applies in situations where one class is a specialisation of another,
 more general class
 - it can be said to represent "is-a" relationships
 
@@ -857,7 +854,7 @@ The Base class will have no 'knowledge' of or dependence on the derived classes
 
 --
 
-Object of a derived type can be used anywhere the Base type is expected
+Objects of a derived type can be used anywhere the Base type is expected
 
 --
 
