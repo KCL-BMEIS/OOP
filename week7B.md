@@ -1277,6 +1277,11 @@ We can allocate any type of object this way:
 auto* p = new `std::vector<int>`;
 ```
 
+The default constructor will be invoked as soon as the memory chunk is
+allocated
+- this is the other reason why need to specify the *type*
+
+
 ---
 
 We can also provide arguments to the constructor if required:
@@ -1284,7 +1289,6 @@ We can also provide arguments to the constructor if required:
 auto* p = new std::vector<int> `(5, 0)`;
 ```
 
-The constructor will be invoked immediately after the memory has been allocated
 
 ---
 
@@ -1332,8 +1336,10 @@ layout: false
 There is a special syntax to allocate memory to hold a C-style array of some
 type:
 ```
-double* p = new double [10];
+double* p = new double `[10]`;
 ```
+
+This allocates a memory region to hold 10 `double`s
 
 For regular built-in types ([plain old data (POD)
 types](https://www.geeksforgeeks.org/pod-type-in-cpp/)), this leaves the
@@ -1348,8 +1354,8 @@ values in the array uninitialised
 It is possible to *default-initialise* such POD values using this syntax:
 
 ```
-double* p = new double [10]();
-double* p = new double [10]{};
+double* p = new double [10]`()`;
+double* p = new double [10]`{}`;
 ```
 
 Both lines are equivalent, and both will zero-initialise the array.
@@ -1362,7 +1368,7 @@ Both lines are equivalent, and both will zero-initialise the array.
 It is also possible to *value-initialise* an array using a brace-enclosed list:
 
 ```
-double* p = new double [10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+double* p = new double [10] `{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }`;
 ```
 
 ---
@@ -1372,16 +1378,101 @@ double* p = new double [10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 For class types, the default constructor will be invoked on each element:
 
 ```
-auto* p = new std::string [10];
+auto* p = new `std::string` [10];
 ```
 This constructs a C-style array of 10 `std::string`s, each default-constructed
 - the strings will all be empty
 
+---
+
+# New & delete for arrays
+
+It is also possible to use value initialisation with a brace-enclosed list:
+
+```
+auto* p = new std::string [5] `{ "a", "ab", "abc", "abcd", "abdce" }`;
+```
+
+---
+
+# New & delete for arrays
+
+As before, we need to release the memory back to the system
+
+```
+auto* p = new std::string [5] { "a", "ab", "abc", "abcd", "abdce" };
+
+...
+
+*delete [] p;
+```
+
+However, note that in this case we need use the *array* `delete` operator:
+`delete []`
+
+We need to make sure that:
+- every memory region allocated using *regular* `new` is released using *regular* `delete`
+- every memory region allocated using *array* `new` is released using *array* `delete`
+
+This is a common source of error!
 
 ---
 name: null_pointer
 
 # The null pointer
+
+It is possible to declare a pointer that does not point to a valid memory
+region
+- we may want to declare the variable to hold the memory address, but actually
+  allocate later (e.g. once we know how much memory to allocate)
+- when we release the memory, there is a chance the remaining code could try to
+  use the pointer
+- ...
+
+--
+
+In this case, we can assign it the special value `nullptr`
+- this is an alias for a literal zero
+- this allows the code to *check* whether the pointer is valid before accessing
+  the memory it points to
+
+```
+Segment::Base* p = nullptr;
+
+...
+
+if (p)
+  std::cout << p->tip_position() << "\n";
+```
+
+---
+
+# The null pointer
+
+When releasing memory, we can also assign it the value `nullptr` to ensure it
+is marked as invalid:
+```
+delete p;
+p = nullptr;
+
+...
+
+if (p)
+  std::cout << "value held is " << *p << "\n";
+```
+
+--
+
+We therefore need to be very careful when handling pointers
+- they may not point to valid locations!
+- but setting the pointer to `nullptr` means we can at least check for validity
+
+--
+
+An attempt to *dereference* a `nullptr` will lead to an immediate crash
+- the error message is rarely very informative however, and indicates a generic
+  memory access violation
+  - typically: `segmentation fault`
 
 ---
 name: memory_problems
@@ -1394,17 +1485,207 @@ name: memory_leak
 
 # Memory leaks
 
+When we fail to `delete` memory previously allocated with `new`, that memory
+chunk remains marked as used
+- it will not be available for subsequent allocations
+
+Eventually, the system will run out of memory, leading to a crash
+
+```
+double compute (int n, ...) {
+  double* values = new double [n];
+  ...
+  // perform computation
+  return result;
+} // &larr; values is not deleted! The address is lost - not scope for subsequent deletion
+
+...
+
+for (auto data : image_data) {
+  auto val = compute (nmeasurements, data); 
+  ...
+}
+```
+
+--
+
+.explain-bottomright[
+Every call to `compute()` will allocate memory that will never be released
+
+<br>
+This is a memory leak &ndash; eventually the program will run out of memory and
+crash
+]
+
+---
+
+# Memory leaks
+
+It is not easy to guarantee deletion always happens:
+```
+double compute (int n, ...) {
+* double* values = new double [n];
+
+  ...
+
+  if (some_error)
+    throw std::runtime_error ("computation failed");
+
+  ...
+
+  if (early_termination_condition)
+    return result;
+
+  ...
+
+* delete [] values;
+  return result;
+}
+```
+
+--
+
+.explain-bottomright[
+Our function allocates memory for `values`, and releases it before returning
+]
+
+---
+
+# Memory leaks
+
+It is not easy to guarantee deletion always happens:
+```
+double compute (int n, ...) {
+  double* values = new double [n];
+
+  ...
+
+* if (some_error)
+*   throw std::runtime_error ("computation failed");
+
+  ...
+
+  if (early_termination_condition)
+    return result;
+
+  ...
+
+  delete [] values;
+  return result;
+}
+```
+
+.explain-bottomright[
+But if an exception is thrown, the memory will not be released!
+]
+
+---
+
+# Memory leaks
+
+It is not easy to guarantee deletion always happens:
+```
+double compute (int n, ...) {
+  double* values = new double [n];
+
+  ...
+
+  if (some_error)
+    throw std::runtime_error ("computation failed");
+
+  ...
+
+* if (early_termination_condition)
+*   return result;
+
+  ...
+
+  delete [] values;
+  return result;
+}
+```
+
+.explain-bottomright[
+We may return from the function at multiple points 
+
+<br>We need to make sure any
+previously allocated memory is released for *every* return statement!
+]
+
 ---
 name: dangling_pointers
 
 # Dangling pointers and references
+
+[Dangling pointers](https://www.geeksforgeeks.org/dangling-pointers-in-cpp/)
+occur when the memory they point to has already been deleted
+- subsequent attempts to dereference this pointer are invalid!
+- this is *undefined behaviour* &ndash; anything can happen
+  - crash with a segmentation fault
+  - unexpected results
+  - data corruption
+  - ...
+
+--
+
+This can happen for different reasons
+- returning the address of a function scope variable
+- deleting memory without setting the pointer to `nullptr`
+- having multiple pointers to the same memory
+- ...
+
+---
+
+# Dangling pointers and references
+
+```
+Segment::Base* create_segment() {
+  Segment::Tip tip (20.0);
+  return &tip;
+}
+
+
+int main() {
+  ...
+
+  auto* segment = create_segment();
+* std::cout << segment->tip_position() << "\n";
+  return 0;
+}
+```
+
+Here, `create_segment()` returns the address of a local function-scope variable
+
+This variable will no longer exist as soon as `create_segment()` returns
+- the stack frame containing its memory location will have been popped!
+
+The address stored in `segment` no longer points to a valid instance!
+
 
 ---
 name: double_free
 
 # Double free
 
+```
+void finalise (Data* d) {
+  // process data in d
+  ...
+* delete d;
+};
 
+int main () {
+  Data* data_item = new Data;
+  ...
+  finalise (data_item);
+* delete data_item;
+}
+```
+
+Here, the memory address pointed to by `data_item` is deleted twice
+- once in `finalise()`, once in `main()`
+
+Trying to delete an already released memory location will cause a program crash!
 
 ---
 name: memory_solutions
@@ -1416,11 +1697,86 @@ class: section
 
 # First line of defence: don't do it!
 
+As you can see, there are many ways things can go wrong when managing memory
+manually. 
+- we have only covered a few simple cases here. 
+
+--
+
+Thankfully, modern C++ provides a number of approaches and techniques to avoid
+the most common pitfalls
+
+--
+
+The most obvious way to avoid these issues is to avoid manual memory
+management!
+- you can handle most projects using well-behaved standard types
+- e.g. `std::string`, `std::array`, `std::vector`, ...
+- we have completed 3 projects on this course without *any* manual memory
+  management!
+
 ---
 name: ownership_lifetime
 
 # Object ownership and lifetime
 
+if manual memory management is required, we need to think about
+**ownership** and **lifetime**
+
+--
+
+When we allocate memory from the heap, we need to keep track of:
+- the memory address 
+- whether this was allocated using regular or array `new`
+
+So that we can release that memory when it is no longer needed
+
+--
+
+When we release the memory, we need to:
+- make sure it is only released *once*
+- using the matching version of `delete` (regular or array)
+- make sure the pointer is set to `nullptr` afterwards &ndash; unless we can guarantee it
+  won't be used any more
+
+--
+
+It may be possible to handle this within a single function
+- or a simple collection of functions that are designed to work together
+
+--
+
+But most of the time, we want to use objects allocated on the heap in many
+different places!
+
+---
+
+# Object ownership and lifetime
+
+Many languages rely on [garbage
+collection](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science%29)
+- the program releases any previously allocated memory that is no longer
+  referenced
+- every so often, the program needs to halt execution and perform garbage collection
+- this can impact performance, particularly in applications where timing needs
+  to be predictable
+- this will also typically require more memory, since memory is not immediately
+  released
+
+--
+
+C++ does not perform garbage collection
+- we need to handle our own memory...
+
+To properly track the memory allocations, it helps to consider which piece of
+code 'owns' that memory
+- this code is then responsible for managing it
+
+--
+
+One way to do this is to have a class manage the memory
+- objects of this class can then be considered to have ownership of that memory
+- the lifetime of that memory is tie to the lifetime of the object
 
 
 ---
@@ -1433,14 +1789,267 @@ class: section
 
 # RAII: Resource Acquisition Is Initialisation
 
+[RAII](https://www.geeksforgeeks.org/resource-acquisition-is-initialization/) stand for "Resource Acquisition Is Initialisation"
+
+It is an idiomatic programming technique widely used in C++ to manage *resources*
+- in RAII, the class constructor *acquires* the resource, while the destructor
+  *releases* resource
+- this means ownership and lifetime of the resource are tied to the object
+
+--
+
+A 'resource' in this context is anything that must be acquired before use, and
+has a limited supply
+- memory
+- file handles
+- network connections
+- database connections
+- mutexes (mutual exclusion locks)
+- ...
+
+--
+
+This is how many of the standard classes manage their resources:
+- `std::vector` (can) allocate memory at construction, and the
+  memory is released in the destructor
+- `std::ifstream` & `std::ofstream` (can) open a file at construction, and
+  close the file in the destructor
+
+
+
+
 ---
 
 # Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+*   int* m_data;
+*   int  m_size;
+};
+```
+
+.explain-bottomright[
+The class has two data members: 
+- the size of the vector
+- a pointer to the memory region storing the elements in the vector 
+
+<br>Note our class is designed to hold data of type `int` 
+]
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+*   MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+.explain-bottomright[
+The default constructor ensures the pointer is set to `nullptr` and the size to
+zero
+]
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+*   MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+.explain-bottomright[
+The other constructor allows the user to specify the size of the vector. 
+
+<br>The `m_data` pointer is then set to the address of a new memory region of
+the right size. 
+]
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+*   ~MyVector () { delete [] m_data; }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+.explain-bottomright[
+The destructor will delete the memory region pointed to by `m_data`
+
+<br>Note that it is not an error to call `delete` a `nullptr`: the standard states that
+nothing will happen in this case
+]
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+*   int size () const { return m_size; }
+*   int&       operator[] (int n)       { return m_data[n]; }
+*   const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+.explain-bottomright[
+The other methods provide access to the data. We have already seen these
+operators in use with our `Image` class in the fMRI project. 
+]
+
+---
+
+# Implementing RAII for memory management
+
+For example, this is how we might implement our own version of a vector:
+
+```
+class MyVector {
+  public:
+    MyVector () : m_data(nullptr), m_size (0) { }
+    MyVector (int size) : m_data (new int[size]), m_size (size) { }
+    ~MyVector () { delete [] m_data; }
+
+*   void clear () {
+*     delete [] m_data;
+*     m_data = nullptr;
+*     m_size = 0;
+*   }
+
+*   void resize (int new_size) {
+*     delete [] m_data;
+*     m_data = new int [new_size];
+*     m_size = new_size;
+*   }
+
+    int size () const { return m_size; }
+    int&       operator[] (int n)       { return m_data[n]; }
+    const int& operator[] (int n) const { return m_data[n]; }
+
+  private:
+    int* m_data;
+    int  m_size;
+};
+```
+
+.explain-topright[
+In practice, we would have other methods, such as `clear()` and `resize()`, and
+these also need to properly manage the memory 
+
+<br>
+Here, `resize` reallocates a new region of the desired size. But it does not
+preserve the previous contents
+- a more mature implementation may handle this more gracefully
+]
 
 ---
 name: copy_and_assignment
 
 # The copy constructor and assignment operator
+
+When handling resource such as memory manually, we typically also need to worry
+about what happens when our object is *copied*
+
+--
+
+There are two specific operations that we need to consider:
+- copy-construction from an existing object
+- assignment from an existing object
+
+--
+
+
 
 ---
 
