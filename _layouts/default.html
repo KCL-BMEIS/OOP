@@ -8,16 +8,16 @@
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import "sass-code-highlight/monokai"; // 'monokai' as example
+
 
       body { font-family: 'Droid Sans'; }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
-      pre code {
-        filter: drop-shadow(0.3em 0.3em 0.3em #888888);
-      }
     </style>
+    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/default.css"> <!-- IMPORTANT -->
   </head>
   <body>
     {{ content }}

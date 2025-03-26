@@ -16,3 +16,4 @@ exclude:
   - CONTRIBUTING.md
   - code/
   - view_local
+  - update_toc.sh
