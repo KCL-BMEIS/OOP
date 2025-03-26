@@ -28,6 +28,7 @@ int main ()
 }
 ```
 
+---
 
 ## Exercise 2
 
@@ -42,6 +43,7 @@ arithmetic.
 - (7 * 3) % 5
 - (7.0 * 3) % 5
 
+---
 
 ## Exercise 3
 
@@ -74,6 +76,7 @@ int main ()
 ```
 
 
+---
 
 ## Exercise 4
 
@@ -91,6 +94,7 @@ instead. Since the remainder operator is not defined for floating point
 arithmetic, this time only the result of the expression should be printed.
 
 
+---
 
 ## Exercise 6
 
@@ -113,6 +117,7 @@ tasks:
 - Add 1 to x and then display the new value of x.
 - Display the value of y and then subtract 1 from it.
 
+---
 
 ## Exercise 7 
 
@@ -165,6 +170,7 @@ int main ()
 }
 ```
 
+---
 
 ## Exercise 8
 
@@ -173,6 +179,7 @@ terminal or as a command-line argument) and compute and display the square root
 of its absolute value.
 
 
+---
 
 ## Exercise 9
 
@@ -184,6 +191,7 @@ $$
 x^{y^z}
 $$
 
+---
 
 ## Exercise 10
 
@@ -195,6 +203,7 @@ $$
 ((i + 3) \times (i + 2) \times (i + 1) \times i)^3
 $$
 
+---
 
 ## Exercise 11
 
@@ -238,6 +247,7 @@ int main ()
 }
 ```
 
+---
 
 ## Exercise 12
 
@@ -251,6 +261,7 @@ $$
 
 where *s* is half of the sum of the three sides.
 
+---
 
 ## Exercise 13
 
