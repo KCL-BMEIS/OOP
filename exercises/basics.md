@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Exercises: "Basics of C++"
+title: "Exercises: Basics of C++"
 ---
 
 # Exercises: Basics of C++
