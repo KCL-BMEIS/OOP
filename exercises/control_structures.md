@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Exercises: "Control structures"
+title: "Exercises: Control structures"
 ---
 
 # Exercises: Control structures
