@@ -169,7 +169,7 @@ $$
 \sum_{n=1}^N \frac{1}{n^2}
 $$
 
-converges to π<sup>2</sup>/6 for very large *N*. 
+converges to *π*<sup>2</sup>/6 for very large *N*. 
 
 Write a program that estimates the value of *π*
 using this approximation, and finds the value of *N* for which the error
