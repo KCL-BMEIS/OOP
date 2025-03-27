@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Exercises: "Basics of C++"
+title: Exercises: "Control structures"
 ---
 
-# Exercises: Basics of C++
+# Exercises: Control structures
 
 ## Exercise 1
 
