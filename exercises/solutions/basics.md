@@ -240,7 +240,7 @@ int main (int argc, char* argv[])
 
 Solution:
 
-```
+```c++
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -269,7 +269,7 @@ int main (int argc, char* argv[])
 
 Solution:
 
-```
+```c++
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -340,7 +340,7 @@ int main ()
 
 Solution:
 
-```
+```c++
 #include <iostream>
 #include <cmath>
 
@@ -364,8 +364,7 @@ int main ()
 
 Solution:
 
-#include <iostream>
-```
+```c++
 #include <iostream>
 #include <cmath>
 #include <vector>
