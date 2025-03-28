@@ -234,7 +234,7 @@ int main ()
     float a, b, c, r1, r2;
 
     // read values of coefficients from user
-    std::cout << " Enter a b c: ";
+    std::cout << "Enter a b c: ";
     std::cin >> a >> b << c;
 
     // compute roots

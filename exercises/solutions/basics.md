@@ -217,10 +217,14 @@ Solution (using command-line argument):
 #include <cmath>
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 int main (int argc, char* argv[])
 {
     std::vector<std::string> args (argv, argv+argc);
+
+    if (args.size() < 2)
+      throw std::runtime_error ("expected at least one argument");
 
     int n = std::stoi (args[1]);
     std::cout << "result = " << std::sqrt (std::abs (n)) << "\n";
@@ -229,201 +233,166 @@ int main (int argc, char* argv[])
 }
 ```
 
+---
 
-9. Solution:
-1 #include <iostream >
-2 #include <cmath >
-3 using
-namespace
-std;
-4
-5 int main ()
-6 {
-7
-double x, y, z, result;
-8
-cout << "Enter x y z: " << endl;
-9
-cin >> x >> y >> z;
-10
-result = pow(x, pow(y,z));
-11
-cout << "x^y^z = " << result
-<< endl;
-12
-13
-return 0;
-14 }
-10. Solution:
-1 #include <iostream >
-2 using
-namespace
-std;
-3
-4 int main ()
-5 {
-6
-// Program to compute
-expression
-7
-// using
-floating
-point
-arithmetic
-4
-8
-int i;
-9
-float v, result;
-10
-cout << "Enter a number :\n";
-11
-cin >> i;
-12
-13
-// use
-decimal
-points in numbers to ensure
-14
-// that
-floating
-point
-arithmetic is used
-15
-v = (i + 3.0) * (i + 2.0) * (i + 1.0) * i;
-16
-result = v * v * v;
-17
-cout << "Result = " << result
-<< endl;
-18
-return 0;
-19 }
-11. The errors are:
-• Line 2: add #include <cmath> to be able to use sqrt function
-• Line 14: replace << with >>
-• Lines 17, 18: add brackets to correct division expression
+## Exercise 9
+
+
+Solution:
+
+```
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <stdexcept>
+
+int main (int argc, char* argv[])
+{
+    std::vector<std::string> args (argv, argv+argc);
+
+    if (args.size() < 4)
+      throw std::runtime_error ("expected 3 arguments");
+
+    double x = std::stod (args[1]);
+    double y = std::stod (args[2]);
+    double z = std::stod (args[3]);
+
+    double result = std::pow (x, std::pow (y,z));
+    std::cout << "x^y^z = " << result << "\n";
+
+    return 0;
+}
+```
+
+## Exercise 10
+
+Solution:
+
+```
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <stdexcept>
+
+int main (int argc, char* argv[])
+{
+    // Program to compute expression
+    // using floating point arithmetic
+
+    std::vector<std::string> args (argv, argv+argc);
+
+    if (args.size() < 2)
+      throw std::runtime_error ("expected one integer argument");
+
+    int i = std::stoi (args[1]);
+
+    // use decimal points in numbers to ensure
+    // that floating-point arithmetic is used:
+    float v = (i + 3.0) * (i + 2.0) * (i + 1.0) * i;
+    float result = v * v * v;
+
+    std::cout << "Result = " << result << "\n";
+    return 0;
+}
+```
+
+---
+
+## Exercise 11
+
+The errors are:
+- add #include <cmath> to be able to use sqrt function
+- at line that starts with `std::cin`: replace `<<` with `>>`
+- when computing roots `r1` & `r2`: add brackets to correct division expression
+
 Corrected code:
-1 #include <iostream >
-2 #include <cmath >
-3 using
-namespace
-std;
-4
-5 int main ()
-6 {
-7
-// compute
-roots of quadratic
-equation of
-8
-// form ax^2 + bx + c = 0
-9
-10
-// declare
-variables
-for
-coefficients
-and roots
-11
-float a, b, c, r1 , r2;
-12
-13
-// read
-values of coefficients
-from user
-14
-cout << "Enter a b c:" << endl;
-15
-cin >> a >> b >> c;
-16
-17
-// compute
-roots
-18
-r1 = (-b + sqrt(b*b - 4.0*a*c)) / (2.0 * a);
-19
-r2 = (-b - sqrt(b*b - 4.0*a*c)) / (2.0 * a);
-20
-21
-// display
-answers
-22
-cout << "Roots = " << r1 << ", " << r2 << endl;
-23
-24
-return 0;
-25 }
-5
-12. Solution:
-1 #include <iostream >
-2 #include <cmath >
-3
-4 using
-namespace
-std;
-5
-6 int main ()
-7 {
-8
-float a, b, c, s, area;
-9
-cout << "Enter the values of a b c" << endl;
-10
-cin >> a >> b >> c;
-11
-s = (a + b + c) / 2.0;
-12
-area = sqrt (s * (s - a) * (s - b) * (s - c));
-13
-cout << "The area of the
-triangle is " << area << endl;
-14
-return 0;
-15 }
-13. Solution:
-1 #include <iostream >
-2 #include <cmath >
-3
-4 using
-namespace
-std;
-5
-6 int main ()
-7 {
-8
-// declare
-variables
-for radius , area , volume
-9
-float r, area , vol;
-10
-11
-// read
-radius
-from
-keyboard
-12
-cout << "Enter
-radius:" << endl;
-13
-cin >> r;
-14
-15
-// compute area , vol
-16
-area = 4.0 * M_PI * r * r;
-17
-vol = (4.0 / 3.0) * M_PI * r * r * r;
-18
-19
-// display to screen
-20
-cout << "Surface
-area = " << area << endl;
-21
-cout << "Volume = " << vol << endl;
-22
-23
-return 0;
-24 }
+
+```c++
+#include <iostream>
+#include <cmath>
+
+int main ()
+{
+    // compute roots of quadratic equation of form ax^2 + bx + c = 0
+
+    // declare variables for coefficients and roots
+    float a, b, c, r1, r2;
+
+    // read values of coefficients from user
+    std::cout << "Enter a b c: ";
+    std::cin >> a >> b >> c;
+
+    // compute roots
+    r1 = ( -b + std::sqrt (b*b - 4.0*a*c) ) / (2.0*a);
+    r2 = ( -b - std::sqrt (b*b - 4.0*a*c) ) / (2.0*a);
+
+    // display answers
+    std::cout << "Roots = " << r1 << ", " << r2 << "\n";
+    return 0;
+}
+```
+
+---
+
+## Exercise 12
+
+Solution:
+
+```
+#include <iostream>
+#include <cmath>
+
+int main ()
+{
+    float a, b, c;
+    std::cout << "Enter the values of a b c: ";
+    std::cin >> a >> b >> c;
+
+    float s = (a + b + c) / 2.0;
+    float area = std::sqrt (s * (s - a) * (s - b) * (s - c));
+
+    std::cout << "The area of the triangle is " << area << "\n";
+    return 0;
+}
+
+
+---
+
+## Exercise 13
+
+Solution:
+
+#include <iostream>
+```
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+#include <stdexcept>
+
+int main (int argc, char* argv[])
+{
+    // Program to compute expression
+    // using floating point arithmetic
+
+    std::vector<std::string> args (argv, argv+argc);
+
+    if (args.size() < 2)
+      throw std::runtime_error ("expected one floating-point argument");
+
+    float r = std::stod (args[1]);
+
+    // compute area , vol
+    float area = 4.0 * M_PI * r * r;
+    float vol = (4.0 / 3.0) * M_PI * r * r * r;
+
+    // display to terminal:
+    std::cout << "Surface area = " << area << "\n";
+    std::cout << "Volume = " << vol << "\n";
+
+    return 0;
+}
+```
+
