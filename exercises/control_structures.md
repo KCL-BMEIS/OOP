@@ -7,9 +7,9 @@ title: "Exercises: Control structures"
 
 ## Exercise 1
 
-In a previous exercise, we wrote a C++ program to compute 
-the area of a triangle given the lengths of its three sides *a*, *b* and *c*,
-according to the equation
+In Exercise 12 from the "Basics of C++" worksheet, we wrote a C++ program to
+compute the area of a triangle given the lengths of its three sides *a*, *b*
+and *c*, according to the equation
 
 $$
 A = s(s − a)(s − b)(s − c)
@@ -48,8 +48,8 @@ the rules described above.
 
 ## Exercise 3
 
-In a previous exerecise, we debugged a C++ program to compute
-the roots of a quadratic equation of the form:
+In exercise 11 of "Basics of C++" worksheet, we debugged a C++ program to
+compute the roots of a quadratic equation of the form:
 
 $$
 ax^2 + bx + c = 0
@@ -95,7 +95,7 @@ one triangle before asking the user if they want to proceed.
 The Fibonacci series is a sequence of integer numbers, starting with 0 & 1,
 such that each subsequent number in the sequence is equal to the
 sum of the previous two. For example, the beginning of the sequence
-is 1, 1, 2, 3, 5, 8, 13, etc. Write a C++ program that computes and
+is 0, 1, 1, 2, 3, 5, 8, 13, etc. Write a C++ program that computes and
 prints the Fibonacci series up to a maximum value of 10000 (i.e. when
 the sum of the previous two numbers is greater than 10000 the program
 should stop).
@@ -122,7 +122,7 @@ tangent crosses the x-axis at the point (x<sub>2</sub>, 0), where x<sub>2</sub> 
 This sequence of steps should continue until some convergence condition, e.g. (x<sub>n</sub> − x<sub>n−1</sub>) < ϵ.
 
 Write a C++ program to find the root of the equation f(x) = cos(x)−x
-using the Newton-Raphson method. (The derivative of cos(x) − x is
+using the Newton-Raphson method with ϵ = 0.001 (The derivative of cos(x) − x is
 −sin(x) − 1.)
 
 ---

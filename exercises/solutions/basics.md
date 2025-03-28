@@ -3,7 +3,7 @@ layout: default
 title: "Exercise solutions: Basics of C++"
 ---
 
-# Exercises solutions: Basics of C++
+# Exercise solutions: Basics of C++
 
 
 ## Exercise 1
@@ -356,6 +356,7 @@ int main ()
     std::cout << "The area of the triangle is " << area << "\n";
     return 0;
 }
+```
 
 
 ---
