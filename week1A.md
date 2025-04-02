@@ -424,9 +424,7 @@ name: first_program
 
 class: section
 
-# Coding in C++
-
-## Compiling and running our first program
+# Compiling and running our first program
 
 ---
 
@@ -724,9 +722,7 @@ name: hello_world
 
 class: section
 
-# Coding in C++
-
-## Understanding our code
+# Understanding our code
 
 ---
 
@@ -930,9 +926,7 @@ name: cmdline_args
 
 class: section
 
-# Coding in C++
-
-## Handling command-line arguments
+# Handling command-line arguments
 
 ---
 

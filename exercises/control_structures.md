@@ -109,7 +109,7 @@ successively finding better approximations of the root(s) of a function.
 To approximate the unknown value of x that satisfies the equation
 f(x) = 0, the method works as follows (see figure below):
 
-![newton-raphson](exercises/newton-raphson.png)
+![newton-raphson](newton-raphson.png)
 
 1. Make an initial guess at the solution - call this x<sub>1</sub>
 2. Calculate y<sub>1</sub> = *f*(x<sub>1</sub>)

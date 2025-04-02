@@ -110,7 +110,6 @@ This can be used to received input from the terminal, for example:
   std::cin >> value;
 ```
 ---
-name: stdin
 
 # Standard input
 
