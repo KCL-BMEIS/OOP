@@ -1461,7 +1461,7 @@ Note that our getter method does not take any arguments
 name: const_method
 
 
-# Getters & setters
+# Getters & setters - const methods
 
 ```
 class ShotgunSequencer {
