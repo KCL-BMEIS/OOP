@@ -226,7 +226,7 @@ about what anchor condition(s) you will need to have for your function.
 In trigonometry, for small values, the approximation
 
 $$
-sin(x) = x − x^3
+\sin(x) = x − x^3
 $$
 
 
@@ -234,15 +234,15 @@ will hold, but for larger values of *x*, the following indirect recursive
 definitions can be used:
 
 $$
-sin(x) = sin(\frac{x}{3}) \frac{3-\tan^2(\frac{x}{3})}{1+\tan^2(\frac{x}{3})}
+\sin(x) = \sin(\frac{x}{3}) \frac{3-\tan^2(\frac{x}{3})}{1+\tan^2(\frac{x}{3})}
 $$
 
 $$
-tan(x) = \frac{sin(x)}{cos(x)}
+\tan(x) = \frac{\sin(x)}{\cos(x)}
 $$
 
 $$
-cos(x) = 1 − sin(\frac{x}{2})
+\cos(x) = 1 − \sin(\frac{x}{2})
 $$
 
 Write functions to implement *sin*, *cos* and *tan* using indirect recursion
